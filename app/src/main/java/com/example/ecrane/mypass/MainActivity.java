@@ -136,12 +136,6 @@ public class MainActivity extends ListActivity {
         super.onResume();
     }
 
-//    @Override
-//    protected void onRestart() {
-//        adapter.notifyDataSetChanged();
-//        super.onRestart();
-//    }
-//
     @Override
     protected void onPause() {
         datasource.close();
