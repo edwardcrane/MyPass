@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <LinearLayout
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    <EditText
+        android:id="@+id/findstring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/findString" />
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/button_find_resource"-->
+        <!--android:onClick="findResource" />-->
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_new_resource"
+        android:onClick="newResource" />
+        </LinearLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:id="@android:id/list"
+        android:layout_height="wrap_content"
+        android:text="@string/list_default_value"
+        android:scrollbars="vertical"
+        android:clickable="true"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false">
+    </ListView>
+
+</LinearLayout>

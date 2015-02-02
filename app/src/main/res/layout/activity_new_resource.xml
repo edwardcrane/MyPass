@@ -1,0 +1,48 @@
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <EditText
+        android:layout_weight="0"
+        android:id="@+id/resource_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/resource_name" />
+
+    <EditText
+        android:layout_weight="0"
+        android:id="@+id/username"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/username" />
+
+    <EditText
+        android:layout_weight="0"
+        android:id="@+id/password"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/password"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:layout_weight="0"
+        android:id="@+id/description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/description" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_save"
+        android:onClick="saveEntry" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_cancel"
+        android:onClick="cancelEntry" />
+
+</TableLayout>

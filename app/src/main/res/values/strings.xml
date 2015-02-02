@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyPass</string>
+    <string name="resource_name">Enter Resource Name</string>
+    <string name="username">Enter User Name</string>
+    <string name="password">Enter Password</string>
+    <string name="description">Enter Description</string>
+    <string name="findString">Enter String to Find</string>
+    <string name="button_save">Save</string>
+    <string name="button_find_resource">Find</string>
+    <string name="button_new_resource">New</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_display_message">My Message</string>
+    <string name="display_message">Display Message</string>
+    <string name="list_default_value">List Default Value</string>
+
+</resources>
