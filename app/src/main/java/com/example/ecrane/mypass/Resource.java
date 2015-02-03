@@ -1,5 +1,7 @@
 package com.example.ecrane.mypass;
 
+import android.text.Html;
+
 import java.io.Serializable;
 
 /**
@@ -67,7 +69,7 @@ public class Resource implements Serializable {
         StringBuffer buf = new StringBuffer();
         buf.append(resourceName);
         if(!description.isEmpty()) {
-            buf.append(" - " + description);
+            buf.append("\n[" + description + "]");
         };
         return(buf.toString());
     }

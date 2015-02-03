@@ -3,6 +3,8 @@ package com.example.ecrane.mypass;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +21,7 @@ public class EditResourceActivity extends ActionBarActivity {
     private ResourceDataSource datasource;
     private Resource resource;
 
+    private boolean isPasswordVisible = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,23 @@ public class EditResourceActivity extends ActionBarActivity {
         ((EditText)findViewById(R.id.username)).setText(resource.getUsername());
         ((EditText)findViewById(R.id.password)).setText(resource.getPassword());
         ((EditText)findViewById(R.id.description)).setText(resource.getDescription());
+
+        final EditText editTextPassword = (EditText)findViewById(R.id.password);
+
+        editTextPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.w(this.getClass().getName(), "User clicked on password, isPasswordVisible: [" + isPasswordVisible + "]");
+                // show password
+                if(!isPasswordVisible) {
+                    editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {  // Hide password
+                    editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+                editTextPassword.setSelection(editTextPassword.getText().length());
+                isPasswordVisible = !isPasswordVisible;
+            }
+        });
     }
 
 
