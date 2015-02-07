@@ -101,7 +101,7 @@ public class ResourceDataSource {
         };
         String whereClause = ResourceDBHelper.COLUMN_NAME_RESOURCENAME + " LIKE \'%"+findString+"%\' OR " + ResourceDBHelper.COLUMN_NAME_DESCRIPTION + " LIKE \'%" + findString + "%\'";
 
-        String sortOrder = ResourceDBHelper.COLUMN_NAME_RESOURCENAME + " ASC";
+        String sortOrder = ResourceDBHelper.COLUMN_NAME_RESOURCENAME + " COLLATE NOCASE ASC";
 
         Cursor cursor = database.query(
                 ResourceDBHelper.TABLE_NAME,    // the table to query
