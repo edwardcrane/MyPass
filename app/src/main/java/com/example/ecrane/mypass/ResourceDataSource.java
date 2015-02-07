@@ -15,19 +15,19 @@ import java.util.List;
  */
 public class ResourceDataSource {
     private SQLiteDatabase database;
-    private MyPassDBHelper dbHelper;
+    private ResourceDBHelper dbHelper;
 
     private String[] allColumns = {
-        MyPassDBHelper.COLUMN_ID,
-        MyPassDBHelper.COLUMN_NAME_ENTRY_ID,
-        MyPassDBHelper.COLUMN_NAME_RESOURCENAME,
-        MyPassDBHelper.COLUMN_NAME_DESCRIPTION,
-        MyPassDBHelper.COLUMN_NAME_USERNAME,
-        MyPassDBHelper.COLUMN_NAME_PASSWORD
+        ResourceDBHelper.COLUMN_ID,
+        ResourceDBHelper.COLUMN_NAME_ENTRY_ID,
+        ResourceDBHelper.COLUMN_NAME_RESOURCENAME,
+        ResourceDBHelper.COLUMN_NAME_DESCRIPTION,
+        ResourceDBHelper.COLUMN_NAME_USERNAME,
+        ResourceDBHelper.COLUMN_NAME_PASSWORD
     };
 
     public ResourceDataSource(Context context) {
-        dbHelper = new MyPassDBHelper(context);
+        dbHelper = new ResourceDBHelper(context);
     }
 
     public void open() throws SQLException {
@@ -43,20 +43,20 @@ public class ResourceDataSource {
 
         // CREATE A NEW MAP OF VALUES, WHERE COLUMN NAMES ARE THE KEYS
         ContentValues values = new ContentValues();
-        values.put(MyPassDBHelper.COLUMN_NAME_ENTRY_ID, entryID);
-        values.put(MyPassDBHelper.COLUMN_NAME_RESOURCENAME, resourceName);
-        values.put(MyPassDBHelper.COLUMN_NAME_USERNAME, userName);
-        values.put(MyPassDBHelper.COLUMN_NAME_PASSWORD, password);
-        values.put(MyPassDBHelper.COLUMN_NAME_DESCRIPTION, description);
+        values.put(ResourceDBHelper.COLUMN_NAME_ENTRY_ID, entryID);
+        values.put(ResourceDBHelper.COLUMN_NAME_RESOURCENAME, resourceName);
+        values.put(ResourceDBHelper.COLUMN_NAME_USERNAME, userName);
+        values.put(ResourceDBHelper.COLUMN_NAME_PASSWORD, password);
+        values.put(ResourceDBHelper.COLUMN_NAME_DESCRIPTION, description);
 
         long newRowId;
         newRowId = db.insert(
-                MyPassDBHelper.TABLE_NAME,
+                ResourceDBHelper.TABLE_NAME,
                 null,
                 values);
 
-        Cursor cursor = database.query(MyPassDBHelper.TABLE_NAME,
-                allColumns, MyPassDBHelper.COLUMN_ID + " = " + newRowId, null, null, null, null);
+        Cursor cursor = database.query(ResourceDBHelper.TABLE_NAME,
+                allColumns, ResourceDBHelper.COLUMN_ID + " = " + newRowId, null, null, null, null);
         cursor.moveToFirst();
         Resource res = cursorToResource(cursor);
         cursor.close();
@@ -69,20 +69,20 @@ public class ResourceDataSource {
 
         String filterString = "_id=" + id;
         ContentValues args = new ContentValues();
-        args.put(MyPassDBHelper.COLUMN_NAME_ENTRY_ID, resource.getEntryID());
-        args.put(MyPassDBHelper.COLUMN_NAME_RESOURCENAME, resource.getResourceName());
-        args.put(MyPassDBHelper.COLUMN_NAME_USERNAME, resource.getUsername());
-        args.put(MyPassDBHelper.COLUMN_NAME_PASSWORD, resource.getPassword());
-        args.put(MyPassDBHelper.COLUMN_NAME_DESCRIPTION, resource.getDescription());
+        args.put(ResourceDBHelper.COLUMN_NAME_ENTRY_ID, resource.getEntryID());
+        args.put(ResourceDBHelper.COLUMN_NAME_RESOURCENAME, resource.getResourceName());
+        args.put(ResourceDBHelper.COLUMN_NAME_USERNAME, resource.getUsername());
+        args.put(ResourceDBHelper.COLUMN_NAME_PASSWORD, resource.getPassword());
+        args.put(ResourceDBHelper.COLUMN_NAME_DESCRIPTION, resource.getDescription());
 
-        database.update(MyPassDBHelper.TABLE_NAME, args, filterString, null);
+        database.update(ResourceDBHelper.TABLE_NAME, args, filterString, null);
 
         Log.w(this.getClass().getName(), "Updated: " + resource.getResourceName());
     }
 
     public void deleteResource(Resource resource) {
         long id = resource.getID();
-        int i = database.delete(MyPassDBHelper.TABLE_NAME, MyPassDBHelper.COLUMN_ID + " = " + id, null);
+        int i = database.delete(ResourceDBHelper.TABLE_NAME, ResourceDBHelper.COLUMN_ID + " = " + id, null);
         if(i != 1) {
             Log.w(this.getClass().getName(), "Deleting [" + resource + "] failed.  Delete returned [" + i + "] rows.");
         }
@@ -92,19 +92,19 @@ public class ResourceDataSource {
         List<Resource> resources = new ArrayList<Resource>();
 
         String[] projection = {
-                MyPassDBHelper.COLUMN_ID,
-                MyPassDBHelper.COLUMN_NAME_ENTRY_ID,
-                MyPassDBHelper.COLUMN_NAME_RESOURCENAME,
-                MyPassDBHelper.COLUMN_NAME_USERNAME,
-                MyPassDBHelper.COLUMN_NAME_PASSWORD,
-                MyPassDBHelper.COLUMN_NAME_DESCRIPTION
+                ResourceDBHelper.COLUMN_ID,
+                ResourceDBHelper.COLUMN_NAME_ENTRY_ID,
+                ResourceDBHelper.COLUMN_NAME_RESOURCENAME,
+                ResourceDBHelper.COLUMN_NAME_USERNAME,
+                ResourceDBHelper.COLUMN_NAME_PASSWORD,
+                ResourceDBHelper.COLUMN_NAME_DESCRIPTION
         };
-        String whereClause = MyPassDBHelper.COLUMN_NAME_RESOURCENAME + " LIKE \'%"+findString+"%\' OR " + MyPassDBHelper.COLUMN_NAME_DESCRIPTION + " LIKE \'%" + findString + "%\'";
+        String whereClause = ResourceDBHelper.COLUMN_NAME_RESOURCENAME + " LIKE \'%"+findString+"%\' OR " + ResourceDBHelper.COLUMN_NAME_DESCRIPTION + " LIKE \'%" + findString + "%\'";
 
-        String sortOrder = MyPassDBHelper.COLUMN_ID + " ASC";
+        String sortOrder = ResourceDBHelper.COLUMN_NAME_RESOURCENAME + " ASC";
 
         Cursor cursor = database.query(
-                MyPassDBHelper.TABLE_NAME,    // the table to query
+                ResourceDBHelper.TABLE_NAME,    // the table to query
                 projection,                                 // the columns to return
                 whereClause,            //selection,        // the values for the WHERE clause
                 null,              //selectionArgs,    // the values for the WHERE clause
@@ -126,7 +126,7 @@ public class ResourceDataSource {
     public List<Resource> getAllResources() {
         List<Resource> resources = new ArrayList<Resource>();
 
-        Cursor cursor = database.query(MyPassDBHelper.TABLE_NAME, allColumns, null, null, null, null, null);
+        Cursor cursor = database.query(ResourceDBHelper.TABLE_NAME, allColumns, null, null, null, null, null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()) {
             Resource resource = cursorToResource(cursor);
@@ -139,12 +139,12 @@ public class ResourceDataSource {
 
     public Resource cursorToResource(Cursor cursor) {
         Resource res = new Resource();
-        res.setID(cursor.getLong(cursor.getColumnIndexOrThrow(MyPassDBHelper.COLUMN_ID)));
-        res.setEntryID(cursor.getString(cursor.getColumnIndexOrThrow(MyPassDBHelper.COLUMN_NAME_ENTRY_ID)));
-        res.setResourceName(cursor.getString(cursor.getColumnIndexOrThrow(MyPassDBHelper.COLUMN_NAME_RESOURCENAME)));
-        res.setUsername(cursor.getString(cursor.getColumnIndexOrThrow(MyPassDBHelper.COLUMN_NAME_USERNAME)));
-        res.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(MyPassDBHelper.COLUMN_NAME_PASSWORD)));
-        res.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(MyPassDBHelper.COLUMN_NAME_DESCRIPTION)));
+        res.setID(cursor.getLong(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_ID)));
+        res.setEntryID(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_ENTRY_ID)));
+        res.setResourceName(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_RESOURCENAME)));
+        res.setUsername(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_USERNAME)));
+        res.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_PASSWORD)));
+        res.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_DESCRIPTION)));
         return res;
     }
 }

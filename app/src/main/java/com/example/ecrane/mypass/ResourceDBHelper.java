@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by ecrane on 1/8/2015.
  */
-public class MyPassDBHelper extends SQLiteOpenHelper {
+public class ResourceDBHelper extends SQLiteOpenHelper {
     // if you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "MyPass.db";
@@ -36,7 +36,7 @@ public class MyPassDBHelper extends SQLiteOpenHelper {
                     COLUMN_NAME_PASSWORD + TEXT_TYPE +
                     " )";
 
-    public MyPassDBHelper(Context context) {
+    public ResourceDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -45,7 +45,7 @@ public class MyPassDBHelper extends SQLiteOpenHelper {
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.w(MyPassDBHelper.class.getName(), " Upgrading database from version " + oldVersion + " to version " + newVersion + ", which will destroy all old data.");
+        Log.w(ResourceDBHelper.class.getName(), " Upgrading database from version " + oldVersion + " to version " + newVersion + ", which will destroy all old data.");
         // this database is only a cache for online data, so its upgrade policy is
         // to simply discard the data and start over
         db.execSQL(SQL_DELETE_ENTRIES);
