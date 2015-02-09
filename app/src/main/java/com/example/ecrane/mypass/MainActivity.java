@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -103,7 +106,48 @@ public class MainActivity extends ListActivity {
             return true;
         }
 
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_export) {
+            onUserSelectedExport();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    public int export(OutputStream os) throws IOException {
+        StringBuffer sb = new StringBuffer();
+        int count = 0;
+
+//        FileOutputStream fos = openFileOutput("export.csv", getApplicationContext().MODE_PRIVATE);
+
+        sb.append("\"_id\",\"ResourceName\",\"UserName\",\"Password\",\"Description\"\n");
+        for(Resource r : values) {
+            sb.append("\"" + r.getID() + "\",");
+            sb.append("\"" + r.getResourceName() + "\",");
+            sb.append("\"" + r.getUsername() + "\",");
+            sb.append("\"" + r.getPassword() + "\",");
+            sb.append("\"" + r.getDescription() + "\"\n");
+            os.write(sb.toString().getBytes());
+            sb.setLength(0);
+            count++;
+        }
+        os.close();
+        return(count);
+    }
+
+    public boolean onUserSelectedExport() {
+        int count = 0;
+        try {
+            FileOutputStream fos = openFileOutput("export.csv", getApplicationContext().MODE_PRIVATE);
+            count = export(fos);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(getApplicationContext(), "Exported " + count + " records to export.csv", Toast.LENGTH_LONG).show();
+        if(count > -1)
+            return true;
+        else return false;
     }
 
     public void findResource(View view) {
