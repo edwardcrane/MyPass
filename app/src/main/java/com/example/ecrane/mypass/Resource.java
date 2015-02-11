@@ -1,7 +1,5 @@
 package com.example.ecrane.mypass;
 
-import android.text.Html;
-
 import java.io.Serializable;
 
 /**
@@ -9,7 +7,6 @@ import java.io.Serializable;
  */
 public class Resource implements Serializable {
     private long _id = 0;
-//    private String entryID = "";
     private String resourceName = "";
     private String username = "";
     private String password = "";
@@ -22,14 +19,6 @@ public class Resource implements Serializable {
     public void setID(long id) {
         _id = id;
     }
-
-//    public String getEntryID() {
-//        return entryID;
-//    }
-
-//    public void setEntryID(String entryID) {
-//        this.entryID = entryID;
-//    }
 
     public String getResourceName() {
         return resourceName;
@@ -81,7 +70,6 @@ public class Resource implements Serializable {
     public String toLongString(){
         StringBuffer buf = new StringBuffer();
         buf.append("[" + _id + "] ");
-//        buf.append("[" + entryID + "] ");
         buf.append("[" + resourceName + "] ");
         buf.append("[" + username + "] ");
         buf.append("[" + password + "] ");

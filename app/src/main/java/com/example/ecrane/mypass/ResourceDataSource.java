@@ -19,7 +19,6 @@ public class ResourceDataSource {
 
     private String[] allColumns = {
         ResourceDBHelper.COLUMN_ID,
-//        ResourceDBHelper.COLUMN_NAME_ENTRY_ID,
         ResourceDBHelper.COLUMN_NAME_RESOURCENAME,
         ResourceDBHelper.COLUMN_NAME_DESCRIPTION,
         ResourceDBHelper.COLUMN_NAME_USERNAME,
@@ -43,7 +42,6 @@ public class ResourceDataSource {
 
         // CREATE A NEW MAP OF VALUES, WHERE COLUMN NAMES ARE THE KEYS
         ContentValues values = new ContentValues();
-  //      values.put(ResourceDBHelper.COLUMN_NAME_ENTRY_ID, entryID);
         values.put(ResourceDBHelper.COLUMN_NAME_RESOURCENAME, resourceName);
         values.put(ResourceDBHelper.COLUMN_NAME_USERNAME, userName);
         values.put(ResourceDBHelper.COLUMN_NAME_PASSWORD, password);
@@ -69,7 +67,6 @@ public class ResourceDataSource {
 
         String filterString = "_id=" + id;
         ContentValues args = new ContentValues();
-//        args.put(ResourceDBHelper.COLUMN_NAME_ENTRY_ID, resource.getEntryID());
         args.put(ResourceDBHelper.COLUMN_NAME_RESOURCENAME, resource.getResourceName());
         args.put(ResourceDBHelper.COLUMN_NAME_USERNAME, resource.getUsername());
         args.put(ResourceDBHelper.COLUMN_NAME_PASSWORD, resource.getPassword());
@@ -93,7 +90,6 @@ public class ResourceDataSource {
 
         String[] projection = {
                 ResourceDBHelper.COLUMN_ID,
-//                ResourceDBHelper.COLUMN_NAME_ENTRY_ID,
                 ResourceDBHelper.COLUMN_NAME_RESOURCENAME,
                 ResourceDBHelper.COLUMN_NAME_USERNAME,
                 ResourceDBHelper.COLUMN_NAME_PASSWORD,
@@ -140,7 +136,6 @@ public class ResourceDataSource {
     public Resource cursorToResource(Cursor cursor) {
         Resource res = new Resource();
         res.setID(cursor.getLong(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_ID)));
-//        res.setEntryID(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_ENTRY_ID)));
         res.setResourceName(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_RESOURCENAME)));
         res.setUsername(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_USERNAME)));
         res.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_PASSWORD)));

@@ -10,12 +10,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="_id" />
-    <!--<EditText-->
-        <!--android:layout_weight="0"-->
-        <!--android:id="@+id/entry_id"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Enter Entry ID"/>-->
     <EditText
         android:layout_weight="0"
         android:id="@+id/resource_name"
