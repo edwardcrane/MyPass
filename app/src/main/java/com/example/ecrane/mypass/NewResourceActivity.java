@@ -52,7 +52,7 @@ public class NewResourceActivity extends ActionBarActivity {
     }
 
     public void saveEntry(View view) {
-        Resource resource = datasource.createResource("mypass." + System.currentTimeMillis(),   // entryid
+        Resource resource = datasource.createResource(
                 ((EditText)findViewById(R.id.resource_name)).getText().toString(),  // resource name
                 ((EditText)findViewById(R.id.username)).getText().toString(),       // username
                 ((EditText)findViewById(R.id.password)).getText().toString(),       // password

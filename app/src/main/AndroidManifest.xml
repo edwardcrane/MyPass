@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".NewResourceActivity"
-            android:label="New Resource"
+            android:label="New"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -35,7 +35,7 @@
         </activity>
         <activity
             android:name=".EditResourceActivity"
-            android:label="Edit Resource"
+            android:label="Edit"
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

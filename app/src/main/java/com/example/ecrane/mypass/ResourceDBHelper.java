@@ -17,7 +17,7 @@ public class ResourceDBHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
 
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME_ENTRY_ID = "mypassid";
+//    public static final String COLUMN_NAME_ENTRY_ID = "mypassid";
     public static final String COLUMN_NAME_RESOURCENAME = "resourcename";
     public static final String COLUMN_NAME_DESCRIPTION = "description";
     public static final String COLUMN_NAME_USERNAME = "username";
@@ -29,7 +29,7 @@ public class ResourceDBHelper extends SQLiteOpenHelper {
             "CREATE TABLE mypassentry (" +
 //                    MyPassDBContract.MyPassEntry._ID + " INTEGER PRIMARY KEY," +
                     COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
+//                    COLUMN_NAME_ENTRY_ID + TEXT_TYPE + COMMA_SEP +
                     COLUMN_NAME_RESOURCENAME + TEXT_TYPE + COMMA_SEP +
                     COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
                     COLUMN_NAME_USERNAME + TEXT_TYPE + COMMA_SEP +

@@ -2,11 +2,11 @@
 <resources>
 
     <string name="app_name">MyPass</string>
-    <string name="resource_name">Enter Resource Name</string>
-    <string name="username">Enter User Name</string>
-    <string name="password">Enter Password</string>
-    <string name="description">Enter Description</string>
-    <string name="findString">Enter String to Find</string>
+    <string name="resource_name">Record Name</string>
+    <string name="username">User Name</string>
+    <string name="password">Password</string>
+    <string name="description">Description</string>
+    <string name="findString">Search</string>
     <string name="button_save">Save</string>
     <string name="button_find_resource">Find</string>
     <string name="button_new_resource">New</string>

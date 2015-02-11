@@ -37,7 +37,7 @@ public class EditResourceActivity extends ActionBarActivity {
             Log.w(this.getClass().getName(), e);
         }
         ((TextView)findViewById(R.id._id)).setText("" + resource.getID());
-        ((TextView)findViewById(R.id.entry_id)).setText(resource.getEntryID());
+//        ((TextView)findViewById(R.id.entry_id)).setText(resource.getEntryID());
         ((EditText)findViewById(R.id.resource_name)).setText(resource.getResourceName());
         ((EditText)findViewById(R.id.username)).setText(resource.getUsername());
         ((EditText)findViewById(R.id.password)).setText(resource.getPassword());
@@ -85,7 +85,7 @@ public class EditResourceActivity extends ActionBarActivity {
     }
 
     public void saveEntry(View view) {
-                resource.setEntryID(((EditText) findViewById(R.id.entry_id)).getText().toString());
+//                resource.setEntryID(((EditText) findViewById(R.id.entry_id)).getText().toString());
                 resource.setResourceName(((EditText)findViewById(R.id.resource_name)).getText().toString());
                 resource.setUsername(((EditText)findViewById(R.id.username)).getText().toString());
                 resource.setPassword(((EditText)findViewById(R.id.password)).getText().toString());
