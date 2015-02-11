@@ -12,6 +12,8 @@ public class Resource implements Serializable {
     private String password = "";
     private String description = "";
 
+    private static int MAX_DESCRIPTION_CHARS = 30;
+
     public long getID() {
         return _id;
     }
@@ -56,9 +58,16 @@ public class Resource implements Serializable {
 
     public String toDisplayString() {
         StringBuffer buf = new StringBuffer();
+
         buf.append(resourceName);
         if(!description.isEmpty()) {
-            buf.append("\n[" + description + "]");
+            String newDescription = description.replace('\n', '-');
+            int descEnd = newDescription.length();
+            if(descEnd > MAX_DESCRIPTION_CHARS) descEnd = MAX_DESCRIPTION_CHARS;
+            buf.append("\n[" + newDescription.substring(0, descEnd));
+            if(newDescription.length() > descEnd)
+                buf.append(" ...");
+            buf.append("]");
         };
         return(buf.toString());
     }
