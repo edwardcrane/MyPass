@@ -1,5 +1,7 @@
 package com.example.ecrane.mypass;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -100,11 +102,35 @@ public class EditResourceActivity extends ActionBarActivity {
 
     public void deleteResource(View view) {
 //      TODO: Implement a confirmation box, with a special message if the text has been modified.
-        Log.w(this.getClass().getName(), "Deleting resource [" + resource + "]");
-        datasource.deleteResource(resource);
-        Toast.makeText(getApplicationContext(), "Deleted Resource [" + resource + "]", Toast.LENGTH_LONG).show();
 
-        finish();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Confirm Delete...");
+        alertDialog.setMessage("Are you sure you want to delete this?"); // TODO: use a String resource instead.
+        // alertDialog.setIcon(R.drawable.delete);  // TODO: create delete icon.
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to invoke NO event
+                        Toast.makeText(getApplicationContext(), "Resource [" + resource + "] NOT DELETED.", Toast.LENGTH_SHORT).show();
+//                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.w(this.getClass().getName(), "Deleting resource [" + resource + "]");
+                        datasource.deleteResource(resource);
+                        Toast.makeText(getApplicationContext(), "Deleted Resource [" + resource + "]", Toast.LENGTH_LONG).show();
+
+                        finish();
+                    }
+                });
+
+
+        final AlertDialog alert = alertDialog.create();
+        alert.show();
     }
 
     @Override
