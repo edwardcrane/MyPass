@@ -16,5 +16,9 @@
     <string name="title_activity_display_message">My Message</string>
     <string name="display_message">Display Message</string>
     <string name="list_default_value">List Default Value</string>
+    <string name="delete_resource_dialog_positive_button_text">OK</string>
+    <string name="delete_resource_dialog_negative_button_text">Cancel</string>
+    <string name="delete_resource_confirm_title">Confirm Delete...</string>
+    <string name="delete_resource_confirm_message">Are you sure you want to delete this?</string>
 
 </resources>

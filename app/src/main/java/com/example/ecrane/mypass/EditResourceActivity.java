@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 
+// TODO: modify confirmation box, to use a special message if the text has been modified.
+// TODO:  Figure out a way to make the Toast strings portable across languages (such as a string with %s embedded) subbing in resource
+
 public class EditResourceActivity extends ActionBarActivity {
     public final static String EXTRA_RESOURCE = "com.example.ecrane.mypass.RESOURCE";
 
@@ -50,11 +53,9 @@ public class EditResourceActivity extends ActionBarActivity {
         editTextPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.w(this.getClass().getName(), "User clicked on password, isPasswordVisible: [" + isPasswordVisible + "]");
-                // show password
-                if(!isPasswordVisible) {
+                if(!isPasswordVisible) {  // show password
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                } else {  // Hide password
+                } else {                  // Hide password
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
                 editTextPassword.setSelection(editTextPassword.getText().length());
@@ -101,23 +102,20 @@ public class EditResourceActivity extends ActionBarActivity {
     }
 
     public void deleteResource(View view) {
-//      TODO: Implement a confirmation box, with a special message if the text has been modified.
-
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        alertDialog.setTitle("Confirm Delete...");
-        alertDialog.setMessage("Are you sure you want to delete this?"); // TODO: use a String resource instead.
-        // alertDialog.setIcon(R.drawable.delete);  // TODO: create delete icon.
+        alertDialog.setTitle(getText(R.string.delete_resource_confirm_title));
+        alertDialog.setMessage(getText(R.string.delete_resource_confirm_message));
+        alertDialog.setIcon(getResources().getDrawable(android.R.drawable.ic_menu_delete));
 
-        alertDialog.setNegativeButton("Cancel",
+        alertDialog.setNegativeButton(getText(R.string.delete_resource_dialog_negative_button_text),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to invoke NO event
                         Toast.makeText(getApplicationContext(), "Resource [" + resource + "] NOT DELETED.", Toast.LENGTH_SHORT).show();
-//                        dialog.cancel();
                     }
                 });
 
-        alertDialog.setPositiveButton("OK",
+        alertDialog.setPositiveButton(getText(R.string.delete_resource_dialog_positive_button_text),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.w(this.getClass().getName(), "Deleting resource [" + resource + "]");
