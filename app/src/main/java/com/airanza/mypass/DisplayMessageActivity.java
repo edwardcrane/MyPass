@@ -1,4 +1,4 @@
-package com.example.ecrane.mypass;
+package com.airanza.mypass;
 
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;

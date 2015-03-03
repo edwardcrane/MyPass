@@ -1,4 +1,4 @@
-package com.example.ecrane.mypass;
+package com.airanza.mypass;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -13,7 +13,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 
-import com.example.ecrane.mypass.dummy.DummyContent;
+import com.airanza.mypass.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ecrane.mypass" >
+    package="com.airanza.mypass" >
 
     <application
         android:allowBackup="true"
@@ -23,7 +23,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ecrane.mypass.MainActivity" />
+                android:value="com.airanza.mypass.MainActivity" />
         </activity>
         <activity
             android:name=".NewResourceActivity"
@@ -31,7 +31,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ecrane.mypass.MainActivity" />
+                android:value="com.airanza.mypass.MainActivity" />
         </activity>
         <activity
             android:name=".EditResourceActivity"
@@ -39,7 +39,7 @@
             android:parentActivityName=".MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.ecrane.mypass.MainActivity" />
+                android:value="com.airanza.mypass.MainActivity" />
         </activity>
     </application>
 

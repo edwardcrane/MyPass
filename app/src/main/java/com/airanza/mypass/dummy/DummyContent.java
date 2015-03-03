@@ -1,4 +1,4 @@
-package com.example.ecrane.mypass.dummy;
+package com.airanza.mypass.dummy;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package com.example.ecrane.mypass;
+package com.airanza.mypass;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -12,7 +12,7 @@ import android.widget.Toast;
 import java.sql.SQLException;
 
 public class NewResourceActivity extends ActionBarActivity {
-    public final static String EXTRA_RESOURCE = "com.example.ecrane.mypass.RESOURCE";
+    public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
     private ResourceDataSource datasource;
 

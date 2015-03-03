@@ -1,7 +1,9 @@
-package com.example.ecrane.mypass;
+package com.airanza.mypass;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,7 +32,9 @@ public class MainActivity extends ListActivity {
     private ArrayAdapter<Resource> adapter = null;
     private EditText editText = null;
 
-    public final static String EXTRA_RESOURCE = "com.example.ecrane.mypass.RESOURCE";
+    static final int SEND_EMAIL_REQUEST = 1;
+
+    public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +117,11 @@ public class MainActivity extends ListActivity {
             return true;
         }
 
+        if(id == R.id.action_email_backup) {
+            onUserSelectedEmailBackup();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -132,22 +142,73 @@ public class MainActivity extends ListActivity {
             sb.setLength(0);
             count++;
         }
-        os.close();
+//        os.close();
         return(count);
     }
 
     public boolean onUserSelectedExport() {
         int count = 0;
         try {
-            FileOutputStream fos = openFileOutput("export.csv", getApplicationContext().MODE_PRIVATE);
+//            FileOutputStream fos = openFileOutput("export.csv", Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput("export.csv", Context.MODE_WORLD_READABLE);
             count = export(fos);
+            fos.close();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
         Toast.makeText(getApplicationContext(), "Exported " + count + " records to export.csv", Toast.LENGTH_LONG).show();
         if(count > -1)
             return true;
         else return false;
+    }
+
+    public boolean onUserSelectedEmailBackup() {
+        try {
+            Intent i = new Intent(Intent.ACTION_SENDTO);
+            i.setData(Uri.parse("mailto:")); // only email apps will handle this.
+            // i.setType("*/*");  // this call was causing an exception within Android, not in this calling code.
+
+            i.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
+            i.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
+
+            String [] addresses = new String[] { "crane.edward@gmail.com" };  // default for testing.
+            i.putExtra(Intent.EXTRA_EMAIL, addresses);
+
+            String fileName = "export.csv";
+            File attachment = this.getApplicationContext().getFileStreamPath(fileName);
+            if (!attachment.exists() || !attachment.canRead()) {
+                Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
+                Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
+            } else {
+                Uri uri = Uri.fromFile(attachment);
+                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
+                i.putExtra(Intent.EXTRA_STREAM, uri);
+            }
+
+            startActivityForResult(i, SEND_EMAIL_REQUEST);
+
+        } catch(android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+            return false;
+        } catch(Exception e) {
+            Log.e(getClass().getName(), e.getMessage(), e);
+        }
+        return true;
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == SEND_EMAIL_REQUEST) {
+            if(resultCode == RESULT_OK) {
+                Log.i(getClass().getName(), "SUCCESS: " + requestCode + " " + resultCode + " " + data);
+            } else {
+                Toast.makeText(this, "ERROR: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].", Toast.LENGTH_LONG).show();
+                Log.e(getClass().getName(), "ERROR: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
+            }
+        } else {
+            Toast.makeText(this, "ERROR: Received ActivityResult for something we did not request: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].", Toast.LENGTH_LONG).show();
+            Log.e(getClass().getName(), "ERROR: Received ActivityResult for something we did not request: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
+        }
     }
 
     public void findResource(View view) {

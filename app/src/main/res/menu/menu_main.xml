@@ -6,5 +6,7 @@
     <group>
     <item android:id="@+id/action_export" android:title="@string/action_export"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_email_backup" android:title="Email Backup File"
+        android:orderInCategory="100" app:showAsAction="never" />
     </group>
 </menu>

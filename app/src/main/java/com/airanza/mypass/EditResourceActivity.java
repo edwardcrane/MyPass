@@ -1,4 +1,4 @@
-package com.example.ecrane.mypass;
+package com.airanza.mypass;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,7 +21,7 @@ import java.sql.SQLException;
 // TODO:  Figure out a way to make the Toast strings portable across languages (such as a string with %s embedded) subbing in resource
 
 public class EditResourceActivity extends ActionBarActivity {
-    public final static String EXTRA_RESOURCE = "com.example.ecrane.mypass.RESOURCE";
+    public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
     private ResourceDataSource datasource;
     private Resource resource;

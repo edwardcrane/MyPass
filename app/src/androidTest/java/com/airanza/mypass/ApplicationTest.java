@@ -1,4 +1,4 @@
-package com.example.ecrane.mypass;
+package com.airanza.mypass;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
