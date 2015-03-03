@@ -36,6 +36,9 @@ public class MainActivity extends ListActivity {
 
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
+    private final static String EXPORT_FILE_NAME = "export.csv";
+    private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,18 +121,23 @@ public class MainActivity extends ListActivity {
         }
 
         if(id == R.id.action_email_backup) {
-            onUserSelectedEmailBackup();
+            onUserSelectedEmailBackupActionSend();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * assumes that os is opened and closed by caller.
+     *
+     * @param os
+     * @return
+     * @throws IOException
+     */
     public int export(OutputStream os) throws IOException {
         StringBuffer sb = new StringBuffer();
         int count = 0;
-
-//        FileOutputStream fos = openFileOutput("export.csv", getApplicationContext().MODE_PRIVATE);
 
         sb.append("\"_id\",\"ResourceName\",\"UserName\",\"Password\",\"Description\"\n");
         for(Resource r : values) {
@@ -142,15 +150,13 @@ public class MainActivity extends ListActivity {
             sb.setLength(0);
             count++;
         }
-//        os.close();
         return(count);
     }
 
     public boolean onUserSelectedExport() {
         int count = 0;
         try {
-//            FileOutputStream fos = openFileOutput("export.csv", Context.MODE_PRIVATE);
-            FileOutputStream fos = openFileOutput("export.csv", Context.MODE_WORLD_READABLE);
+            FileOutputStream fos = openFileOutput("export.csv", Context.MODE_WORLD_READABLE);  // Context.MODE_PRIVATE prevents email apps from seeing file?
             count = export(fos);
             fos.close();
         } catch (IOException e) {
@@ -163,30 +169,70 @@ public class MainActivity extends ListActivity {
         else return false;
     }
 
-    public boolean onUserSelectedEmailBackup() {
+    /**
+     * this method works with both email Android client and gmail, but it does not filter the chooser well at all.
+     * @return
+     */
+    public boolean onUserSelectedEmailBackupActionSend() {
         try {
-            Intent i = new Intent(Intent.ACTION_SENDTO);
-            i.setData(Uri.parse("mailto:")); // only email apps will handle this.
-            // i.setType("*/*");  // this call was causing an exception within Android, not in this calling code.
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);  // works with ACTION_SENDTO  in order to filter apps that appear.
+            emailIntent.setType("text/plain");  // this call was causing an exception within Android, not in this calling code.
+//            emailIntent.setData(Uri.parse("mailto:")); // only email apps will handle this.
 
-            i.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
-            i.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
+            String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
 
-            String [] addresses = new String[] { "crane.edward@gmail.com" };  // default for testing.
-            i.putExtra(Intent.EXTRA_EMAIL, addresses);
-
-            String fileName = "export.csv";
-            File attachment = this.getApplicationContext().getFileStreamPath(fileName);
+            File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
             if (!attachment.exists() || !attachment.canRead()) {
                 Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
                 Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
             } else {
                 Uri uri = Uri.fromFile(attachment);
                 Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
-                i.putExtra(Intent.EXTRA_STREAM, uri);
+                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
             }
 
-            startActivityForResult(i, SEND_EMAIL_REQUEST);
+            startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
+
+        } catch(android.content.ActivityNotFoundException ex) {
+            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+            return false;
+        } catch(Exception e) {
+            Log.e(getClass().getName(), e.getMessage(), e);
+        }
+        return true;
+    }
+
+
+    /**
+     * Sadly, this method using SENDTO only works with gmail, but it filters the chooser better.
+     * @return
+     */
+    public boolean onUserSelectedEmailBackupActionSendTo() {
+        try {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  // works with ACTION_SENDTO  in order to filter apps that appear.
+            // emailIntent.setType("*/*");  // this call was causing an exception within Android, not in this calling code.
+            emailIntent.setData(Uri.parse("mailto:")); // only email apps will handle this.
+
+            String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
+
+            File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
+            if (!attachment.exists() || !attachment.canRead()) {
+                Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
+                Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
+            } else {
+                Uri uri = Uri.fromFile(attachment);
+                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
+                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            }
+
+            startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
 
         } catch(android.content.ActivityNotFoundException ex) {
             Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
