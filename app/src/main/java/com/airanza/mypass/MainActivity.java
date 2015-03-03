@@ -176,8 +176,7 @@ public class MainActivity extends ListActivity {
     public boolean onUserSelectedEmailBackupActionSend() {
         try {
             Intent emailIntent = new Intent(Intent.ACTION_SEND);  // works with ACTION_SENDTO  in order to filter apps that appear.
-            emailIntent.setType("text/plain");  // this call was causing an exception within Android, not in this calling code.
-//            emailIntent.setData(Uri.parse("mailto:")); // only email apps will handle this.
+            emailIntent.setType("message/rfc822");  // this call was causing an exception within Android, not in this calling code.
 
             String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
             emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
