@@ -17,9 +17,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
@@ -36,7 +40,7 @@ public class MainActivity extends ListActivity {
 
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
-    private final static String EXPORT_FILE_NAME = "export.csv";
+    private final static String EXPORT_FILE_NAME = "exportCSV.csv";
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
 
     @Override
@@ -120,6 +124,11 @@ public class MainActivity extends ListActivity {
             return true;
         }
 
+        if (id == R.id.action_import_csv) {
+            onUserSelectedImportCSV();
+            return true;
+        }
+
         if(id == R.id.action_email_backup) {
             onUserSelectedEmailBackupActionSend();
             return true;
@@ -135,7 +144,7 @@ public class MainActivity extends ListActivity {
      * @return
      * @throws IOException
      */
-    public int export(OutputStream os) throws IOException {
+    public int exportCSV(OutputStream os) throws IOException {
         StringBuffer sb = new StringBuffer();
         int count = 0;
 
@@ -153,17 +162,65 @@ public class MainActivity extends ListActivity {
         return(count);
     }
 
+    /**
+     * TODO: IMPLEMENT CORRECT TOKENIZER LOGIC WITH " delimiters and , separator
+     * TODO: ENSURE THAT MULTI-LINE FIELDS WORK PROPERLY
+     * @param is
+     * @return
+     * @throws IOException
+     */
+    public int importCSV(InputStream is) throws IOException {
+        int count = 0;
+        String line = "";
+        BufferedReader fileReader = new BufferedReader(new InputStreamReader(is));
+        fileReader.readLine();  // READ AND IGNORE HEADER:
+        while((line = fileReader.readLine()) != null) {
+//            String[] tokens = line.split("\",\"");
+            String[] tokens = line.split(",(?=([^\"]|\"[^\"]*\")*$)");
+            if(tokens.length > 0) {
+                // Create a new Resource object and fill its data
+                Resource resource = datasource.createResource(
+                tokens[1],
+                tokens[2],
+                tokens[3],
+                tokens[4]
+                );
+
+                values.add(resource);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public boolean onUserSelectedImportCSV() {
+        int count = 0;
+        try {
+            FileInputStream fis = openFileInput(EXPORT_FILE_NAME);
+            count = importCSV(fis);
+            fis.close();
+        } catch (IOException e) {
+            Log.e(getClass().getName(), e.getMessage(), e);
+        }
+        Toast.makeText(getApplicationContext(), "Imported " + count + " records from " + EXPORT_FILE_NAME, Toast.LENGTH_LONG).show();
+        if(count > 0) {
+            onResume();
+            return true;
+        }
+        else return false;
+    }
+
     public boolean onUserSelectedExport() {
         int count = 0;
         try {
-            FileOutputStream fos = openFileOutput("export.csv", Context.MODE_WORLD_READABLE);  // Context.MODE_PRIVATE prevents email apps from seeing file?
-            count = export(fos);
+            FileOutputStream fos = openFileOutput(EXPORT_FILE_NAME, Context.MODE_WORLD_READABLE);  // Context.MODE_PRIVATE prevents email apps from seeing file?
+            count = exportCSV(fos);
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
             return false;
         }
-        Toast.makeText(getApplicationContext(), "Exported " + count + " records to export.csv", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Exported " + count + " records to " + EXPORT_FILE_NAME, Toast.LENGTH_LONG).show();
         if(count > -1)
             return true;
         else return false;
@@ -175,6 +232,7 @@ public class MainActivity extends ListActivity {
      */
     public boolean onUserSelectedEmailBackupActionSend() {
         try {
+            onUserSelectedExport();
             Intent emailIntent = new Intent(Intent.ACTION_SEND);  // works with ACTION_SENDTO  in order to filter apps that appear.
             emailIntent.setType("message/rfc822");  // this call was causing an exception within Android, not in this calling code.
 
@@ -189,10 +247,11 @@ public class MainActivity extends ListActivity {
                 Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
             } else {
                 Uri uri = Uri.fromFile(attachment);
-                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "ATTACHING: " + uri.getPath(), Toast.LENGTH_LONG).show();
                 emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
             }
 
+            // startActivity(emailIntent);  // ATTACHMENT PERMISSION DENIED IN GMAIL APP, so must use startActivityForResult():
             startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
 
         } catch(android.content.ActivityNotFoundException ex) {
@@ -204,54 +263,51 @@ public class MainActivity extends ListActivity {
         return true;
     }
 
-
-    /**
-     * Sadly, this method using SENDTO only works with gmail, but it filters the chooser better.
-     * @return
-     */
-    public boolean onUserSelectedEmailBackupActionSendTo() {
-        try {
-            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  // works with ACTION_SENDTO  in order to filter apps that appear.
-            // emailIntent.setType("*/*");  // this call was causing an exception within Android, not in this calling code.
-            emailIntent.setData(Uri.parse("mailto:")); // only email apps will handle this.
-
-            String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
-
-            File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
-            if (!attachment.exists() || !attachment.canRead()) {
-                Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
-                Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
-            } else {
-                Uri uri = Uri.fromFile(attachment);
-                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
-                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-            }
-
-            startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
-
-        } catch(android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
-            return false;
-        } catch(Exception e) {
-            Log.e(getClass().getName(), e.getMessage(), e);
-        }
-        return true;
-    }
+//    /**
+//     * Sadly, this method using SENDTO only works with gmail, but it filters the chooser better.
+//     * @return
+//     */
+//    public boolean onUserSelectedEmailBackupActionSendTo() {
+//        try {
+//            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  // works with ACTION_SENDTO  in order to filter apps that appear.
+//            // emailIntent.setType("*/*");  // this call was causing an exception within Android, not in this calling code.
+//            emailIntent.setData(Uri.parse("mailto:")); // only email apps will handle this.
+//
+//            String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
+//            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
+//
+//            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
+//            emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
+//
+//            File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
+//            if (!attachment.exists() || !attachment.canRead()) {
+//                Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
+//                Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
+//            } else {
+//                Uri uri = Uri.fromFile(attachment);
+//                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
+//                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+//            }
+//
+//            startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
+//
+//        } catch(android.content.ActivityNotFoundException ex) {
+//            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+//            return false;
+//        } catch(Exception e) {
+//            Log.e(getClass().getName(), e.getMessage(), e);
+//        }
+//        return true;
+//    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == SEND_EMAIL_REQUEST) {
             if(resultCode == RESULT_OK) {
                 Log.i(getClass().getName(), "SUCCESS: " + requestCode + " " + resultCode + " " + data);
             } else {
-                Toast.makeText(this, "ERROR: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].", Toast.LENGTH_LONG).show();
-                Log.e(getClass().getName(), "ERROR: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
+                Log.e(getClass().getName(), "UNKNOWN ERROR SENDING EMAIL WITH ATTACHMENT: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
             }
         } else {
-            Toast.makeText(this, "ERROR: Received ActivityResult for something we did not request: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].", Toast.LENGTH_LONG).show();
             Log.e(getClass().getName(), "ERROR: Received ActivityResult for something we did not request: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
         }
     }
