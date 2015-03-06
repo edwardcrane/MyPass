@@ -3,30 +3,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
     <LinearLayout
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
     <EditText
-        android:id="@+id/findstring"
+        android:id="@+id/findString"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/findString"
-        android:minWidth="@dimen/abc_search_view_text_min_width" />
+        android:maxLines="1"
+        android:minLines="1"
+        android:minWidth="@dimen/abc_search_view_preferred_width"
+        android:textStyle="bold|italic" />
 
-    <!--<Button-->
+        <!--<Button-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="@string/button_find_resource"-->
         <!--android:onClick="findResource" />-->
 
+    </LinearLayout>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/button_new_resource"
-        android:onClick="newResource" />
-        </LinearLayout>
+        android:onClick="newResource"
+        android:minWidth="@dimen/abc_search_view_preferred_width"
+        android:textStyle="bold|italic"
+        android:id="@+id/new_resource"
+        style="@style/Base.TextAppearance.AppCompat.Button" />
 
     <ListView
         android:layout_width="match_parent"

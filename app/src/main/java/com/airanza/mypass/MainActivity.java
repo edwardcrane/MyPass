@@ -41,6 +41,8 @@ public class MainActivity extends ListActivity {
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
     private final static String EXPORT_FILE_NAME = "exportCSV.csv";
+
+    // TODO: Store this somewhere manageable through settings:
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
 
     @Override
@@ -53,7 +55,9 @@ public class MainActivity extends ListActivity {
             datasource.open();
             values = datasource.getAllResources();
 
-            adapter = new ArrayAdapter<Resource>(this, android.R.layout.simple_list_item_1, values);
+//            adapter = new ArrayAdapter<Resource>(this, android.R.layout.simple_list_item_1, values);
+            adapter = new ArrayAdapter<Resource>(this, R.layout.rowlayout, R.id.label, values);
+            Log.i(getClass().getName(), "About to call setListAdapter(" + adapter + ") with " + R.layout.rowlayout + ";");
             setListAdapter(adapter);
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
@@ -80,7 +84,7 @@ public class MainActivity extends ListActivity {
      */
     public void addTextChangedListener() {
         // get editText component:
-        editText = (EditText)findViewById(R.id.findstring);
+        editText = (EditText)findViewById(R.id.findString);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -313,7 +317,7 @@ public class MainActivity extends ListActivity {
     }
 
     public void findResource(View view) {
-        String findString = ((EditText)findViewById(R.id.findstring)).getText().toString();
+        String findString = ((EditText)findViewById(R.id.findString)).getText().toString();
         System.out.println("Searching [" + findString + "].");
 
         values = datasource.findResources(findString);

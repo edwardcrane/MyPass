@@ -9,7 +9,7 @@
     <string name="findString">Search</string>
     <string name="button_save">Save</string>
     <string name="button_find_resource">Find</string>
-    <string name="button_new_resource">New</string>
+    <string name="button_new_resource">New Record...</string>
     <string name="button_cancel">Cancel</string>
     <string name="action_settings">Settings</string>
     <string name="action_export">Export</string>
