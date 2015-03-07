@@ -33,7 +33,7 @@ public class MainActivity extends ListActivity {
     private ResourceDataSource datasource;
 
     private List<Resource> values = null;
-    private ArrayAdapter<Resource> adapter = null;
+    private ResourcesAdapter adapter = null;
     private EditText editText = null;
 
     static final int SEND_EMAIL_REQUEST = 1;
@@ -55,9 +55,8 @@ public class MainActivity extends ListActivity {
             datasource.open();
             values = datasource.getAllResources();
 
-//            adapter = new ArrayAdapter<Resource>(this, android.R.layout.simple_list_item_1, values);
-            adapter = new ArrayAdapter<Resource>(this, R.layout.rowlayout, R.id.label, values);
-            Log.i(getClass().getName(), "About to call setListAdapter(" + adapter + ") with " + R.layout.rowlayout + ";");
+            adapter = new ResourcesAdapter(getApplicationContext(), values);
+            Log.i(getClass().getName(), "About to call setListAdapter(" + adapter + ") with " + R.layout.resourcerowlayout + ";");
             setListAdapter(adapter);
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
@@ -99,6 +98,7 @@ public class MainActivity extends ListActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 findResource(getListView());
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -319,15 +319,16 @@ public class MainActivity extends ListActivity {
     public void findResource(View view) {
         String findString = ((EditText)findViewById(R.id.findString)).getText().toString();
         System.out.println("Searching [" + findString + "].");
+        adapter.clear();
 
-        values = datasource.findResources(findString);
+        for (Resource r : datasource.findResources(findString)) {
+            adapter.add(r);
+        }
+
+        // values array is updated via the adapter:
         if (values.isEmpty()) {
             Toast.makeText(getApplicationContext(), "No Records matching \"" + findString + "\" were found", Toast.LENGTH_LONG).show();
         }
-
-        // TODO: Consider overriding hasStableIds() to help ListView.
-        adapter = new ArrayAdapter<Resource>(this, android.R.layout.simple_list_item_1, values);
-        setListAdapter(adapter);
     }
 
     public void newResource(View view) {
