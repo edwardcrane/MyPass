@@ -38,7 +38,7 @@ public class LoginActivity extends Activity {
 
     public boolean checkLogin(String username, String password) {
         // TODO: change this to real authentication from sqlite database or datasource:
-        if (username.equals("crane.edward@gmail.com") && password.equals("welcome")) {
+        if (username.equals("username") && password.equals("password")) {
             return true;
         }
         return false;
