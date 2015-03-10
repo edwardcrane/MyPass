@@ -35,7 +35,10 @@ public class MainActivity extends ListActivity {
     private ResourcesAdapter adapter = null;
     private EditText editText = null;
 
-    static final int SEND_EMAIL_REQUEST = 1;
+    static final int LOGIN_REQUEST = 1;
+    static final int SEND_EMAIL_REQUEST = 2;
+
+    private boolean logged_in = false;
 
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
@@ -48,6 +51,14 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // LOGIN HERE
+        // create intent for LoginActivity
+        Intent intent = new Intent(this, LoginActivity.class);
+        // start LoginActivity via Intent
+        // check result
+        startActivityForResult(intent, LOGIN_REQUEST );
+        // we will process the result in this.onActivityResult();
+        // if not logged in, we will exit there.
 
         try {
             datasource = new ResourceDataSource(this);
@@ -304,7 +315,18 @@ public class MainActivity extends ListActivity {
 //    }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == SEND_EMAIL_REQUEST) {
+        Log.i(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+        if(requestCode == LOGIN_REQUEST) {
+            if(resultCode == RESULT_OK) {
+                Log.i(getClass().getName(), "LOGIN SUCCEEDED: " + requestCode + " " + resultCode + " " + data);
+                logged_in = true;
+            } else {
+                Log.e(getClass().getName(), "LOGIN FAILED: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
+                logged_in = false;
+                // Exit this activity, which will also cause progam to shut down:
+                finish();
+            }
+        } else if(requestCode == SEND_EMAIL_REQUEST) {
             if(resultCode == RESULT_OK) {
                 Log.i(getClass().getName(), "SUCCESS: " + requestCode + " " + resultCode + " " + data);
             } else {
