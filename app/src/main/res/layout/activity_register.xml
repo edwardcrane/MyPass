@@ -40,45 +40,61 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             android:layout_below="@id/header">
-            <!-- Full Name Label -->
+            <!-- User Name Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Full Name"/>
+                android:text="User Name:"/>
             <EditText android:id="@+id/reg_fullname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:layout_marginBottom="20dip"/>
-            <!--  Email Label -->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#372c24"
-                android:text="Email"/>
-            <EditText android:id="@+id/reg_email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:layout_marginBottom="20dip"/>
+                android:singleLine="true" />
+                <!--android:layout_marginBottom="20dip"/>-->
             <!-- Password Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
-                android:text="Password"/>
+                android:text="Password:"/>
             <EditText android:id="@+id/reg_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
                 android:singleLine="true"
                 android:layout_marginTop="5dip"/>
+
+            <!-- Password Hint Label -->
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="Password Hint:"/>
+            <EditText android:id="@+id/reg_password_hint"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:password="true"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"/>
+
+            <!--  Email Label -->
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="Email:"/>
+            <EditText android:id="@+id/reg_email"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:singleLine="true"
+                android:layout_marginBottom="20dip"/>
+
             <!-- Register Button -->
             <Button android:id="@+id/btnRegister"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dip"
-                android:text="Register New Account"/>
+                android:text="Register New Account"
+                android:longClickable="false"
+                android:onClick="onRegisterButtonClick" />
             <!-- Link to Login Screen -->
             <TextView android:id="@+id/link_to_login"
                 android:layout_width="fill_parent"

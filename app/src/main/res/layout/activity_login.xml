@@ -32,19 +32,20 @@
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#372c24"
-            android:text="Email"/>
+            android:text="User Name:"/>
         <EditText android:id="@+id/user_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
-            android:layout_marginBottom="20dip"
             android:textColor="#372c24"
             android:singleLine="true"/>
+        <!--android:layout_marginBottom="20dip" /> -->
+
         <!--  Password Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="#372c24"
-            android:text="Password"/>
+            android:text="Password:" />
         <EditText android:id="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -52,6 +53,18 @@
             android:textColor="#372c24"
             android:singleLine="true"
             android:password="true"/>
+
+        <!-- Remember Me Checkbox-->
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me?"
+            android:id="@+id/rememberMeCheckBox"
+            android:textColor="#372c24"
+            android:enabled="true"
+            android:clickable="true"
+            android:checked="true" />
+
         <!-- Login button -->
         <Button android:id="@+id/btnLogin"
             android:layout_width="fill_parent"
