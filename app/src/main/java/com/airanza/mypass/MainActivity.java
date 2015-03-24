@@ -3,6 +3,7 @@ package com.airanza.mypass;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
@@ -30,6 +31,7 @@ import java.util.List;
 public class MainActivity extends ListActivity {
 
     private ResourceDataSource datasource;
+    private LoginDataSource logindatasource;
 
     private List<Resource> values = null;
     private ResourcesAdapter adapter = null;
@@ -38,12 +40,17 @@ public class MainActivity extends ListActivity {
     static final int LOGIN_REQUEST = 1;
     static final int SEND_EMAIL_REQUEST = 2;
 
+    // for saving login state information across Activity lifecycle as needed:
+    private SharedPreferences prefs = null;
+    static final String LOGGED_IN = "logged_in";
+    static final String LOGGED_IN_USER = "logged_in_user";
+
     private boolean logged_in = false;
+    private String logged_in_user = "";
 
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
     private final static String EXPORT_FILE_NAME = "exportCSV.csv";
-
     // TODO: Store this somewhere manageable through settings:
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
 
@@ -51,14 +58,27 @@ public class MainActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(savedInstanceState != null) {
+            logged_in = savedInstanceState.getBoolean(LOGGED_IN);
+            logged_in_user = savedInstanceState.getString(LOGGED_IN_USER);
+        }
+
+        prefs = getPreferences(MODE_PRIVATE);
+        logged_in = prefs.getBoolean(LOGGED_IN, false);
+        logged_in_user = prefs.getString(LOGGED_IN_USER, "");
+
         // LOGIN HERE
-        // create intent for LoginActivity
-        Intent intent = new Intent(this, LoginActivity.class);
-        // start LoginActivity via Intent
-        // check result
-        startActivityForResult(intent, LOGIN_REQUEST );
-        // we will process the result in this.onActivityResult();
-        // if not logged in, we will exit there.
+        if(!logged_in || !(logged_in_user.length() > 0)) {
+            Log.i(getClass().getName(), "Starting Login Activity.  logged_in:[" + logged_in + "] logged_in_user: [" + logged_in_user + "]");
+            // create intent for LoginActivity
+            Intent intent = new Intent(this, LoginActivity.class);
+            // start LoginActivity via Intent
+            // check result
+            startActivityForResult(intent, LOGIN_REQUEST);
+            // we will process the result in this.onActivityResult();
+            // if not logged in, we will exit there.
+        }
 
         try {
             datasource = new ResourceDataSource(this);
@@ -68,6 +88,9 @@ public class MainActivity extends ListActivity {
             adapter = new ResourcesAdapter(getApplicationContext(), values);
             Log.i(getClass().getName(), "About to call setListAdapter(" + adapter + ") with " + R.layout.resourcerowlayout + ";");
             setListAdapter(adapter);
+
+            logindatasource = new LoginDataSource(this);
+            logindatasource.open();
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
@@ -251,6 +274,17 @@ public class MainActivity extends ListActivity {
             emailIntent.setType("message/rfc822");  // this call was causing an exception within Android, not in this calling code.
 
             String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
+
+            // TODO:  Get email address from logged_in_user in logindatasource
+            String emailAddress = logindatasource.getEmail(logged_in_user);
+
+            if(emailAddress.length() > 0) {
+                addresses = new String[] { emailAddress };
+            } else {
+                Toast.makeText(getApplicationContext(), "ERROR: There is no logged in user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.", Toast.LENGTH_LONG).show();
+                Log.e(this.getClass().getName(), "ERROR: There is no logged in user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.");
+            }
+
             emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
             emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
@@ -318,11 +352,15 @@ public class MainActivity extends ListActivity {
         Log.i(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         if(requestCode == LOGIN_REQUEST) {
             if(resultCode == RESULT_OK) {
+
                 Log.i(getClass().getName(), "LOGIN SUCCEEDED: " + requestCode + " " + resultCode + " " + data);
                 logged_in = true;
+                logged_in_user = data.getStringExtra("logged_in_username");
+                Toast.makeText(getApplicationContext(), "Logged in as [" + logged_in_user + "]", Toast.LENGTH_LONG).show();
             } else {
                 Log.e(getClass().getName(), "LOGIN FAILED: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
                 logged_in = false;
+                logged_in_user = "";
                 // Exit this activity, which will also cause progam to shut down:
                 finish();
             }
@@ -361,6 +399,7 @@ public class MainActivity extends ListActivity {
     protected void onResume() {
         try {
             datasource.open();
+            logindatasource.open();
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
@@ -371,6 +410,26 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onPause() {
         datasource.close();
+        logindatasource.close();
         super.onPause();
+    }
+
+    public void onStop()
+    {
+        super.onStop();  // always call the superclass method first
+
+        // save the login state
+        prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(LOGGED_IN, logged_in);
+        editor.putString(LOGGED_IN_USER, logged_in_user);
+        editor.commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putBoolean(LOGGED_IN, logged_in);
+        savedInstanceState.putString(LOGGED_IN_USER, logged_in_user);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

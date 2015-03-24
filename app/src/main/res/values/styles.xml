@@ -3,6 +3,19 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Base.Theme.AppCompat">
         <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">#FFFFFF</item>
+
+        <!-- textColorSecondary seems to change the underlines in the EditText boxes -->
+        <item name="android:textColorSecondary">#FFFFFF</item>
+
+        <!--<item name="android:textColorHighlightInverse">#FF00FF</item>-->
+        <!--<item name="android:textColorHighlight">#FF00FF</item>-->
+        <item name="android:editTextColor">#FF00FF</item>
+        <item name="android:textColorHint">#FFFFFF</item>
+
+        <!-- attempts to change the list item colors seem to have failed.  See the resourcerowlayout.xml file
+        for color there -->
+
     </style>
 
 </resources>

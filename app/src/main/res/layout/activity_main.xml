@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@layout/main_gradient"
     android:orientation="vertical" >
-
     <LinearLayout
         android:id="@+id/group"
         android:layout_width="match_parent"
@@ -17,12 +17,6 @@
         android:maxLines="1"
         android:minLines="1"
         android:textStyle="bold|italic" />
-
-        <!--<Button-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/button_find_resource"-->
-        <!--android:onClick="findResource" />-->
 
     </LinearLayout>
 

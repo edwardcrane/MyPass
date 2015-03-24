@@ -59,6 +59,7 @@ public class LoginActivity extends Activity {
         if(rememberedLastUser.length() > 0) {
             // place rememberedLastUser in the username field
             ((EditText)findViewById(R.id.user_name)).setText(rememberedLastUser);
+            ((EditText)findViewById(R.id.password)).requestFocus();
         }
         // check the "Remember Me?" box.
         ((CheckBox)findViewById(R.id.rememberMeCheckBox)).setChecked(rememberedLastUser.length() > 0);
@@ -92,6 +93,7 @@ public class LoginActivity extends Activity {
 
         // if login is successful, send word to calling Activity that we succeeded:
         if(checkLogin(username, password)) {
+            result.putExtra("logged_in_username", username);
             if (getParent() == null) {
                 setResult(Activity.RESULT_OK, result);
             } else {
