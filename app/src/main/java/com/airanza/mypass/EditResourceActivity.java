@@ -62,6 +62,7 @@ public class EditResourceActivity extends ActionBarActivity {
                 isPasswordVisible = !isPasswordVisible;
             }
         });
+        ((EditText)findViewById(R.id.resource_name)).requestFocus();
     }
 
 

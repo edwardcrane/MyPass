@@ -30,28 +30,33 @@ import java.util.List;
 
 public class MainActivity extends ListActivity {
 
-    private ResourceDataSource datasource;
+    private ResourceDataSource resourcedatasource;
     private LoginDataSource logindatasource;
 
     private List<Resource> values = null;
     private ResourcesAdapter adapter = null;
-    private EditText editText = null;
 
     static final int LOGIN_REQUEST = 1;
     static final int SEND_EMAIL_REQUEST = 2;
 
-    // for saving login state information across Activity lifecycle as needed:
+    // for saving login state information across Activity lifecycle as needed.
+    // there will be a grace period of STAY_LOGGED_IN_MINUTES whereby a user
+    // can navigate away from the screen and return if they have logged in during that
+    // grace period without entering their username and password again.
     private SharedPreferences prefs = null;
     static final String LOGGED_IN = "logged_in";
     static final String LOGGED_IN_USER = "logged_in_user";
+    static final String LOGGED_IN_TIME = "logged_in_time";
 
     private boolean logged_in = false;
     private String logged_in_user = "";
+    private long logged_in_time = 0;
+    private final int STAY_LOGGED_IN_MINUTES = 2;
 
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
     private final static String EXPORT_FILE_NAME = "exportCSV.csv";
-    // TODO: Store this somewhere manageable through settings:
+    // This is retrieved from logindatasource, but if not found, this is the default:
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
 
     @Override
@@ -59,34 +64,32 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // this is useful for orientation changes:
         if(savedInstanceState != null) {
             logged_in = savedInstanceState.getBoolean(LOGGED_IN);
             logged_in_user = savedInstanceState.getString(LOGGED_IN_USER);
+            Log.i(getClass().getName(), "inside onCreate(), savedInstanceState != null, logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "]");
         }
 
-        prefs = getPreferences(MODE_PRIVATE);
-        logged_in = prefs.getBoolean(LOGGED_IN, false);
-        logged_in_user = prefs.getString(LOGGED_IN_USER, "");
+        // this prevents the login screen from appearing for time specified in STAY_LOGGED_IN_MINUTES:
+        loadLoginStateFromPreferences();
 
-        // LOGIN HERE
-        if(!logged_in || !(logged_in_user.length() > 0)) {
-            Log.i(getClass().getName(), "Starting Login Activity.  logged_in:[" + logged_in + "] logged_in_user: [" + logged_in_user + "]");
-            // create intent for LoginActivity
+        // LOGIN HERE if not logged in, or if STAY_LOGGED_IN_MINUTES has elapsed:
+        if(!logged_in ||
+                !(logged_in_user.length() > 0) || ((System.currentTimeMillis() - logged_in_time) > (STAY_LOGGED_IN_MINUTES * 60 * 1000))) {
+            Log.i(getClass().getName(), "Starting Login Activity.  logged_in:[" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
             Intent intent = new Intent(this, LoginActivity.class);
-            // start LoginActivity via Intent
-            // check result
             startActivityForResult(intent, LOGIN_REQUEST);
-            // we will process the result in this.onActivityResult();
+            // process the result in this.onActivityResult();
             // if not logged in, we will exit there.
         }
 
         try {
-            datasource = new ResourceDataSource(this);
-            datasource.open();
-            values = datasource.getAllResources();
+            resourcedatasource = new ResourceDataSource(this);
+            resourcedatasource.open();
+            values = resourcedatasource.getAllResources();
 
             adapter = new ResourcesAdapter(getApplicationContext(), values);
-            Log.i(getClass().getName(), "About to call setListAdapter(" + adapter + ") with " + R.layout.resourcerowlayout + ";");
             setListAdapter(adapter);
 
             logindatasource = new LoginDataSource(this);
@@ -116,7 +119,7 @@ public class MainActivity extends ListActivity {
      */
     public void addTextChangedListener() {
         // get editText component:
-        editText = (EditText)findViewById(R.id.findString);
+        EditText editText = (EditText)findViewById(R.id.findString);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -182,7 +185,7 @@ public class MainActivity extends ListActivity {
      * @throws IOException
      */
     public int exportCSV(OutputStream os) throws IOException {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int count = 0;
 
         sb.append("\"_id\",\"ResourceName\",\"UserName\",\"Password\",\"Description\"\n");
@@ -216,7 +219,7 @@ public class MainActivity extends ListActivity {
             String[] tokens = line.split(",(?=([^\"]|\"[^\"]*\")*$)");
             if(tokens.length > 0) {
                 // Create a new Resource object and fill its data
-                Resource resource = datasource.createResource(
+                Resource resource = resourcedatasource.createResource(
                 tokens[1],
                 tokens[2],
                 tokens[3],
@@ -311,43 +314,6 @@ public class MainActivity extends ListActivity {
         return true;
     }
 
-//    /**
-//     * Sadly, this method using SENDTO only works with gmail, but it filters the chooser better.
-//     * @return
-//     */
-//    public boolean onUserSelectedEmailBackupActionSendTo() {
-//        try {
-//            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);  // works with ACTION_SENDTO  in order to filter apps that appear.
-//            // emailIntent.setType("*/*");  // this call was causing an exception within Android, not in this calling code.
-//            emailIntent.setData(Uri.parse("mailto:")); // only email apps will handle this.
-//
-//            String [] addresses = new String[] { DEFAULT_EXPORT_EMAIL_ADDRESS };  // default for testing.
-//            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-//
-//            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
-//            emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
-//
-//            File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
-//            if (!attachment.exists() || !attachment.canRead()) {
-//                Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
-//                Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
-//            } else {
-//                Uri uri = Uri.fromFile(attachment);
-//                Toast.makeText(getApplicationContext(), uri.getPath(), Toast.LENGTH_LONG).show();
-//                emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
-//            }
-//
-//            startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
-//
-//        } catch(android.content.ActivityNotFoundException ex) {
-//            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
-//            return false;
-//        } catch(Exception e) {
-//            Log.e(getClass().getName(), e.getMessage(), e);
-//        }
-//        return true;
-//    }
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         if(requestCode == LOGIN_REQUEST) {
@@ -356,12 +322,13 @@ public class MainActivity extends ListActivity {
                 Log.i(getClass().getName(), "LOGIN SUCCEEDED: " + requestCode + " " + resultCode + " " + data);
                 logged_in = true;
                 logged_in_user = data.getStringExtra("logged_in_username");
+                logged_in_time = System.currentTimeMillis();
                 Toast.makeText(getApplicationContext(), "Logged in as [" + logged_in_user + "]", Toast.LENGTH_LONG).show();
             } else {
                 Log.e(getClass().getName(), "LOGIN FAILED: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
                 logged_in = false;
                 logged_in_user = "";
-                // Exit this activity, which will also cause progam to shut down:
+                // Exit this activity, which will also cause program to shut down:
                 finish();
             }
         } else if(requestCode == SEND_EMAIL_REQUEST) {
@@ -380,7 +347,7 @@ public class MainActivity extends ListActivity {
         System.out.println("Searching [" + findString + "].");
         adapter.clear();
 
-        for (Resource r : datasource.findResources(findString)) {
+        for (Resource r : resourcedatasource.findResources(findString)) {
             adapter.add(r);
         }
 
@@ -398,7 +365,7 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onResume() {
         try {
-            datasource.open();
+            resourcedatasource.open();
             logindatasource.open();
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
@@ -409,27 +376,60 @@ public class MainActivity extends ListActivity {
 
     @Override
     protected void onPause() {
-        datasource.close();
+        resourcedatasource.close();
         logindatasource.close();
         super.onPause();
+    }
+
+    public void saveLoginStateToPreferences() {
+        prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(LOGGED_IN, logged_in);
+        editor.putString(LOGGED_IN_USER, logged_in_user);
+        editor.putLong(LOGGED_IN_TIME, logged_in_time);
+        editor.commit();
+    }
+
+    public void loadLoginStateFromPreferences() {
+        prefs = getPreferences(MODE_PRIVATE);
+        logged_in = prefs.getBoolean(LOGGED_IN, false);
+        logged_in_user = prefs.getString(LOGGED_IN_USER, "");
+        logged_in_time = prefs.getLong(LOGGED_IN_TIME, 0);
     }
 
     public void onStop()
     {
         super.onStop();  // always call the superclass method first
+        saveLoginStateToPreferences();
+    }
 
-        // save the login state
-        prefs = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(LOGGED_IN, logged_in);
-        editor.putString(LOGGED_IN_USER, logged_in_user);
-        editor.commit();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i(getClass().getName(), "onDestroy: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
+        saveLoginStateToPreferences();
     }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.i(getClass().getName(), "onSaveInstanceState: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
         savedInstanceState.putBoolean(LOGGED_IN, logged_in);
         savedInstanceState.putString(LOGGED_IN_USER, logged_in_user);
+        savedInstanceState.putLong(LOGGED_IN_TIME, logged_in_time);
         super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /**
+     * Try to restore the state.  Unfortunately, this seems to be called after onStart(), which
+     * is called AFTER onCreate().
+     * @param savedInstanceState
+     */
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        logged_in = savedInstanceState.getBoolean(LOGGED_IN);
+        logged_in_user = savedInstanceState.getString(LOGGED_IN_USER);
+        logged_in_time = savedInstanceState.getLong(LOGGED_IN_TIME);
+        Log.i(getClass().getName(), "onRestoreInstanceState: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
     }
 }
