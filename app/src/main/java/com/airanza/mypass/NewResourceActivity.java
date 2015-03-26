@@ -26,7 +26,6 @@ public class NewResourceActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
-        ((EditText)findViewById(R.id.resource_name)).requestFocus();
     }
 
 

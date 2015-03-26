@@ -17,7 +17,8 @@
         android:hint="@string/findString"
         android:maxLines="1"
         android:minLines="1"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold|italic"
+        android:textCursorDrawable="@drawable/color_cursor"/>
 
     </LinearLayout>
 

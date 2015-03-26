@@ -10,8 +10,12 @@
 
         <!--<item name="android:textColorHighlightInverse">#FF00FF</item>-->
         <!--<item name="android:textColorHighlight">#FF00FF</item>-->
-        <item name="android:editTextColor">#FF00FF</item>
+        <item name="android:editTextColor">#FFFFFF</item>
         <item name="android:textColorHint">#FFFFFF</item>
+
+        <!--This might help dislay the cursor in the text color:-->
+        <!--<item name="android:textCursorDrawable">@null</item>-->
+        <!--<item name="android:textColor">@android:color/black</item>-->
 
         <!-- attempts to change the list item colors seem to have failed.  See the resourcerowlayout.xml file
         for color there -->

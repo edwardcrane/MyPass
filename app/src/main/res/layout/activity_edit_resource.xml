@@ -18,14 +18,19 @@
         android:textStyle="bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/resource_name" />
+        android:hint="@string/resource_name"
+        android:textCursorDrawable="@drawable/color_cursor" >
+        <requestFocus />
+    </EditText>
 
     <EditText
         android:layout_weight="0"
         android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/username" />
+        android:hint="@string/username"
+        android:textCursorDrawable="@drawable/color_cursor"
+    />
 
     <EditText
         android:layout_weight="0"
@@ -33,14 +38,16 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/password"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <EditText
         android:layout_weight="0"
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="@string/description" />
+        android:hint="@string/description"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <LinearLayout
         android:layout_width="match_parent"
