@@ -4,9 +4,13 @@
     android:layout_height="wrap_content">
     <gradient
         android:startColor="#24b2eb"
-        android:centerColor="#4ccbff"
+        android:centerColor="#6fdfff"
         android:endColor="#24b2eb"
         android:angle="270"/>
     <corners android:radius="5dp"/>
 </shape>
+    <!--android:startColor="#4ccbff"-->
     <!--android:startColor="#24b2eb"-->
+    <!--android:centerColor="#5cdbff"-->
+    <!--android:type="radial"-->
+    <!--android:gradientRadius="500"-->

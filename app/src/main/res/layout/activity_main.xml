@@ -3,7 +3,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@layout/main_gradient"
+    android:background="@layout/radial_gradient"
     android:orientation="vertical" >
     <LinearLayout
         android:id="@+id/group"
