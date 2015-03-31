@@ -17,7 +17,7 @@
             android:paddingTop="5dip"
             android:paddingBottom="5dip">
             <!-- Logo Start-->
-            <ImageView android:src="@drawable/a_icon_reversed_aqua48x48"
+            <ImageView android:src="@drawable/a_icon_white_trans_48x48"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"/>
@@ -121,6 +121,7 @@
                 android:text="Register New Account"
                 android:longClickable="false"
                 android:onClick="onRegisterButtonClick" />
+
             <!-- Link to Login Screen -->
             <TextView android:id="@+id/link_to_login"
                 android:layout_width="fill_parent"
@@ -131,7 +132,6 @@
                 android:gravity="center"
                 android:textSize="20dip"
                 android:textColor="#025f7c"/>
-
         </LinearLayout>
         <!-- Registration Form Ends -->
 
@@ -144,7 +144,6 @@
             android:layout_alignParentBottom="true">
         </LinearLayout>
         <!-- Footer Ends -->
-
 
     </RelativeLayout>
 </ScrollView>

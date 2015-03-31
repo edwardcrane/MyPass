@@ -52,7 +52,9 @@ public class RegisterActivity extends Activity {
             newPasswordEditText.setVisibility(View.VISIBLE);
             newPasswordEditText.setEnabled(true);
             registerButton.setText("Change Login Information");
-            linkToLogin.setVisibility(View.GONE);
+
+            linkToLogin.setVisibility(View.INVISIBLE);
+            linkToLogin.setEnabled(false);
 
             usernameEditText.setText(intent.getStringExtra(MainActivity.LOGGED_IN_USER));
             passwordEditText.setText(datasource.getPassword(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
@@ -65,20 +67,18 @@ public class RegisterActivity extends Activity {
             vg.removeView(newPasswordTextView);
             vg.removeView(newPasswordEditText);
             registerButton.setText("Create New Login");
+
+            // Listening to Login Screen link
+            linkToLogin.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View arg0) {
+                    // grab values and try to create the login:
+
+                    // Switching to Login Screen/closing register screen
+                    finish();
+                }
+            });
         }
-
-        TextView loginScreen = (TextView) findViewById(R.id.link_to_login);
-
-        // Listening to Login Screen link
-        loginScreen.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                // grab values and try to create the login:
-
-                // Switching to Login Screen/closing register screen
-                finish();
-            }
-        });
     }
 
     public void onRegisterButtonClick(View view) {
