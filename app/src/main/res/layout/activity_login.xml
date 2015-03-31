@@ -15,7 +15,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         >
-        <ImageView android:src="@drawable/a_icon_aqua48x48"
+        <ImageView android:src="@drawable/a_icon_reversed_aqua48x48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"/>
@@ -73,6 +73,15 @@
             android:layout_marginTop="10dip"
             android:text="Login"
             android:onClick="onLoginButtonClick"/>
+
+        <!-- Show Password Hint button -->
+        <Button android:id="@+id/btnShowPasswordHint"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="Show Password Hint"
+            android:onClick="onShowPasswordHintButtonClick"/>
+
         <!-- Link to Registration Screen -->
         <TextView android:id="@+id/link_to_register"
             android:layout_width="fill_parent"

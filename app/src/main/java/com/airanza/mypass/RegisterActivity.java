@@ -40,6 +40,7 @@ public class RegisterActivity extends Activity {
         EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
         EditText passwordHintEditText = (EditText) findViewById(R.id.reg_password_hint);
         EditText emailEditText = (EditText) findViewById(R.id.reg_email);
+        TextView linkToLogin = (TextView) findViewById(R.id.link_to_login);
 
         Intent intent = getIntent();
         TextView newPasswordTextView = (TextView) findViewById(R.id.reg_new_password_label);
@@ -51,6 +52,7 @@ public class RegisterActivity extends Activity {
             newPasswordEditText.setVisibility(View.VISIBLE);
             newPasswordEditText.setEnabled(true);
             registerButton.setText("Change Login Information");
+            linkToLogin.setVisibility(View.GONE);
 
             usernameEditText.setText(intent.getStringExtra(MainActivity.LOGGED_IN_USER));
             passwordEditText.setText(datasource.getPassword(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));

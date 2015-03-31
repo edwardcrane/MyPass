@@ -84,6 +84,16 @@ public class LoginActivity extends Activity {
         return(datasource.isValidLogin(username, password));
     }
 
+    public void onShowPasswordHintButtonClick(View view) {
+        String username = ((EditText) findViewById(R.id.user_name)).getText().toString();
+        String passwordHint = datasource.getPasswordHint(username);
+        if(passwordHint.length() > 0) {
+            Toast.makeText(getApplicationContext(), "Password Hint: [" + passwordHint + "]", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please specify valid User Name.", Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void onLoginButtonClick(View view) {
         String username = ((EditText) findViewById(R.id.user_name)).getText().toString();
         String password = ((EditText) findViewById(R.id.password)).getText().toString();
