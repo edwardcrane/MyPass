@@ -50,6 +50,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
+                android:textColor="#372c24"
                 android:singleLine="true" />
                 <!--android:layout_marginBottom="20dip"/>-->
             <!-- Password Label -->
@@ -62,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:password="true"
                 android:singleLine="true"
+                android:textColor="#372c24"
                 android:layout_marginTop="5dip"/>
 
             <!-- Password Label -->
@@ -74,6 +76,7 @@
                 android:layout_height="wrap_content"
                 android:password="true"
                 android:singleLine="true"
+                android:textColor="#372c24"
                 android:layout_marginTop="5dip"/>
 
             <!-- New Password Label -->
@@ -90,6 +93,7 @@
                 android:singleLine="true"
                 android:layout_marginTop="5dip"
                 android:enabled="false"
+                android:textColor="#372c24"
                 android:visibility="invisible"/>
 
             <!-- Password Hint Label -->
@@ -100,8 +104,8 @@
             <EditText android:id="@+id/reg_password_hint"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:password="true"
                 android:singleLine="true"
+                android:textColor="#372c24"
                 android:layout_marginTop="5dip"/>
 
             <!--  Email Label -->
@@ -114,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:singleLine="true"
+                android:textColor="#372c24"
                 android:layout_marginBottom="20dip"/>
 
             <!-- Register Button -->
