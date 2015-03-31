@@ -11,4 +11,8 @@
     <item android:id="@+id/action_import_csv" android:title="@string/action_import_csv"
         android:orderInCategory="100" app:showAsAction="never" />
     </group>
+
+    <item android:id="@+id/action_change_login" android:title="Change Login..."
+        android:orderInCategory="100" app:showAsAction="never" />
+
 </menu>

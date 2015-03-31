@@ -64,6 +64,34 @@
                 android:singleLine="true"
                 android:layout_marginTop="5dip"/>
 
+            <!-- Password Label -->
+            <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="Confirm Password:"/>
+            <EditText android:id="@+id/reg_confirm_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:password="true"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"/>
+
+            <!-- New Password Label -->
+            <TextView android:id="@+id/reg_new_password_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="New Password:"
+                android:visibility="invisible"/>
+            <EditText android:id="@+id/reg_new_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:password="true"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"
+                android:enabled="false"
+                android:visibility="invisible"/>
+
             <!-- Password Hint Label -->
             <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

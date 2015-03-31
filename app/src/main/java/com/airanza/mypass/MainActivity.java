@@ -38,6 +38,7 @@ public class MainActivity extends ListActivity {
 
     static final int LOGIN_REQUEST = 1;
     static final int SEND_EMAIL_REQUEST = 2;
+    static final int CHANGE_LOGIN = 3;
 
     // for saving login state information across Activity lifecycle as needed.
     // there will be a grace period of STAY_LOGGED_IN_MINUTES whereby a user
@@ -47,6 +48,7 @@ public class MainActivity extends ListActivity {
     static final String LOGGED_IN = "logged_in";
     static final String LOGGED_IN_USER = "logged_in_user";
     static final String LOGGED_IN_TIME = "logged_in_time";
+    static final String REGISTER_ACTION = "register_action";
 
     private boolean logged_in = false;
     private String logged_in_user = "";
@@ -171,6 +173,11 @@ public class MainActivity extends ListActivity {
 
         if(id == R.id.action_email_backup) {
             onUserSelectedEmailBackupActionSend();
+            return true;
+        }
+
+        if(id == R.id.action_change_login) {
+            onUserSelectedChangeLogin();
             return true;
         }
 
@@ -317,7 +324,7 @@ public class MainActivity extends ListActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         if(requestCode == LOGIN_REQUEST) {
-            if(resultCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
 
                 Log.i(getClass().getName(), "LOGIN SUCCEEDED: " + requestCode + " " + resultCode + " " + data);
                 logged_in = true;
@@ -331,6 +338,16 @@ public class MainActivity extends ListActivity {
                 // Exit this activity, which will also cause program to shut down:
                 finish();
             }
+        } else if(requestCode == CHANGE_LOGIN) {
+            if(resultCode == RESULT_OK) {
+                logged_in = true;
+                logged_in_user = data.getStringExtra(LOGGED_IN_USER);
+                logged_in_time = System.currentTimeMillis();
+                Toast.makeText(getApplicationContext(), "Logged in as [" + logged_in_user + "]", Toast.LENGTH_LONG).show();
+            } else {
+                // THERE IS NOTHING TO DO HERE UNLESS YOU WANT TO LOG USER OFF AND SHUT DOWN.
+            }
+
         } else if(requestCode == SEND_EMAIL_REQUEST) {
             if(resultCode == RESULT_OK) {
                 Log.i(getClass().getName(), "SUCCESS: " + requestCode + " " + resultCode + " " + data);
@@ -431,5 +448,22 @@ public class MainActivity extends ListActivity {
         logged_in_user = savedInstanceState.getString(LOGGED_IN_USER);
         logged_in_time = savedInstanceState.getLong(LOGGED_IN_TIME);
         Log.i(getClass().getName(), "onRestoreInstanceState: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
+    }
+
+    public void onUserSelectedChangeLogin() {
+        Log.i(getClass().getName(), "onUserSelectedChangeLogin(): Starting Register Activity.  logged_in:[" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
+        Intent intent = new Intent(this, RegisterActivity.class);
+
+        /* TODO:  set attributes of Intent to notify RegisterActivity that it should function as
+        *  change login activity
+        */
+        intent.putExtra(REGISTER_ACTION, CHANGE_LOGIN);
+        intent.putExtra(LOGGED_IN_USER, logged_in_user);
+
+        // start register activity.  Results are handled in onActivityResult();
+        startActivityForResult(intent, CHANGE_LOGIN);
+
+        // Log results of login change:
+        Log.i(getClass().getName(), "onUserSelectedChangeLogin: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
     }
 }
