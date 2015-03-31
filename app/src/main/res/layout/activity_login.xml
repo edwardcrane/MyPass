@@ -15,7 +15,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         >
-        <ImageView android:src="@mipmap/logo"
+        <ImageView android:src="@drawable/a_icon_aqua48x48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"/>

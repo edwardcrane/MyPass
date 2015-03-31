@@ -217,4 +217,58 @@ public class LoginDataSource {
         cursor.close();
         return email;
     }
+
+    public String getPassword(String username) {
+        String password = null;
+        if(!isExistingUsername(username)) {
+            return("");
+        }
+
+        String[] projection = {
+                LoginDBHelper.COLUMN_NAME_USERNAME,
+                LoginDBHelper.COLUMN_NAME_PASSWORD
+        };
+        String whereClause = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
+
+        Cursor cursor = database.query(
+                LoginDBHelper.TABLE_NAME,
+                projection,
+                whereClause,
+                null,
+                null,
+                null,
+                null
+        );
+        cursor.moveToFirst();
+        password = cursor.getString(cursor.getColumnIndexOrThrow(LoginDBHelper.COLUMN_NAME_PASSWORD));
+        cursor.close();
+        return password;
+    }
+
+    public String getPasswordHint(String username) {
+        String passwordHint = null;
+        if(!isExistingUsername(username)) {
+            return("");
+        }
+
+        String[] projection = {
+                LoginDBHelper.COLUMN_NAME_USERNAME,
+                LoginDBHelper.COLUMN_NAME_PASSWORD_HINT
+        };
+        String whereClause = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
+
+        Cursor cursor = database.query(
+                LoginDBHelper.TABLE_NAME,
+                projection,
+                whereClause,
+                null,
+                null,
+                null,
+                null
+        );
+        cursor.moveToFirst();
+        passwordHint = cursor.getString(cursor.getColumnIndexOrThrow(LoginDBHelper.COLUMN_NAME_PASSWORD_HINT));
+        cursor.close();
+        return passwordHint;
+    }
 }

@@ -20,6 +20,8 @@
         <!-- attempts to change the list item colors seem to have failed.  See the resourcerowlayout.xml file
         for color there -->
 
+        <item name="android:itemBackground">#000000</item>
+
     </style>
 
 </resources>

@@ -26,9 +26,24 @@ public class RegisterActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+        try {
+            datasource = new LoginDataSource(this);
+            datasource.open();
+        } catch (SQLException e) {
+            Log.w(this.getClass().getName(), e);
+            return;
+        }
+
+        EditText usernameEditText = (EditText) findViewById(R.id.reg_fullname);
+        EditText passwordEditText = (EditText) findViewById(R.id.reg_password);
+        EditText confirmPasswordEditText = (EditText) findViewById(R.id.reg_confirm_password);
+        EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
+        EditText passwordHintEditText = (EditText) findViewById(R.id.reg_password_hint);
+        EditText emailEditText = (EditText) findViewById(R.id.reg_email);
+
         Intent intent = getIntent();
         TextView newPasswordTextView = (TextView) findViewById(R.id.reg_new_password_label);
-        EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
+
         Button registerButton = (Button) findViewById(R.id.btnRegister);
         if(intent.getIntExtra(MainActivity.REGISTER_ACTION, MainActivity.LOGIN_REQUEST) == MainActivity.CHANGE_LOGIN) {
             newPasswordTextView.setVisibility(View.VISIBLE);
@@ -36,6 +51,12 @@ public class RegisterActivity extends Activity {
             newPasswordEditText.setVisibility(View.VISIBLE);
             newPasswordEditText.setEnabled(true);
             registerButton.setText("Change Login Information");
+
+            usernameEditText.setText(intent.getStringExtra(MainActivity.LOGGED_IN_USER));
+            passwordEditText.setText(datasource.getPassword(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
+            confirmPasswordEditText.setText(datasource.getPassword(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
+            passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
+            emailEditText.setText(datasource.getEmail(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
         } else {
             // remove new_password and label:
             ViewGroup vg = (ViewGroup)newPasswordTextView.getParent();
@@ -56,22 +77,23 @@ public class RegisterActivity extends Activity {
                 finish();
             }
         });
-
-        try {
-            datasource = new LoginDataSource(this);
-            datasource.open();
-        } catch (SQLException e) {
-            Log.w(this.getClass().getName(), e);
-        }
     }
 
     public void onRegisterButtonClick(View view) {
-        String username = ((EditText) findViewById(R.id.reg_fullname)).getText().toString();
-        String password = ((EditText) findViewById(R.id.reg_password)).getText().toString();
-        String confirmPassword = ((EditText) findViewById(R.id.reg_confirm_password)).getText().toString();
-        String newPassword = ((EditText) findViewById(R.id.reg_new_password)).getText().toString();
-        String passwordhint = ((EditText) findViewById(R.id.reg_password_hint)).getText().toString();
-        String email = ((EditText) findViewById(R.id.reg_email)).getText().toString();
+
+        EditText usernameEditText = (EditText) findViewById(R.id.reg_fullname);
+        EditText passwordEditText = (EditText) findViewById(R.id.reg_password);
+        EditText confirmPasswordEditText = (EditText) findViewById(R.id.reg_confirm_password);
+        EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
+        EditText passwordHintEditText = (EditText) findViewById(R.id.reg_password_hint);
+        EditText emailEditText = (EditText) findViewById(R.id.reg_email);
+
+        String username = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String confirmPassword = confirmPasswordEditText.getText().toString();
+        String newPassword = newPasswordEditText.getText().toString();
+        String passwordHint = passwordHintEditText.getText().toString();
+        String email = emailEditText.getText().toString();
 
         Intent intent = getIntent();
         int actionCode = intent.getIntExtra(MainActivity.REGISTER_ACTION, MainActivity.LOGIN_REQUEST);
@@ -89,7 +111,7 @@ public class RegisterActivity extends Activity {
                 password.length() <= 0 ||
                 confirmPassword.length() <= 0 ||
                 ((actionCode == MainActivity.CHANGE_LOGIN) && (newPassword.length() <= 0)) ||
-                passwordhint.length() <= 0 ||
+                passwordHint.length() <= 0 ||
                 email.length() <= 0) {
             // display an error message and allow the user to try again:
             Toast.makeText(getApplicationContext(), "All fields must be completed.  Please try again.", Toast.LENGTH_LONG).show();
@@ -104,9 +126,9 @@ public class RegisterActivity extends Activity {
         }
 
         if (actionCode == MainActivity.LOGIN_REQUEST) {
-            datasource.createLogin(username, password, passwordhint, email);
+            datasource.createLogin(username, password, passwordHint, email);
         } else if(actionCode == MainActivity.CHANGE_LOGIN) {
-            datasource.update(oldUsername, username, password, newPassword, "old password hint", passwordhint, "old email", email, 0, 1);
+            datasource.update(oldUsername, username, password, newPassword, "old password hint", passwordHint, "old email", email, 0, 1);
             result.putExtra(MainActivity.LOGGED_IN_USER, username);
             // now we can throw away the old password.
             password = newPassword;
