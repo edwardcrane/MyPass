@@ -15,7 +15,7 @@
         android:paddingTop="5dip"
         android:paddingBottom="5dip"
         >
-        <ImageView android:src="@drawable/a_icon_white_trans_48x48"
+        <ImageView android:src="@drawable/a_icon_white_trans_border_48x48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"/>
@@ -99,7 +99,7 @@
         android:orientation="horizontal"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="@layout/footer_repeat"
+        android:background="@layout/footer_center_logo"
         android:layout_alignParentBottom="true">
 
     </LinearLayout>
