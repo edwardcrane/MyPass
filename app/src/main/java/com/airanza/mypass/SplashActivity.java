@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Created by ecrane on 3/31/2015.
@@ -21,6 +22,9 @@ public class SplashActivity extends Activity {
 
         if(splashLoaded) {
             // only show the splash screen once, at startup.
+            // todo:  this doesn't quite work, as it seems to save splashLoaded == true across app runs.
+            // figure this out.  Setting it to false in onDestroy() also doesn't work, as finish() causes
+            // onDestroy to be called.
             finish();
         }
 
