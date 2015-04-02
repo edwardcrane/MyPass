@@ -10,6 +10,7 @@ import android.os.Handler;
  */
 
 public class SplashActivity extends Activity {
+    private static boolean splashLoaded = false;
 
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 3000;
@@ -17,7 +18,14 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(splashLoaded) {
+            // only show the splash screen once, at startup.
+            finish();
+        }
+
         setContentView(R.layout.activity_splash);
+        splashLoaded = true;
 
         new Handler().postDelayed(new Runnable() {
 
