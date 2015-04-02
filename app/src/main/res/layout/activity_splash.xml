@@ -7,7 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/airanza_logo_white_trans" />
+        android:src="@drawable/airanza_logo_white_trans_border" />
 
     <TextView
         android:layout_width="fill_parent"
