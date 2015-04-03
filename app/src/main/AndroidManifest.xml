@@ -5,6 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/a_icon_white_trans_border_96x96"
+        android:logo="@drawable/airanza_logo_aqua_trans"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:debuggable="true"

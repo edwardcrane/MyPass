@@ -52,6 +52,8 @@ public class NewResourceActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        // context-specific actionbar items:
+        getMenuInflater().inflate(R.menu.menu_new_resource, menu);
         return true;
     }
 
@@ -65,6 +67,15 @@ public class NewResourceActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if(id == R.id.action_save_resource) {
+            saveEntry(null);
+            return true;
+        }
+
+        if(id == R.id.action_cancel_resource) {
+            cancelEntry(null);
         }
 
         return super.onOptionsItemSelected(item);

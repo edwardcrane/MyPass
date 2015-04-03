@@ -69,6 +69,7 @@ public class EditResourceActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_edit_resource, menu);
         return true;
     }
 
@@ -81,6 +82,21 @@ public class EditResourceActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if(id == R.id.action_delete_resource) {
+            deleteResource(null);
+            return true;
+        }
+
+        if(id == R.id.action_cancel_resource) {
+            cancelEntry(null);
+            return true;
+        }
+
+        if(id == R.id.action_save_resource) {
+            saveEntry(null);
             return true;
         }
 

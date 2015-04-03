@@ -1,6 +1,5 @@
 package com.airanza.mypass;
 
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -148,6 +147,8 @@ public class MainActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        // context specific menu items:
+        getMenuInflater().inflate(R.menu.menu_add_resource, menu);
         return true;
     }
 
@@ -181,6 +182,11 @@ public class MainActivity extends ActionBarActivity {
 
         if(id == R.id.action_change_login) {
             onUserSelectedChangeLogin();
+            return true;
+        }
+
+        if(id == R.id.action_add_resource) {
+            newResource(null);
             return true;
         }
 
