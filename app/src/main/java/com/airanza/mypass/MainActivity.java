@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,12 +29,13 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends ActionBarActivity {
 
     private ResourceDataSource resourcedatasource;
     private LoginDataSource logindatasource;
 
     private List<Resource> values = null;
+    private ListView listView = null;
     private ResourcesAdapter adapter = null;
 
     static final int LOGIN_REQUEST = 1;
@@ -92,7 +94,8 @@ public class MainActivity extends ListActivity {
             values = resourcedatasource.getAllResources();
 
             adapter = new ResourcesAdapter(getApplicationContext(), values);
-            setListAdapter(adapter);
+            listView = (ListView)findViewById(R.id.listMain);
+            listView.setAdapter(adapter);
 
             logindatasource = new LoginDataSource(this);
             logindatasource.open();
@@ -100,7 +103,7 @@ public class MainActivity extends ListActivity {
             Log.w(this.getClass().getName(), e);
         }
 
-        ListView listView = (ListView)findViewById(android.R.id.list);
+        ListView listView = (ListView)findViewById(R.id.listMain);
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
@@ -135,7 +138,7 @@ public class MainActivity extends ListActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                findResource(getListView());
+                findResource(listView);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -187,8 +190,8 @@ public class MainActivity extends ListActivity {
     /**
      * assumes that os is opened and closed by caller.
      *
-     * @param os
-     * @return
+     * @param os output stream where data is written
+     * @return success or failure code
      * @throws IOException
      */
     public int exportCSV(OutputStream os) throws IOException {
@@ -197,11 +200,11 @@ public class MainActivity extends ListActivity {
 
         sb.append("\"_id\",\"ResourceName\",\"UserName\",\"Password\",\"Description\"\n");
         for(Resource r : values) {
-            sb.append("\"" + r.getID() + "\",");
-            sb.append("\"" + r.getResourceName() + "\",");
-            sb.append("\"" + r.getUsername() + "\",");
-            sb.append("\"" + r.getPassword() + "\",");
-            sb.append("\"" + r.getDescription() + "\"\n");
+            sb.append("\"").append(r.getID()).append("\",");
+            sb.append("\"").append(r.getResourceName()).append("\",");
+            sb.append("\"").append(r.getUsername()).append("\",");
+            sb.append("\"").append(r.getPassword()).append("\",");
+            sb.append("\"").append(r.getDescription()).append("\"\n");
             os.write(sb.toString().getBytes());
             sb.setLength(0);
             count++;
@@ -387,7 +390,7 @@ public class MainActivity extends ListActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
-        findResource(getListView());
+        findResource(listView);
         super.onResume();
     }
 
