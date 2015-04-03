@@ -39,7 +39,9 @@
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:textCursorDrawable="@drawable/color_cursor" />
+        android:textCursorDrawable="@drawable/color_cursor"
+        android:drawableRight="@android:drawable/ic_menu_view"
+        />
 
     <EditText
         android:layout_weight="0"
@@ -47,6 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/description"
-        android:textCursorDrawable="@drawable/color_cursor" />
+        android:textCursorDrawable="@drawable/color_cursor"
+        />
 
 </TableLayout>
