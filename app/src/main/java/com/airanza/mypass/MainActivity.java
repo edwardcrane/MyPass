@@ -39,7 +39,6 @@ public class MainActivity extends ListActivity {
     static final int LOGIN_REQUEST = 1;
     static final int SEND_EMAIL_REQUEST = 2;
     static final int CHANGE_LOGIN = 3;
-    static final int DISPLAY_SPLASH = 4;
 
     // for saving login state information across Activity lifecycle as needed.
     // there will be a grace period of STAY_LOGGED_IN_MINUTES whereby a user
@@ -86,10 +85,6 @@ public class MainActivity extends ListActivity {
             // process the result in this.onActivityResult();
             // if not logged in, we will exit there.
         }
-
-        // display splash screen:
-        Intent splashIntent = new Intent(this, SplashActivity.class);
-        startActivityForResult(splashIntent, DISPLAY_SPLASH);
 
         try {
             resourcedatasource = new ResourceDataSource(this);
