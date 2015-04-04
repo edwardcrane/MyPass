@@ -101,14 +101,14 @@
                 android:singleLine="true"
                 android:layout_marginBottom="20dip"/>
 
-            <!-- Register Button -->
-            <Button android:id="@+id/btnRegister"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                android:text="Register New Account"
-                android:longClickable="false"
-                android:onClick="onRegisterButtonClick" />
+            <!--&lt;!&ndash; Register Button &ndash;&gt;-->
+            <!--<Button android:id="@+id/btnRegister"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dip"-->
+                <!--android:text="Register New Account"-->
+                <!--android:longClickable="false"-->
+                <!--android:onClick="onRegisterButtonClick" />-->
 
             <!-- Link to Login Screen -->
             <TextView android:id="@+id/link_to_login"

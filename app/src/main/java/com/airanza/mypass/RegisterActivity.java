@@ -9,6 +9,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -46,13 +48,11 @@ public class RegisterActivity extends ActionBarActivity {
         Intent intent = getIntent();
         TextView newPasswordTextView = (TextView) findViewById(R.id.reg_new_password_label);
 
-        Button registerButton = (Button) findViewById(R.id.btnRegister);
         if(intent.getIntExtra(MainActivity.REGISTER_ACTION, MainActivity.LOGIN_REQUEST) == MainActivity.CHANGE_LOGIN) {
             newPasswordTextView.setVisibility(View.VISIBLE);
             newPasswordTextView.setEnabled(true);
             newPasswordEditText.setVisibility(View.VISIBLE);
             newPasswordEditText.setEnabled(true);
-            registerButton.setText("Change Login Information");
 
             linkToLogin.setVisibility(View.INVISIBLE);
             linkToLogin.setEnabled(false);
@@ -67,7 +67,6 @@ public class RegisterActivity extends ActionBarActivity {
             ViewGroup vg = (ViewGroup)newPasswordTextView.getParent();
             vg.removeView(newPasswordTextView);
             vg.removeView(newPasswordEditText);
-            registerButton.setText("Create New Login");
 
             // Listening to Login Screen link
             linkToLogin.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +80,33 @@ public class RegisterActivity extends ActionBarActivity {
             });
         }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // context-specific actionbar items:
+        getMenuInflater().inflate(R.menu.menu_register_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if(id == R.id.action_save_login_info) {
+            onRegisterButtonClick(null);
+            return true;
+        }
+
+        if(id == R.id.action_cancel_login_info) {
+            cancelEntry(null);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     public void onRegisterButtonClick(View view) {
 
@@ -148,6 +174,10 @@ public class RegisterActivity extends ActionBarActivity {
         } else {
             getParent().setResult(Activity.RESULT_OK, result);
         }
+        finish();
+    }
+
+    public void cancelEntry(View view) {
         finish();
     }
 }
