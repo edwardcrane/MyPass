@@ -6,12 +6,6 @@
     android:background="@layout/radial_gradient"
     android:orientation="horizontal" >
 
-    <TextView
-        android:layout_weight="0"
-        android:id="@+id/_id"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="_id" />
     <EditText
         android:layout_weight="0"
         android:id="@+id/resource_name"

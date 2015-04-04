@@ -42,7 +42,6 @@ public class EditResourceActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
-        ((TextView)findViewById(R.id._id)).setText("" + resource.getID());
         ((EditText)findViewById(R.id.resource_name)).setText(resource.getResourceName());
         ((EditText)findViewById(R.id.username)).setText(resource.getUsername());
         ((EditText)findViewById(R.id.password)).setText(resource.getPassword());
