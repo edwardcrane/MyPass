@@ -22,6 +22,8 @@
 
         <item name="android:itemBackground">#000000</item>
 
+        <item name="android:textCursorDrawable">@drawable/color_cursor</item>
+
     </style>
 
 </resources>

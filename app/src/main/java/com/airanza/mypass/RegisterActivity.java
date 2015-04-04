@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends ActionBarActivity {
 
     private LoginDataSource datasource;
 

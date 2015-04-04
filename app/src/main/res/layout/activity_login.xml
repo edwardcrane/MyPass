@@ -7,20 +7,20 @@
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#ffffff">
-    <LinearLayout android:id="@+id/header"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:background="@layout/header_gradient"
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip"
-        >
-        <ImageView android:src="@drawable/a_icon_white_trans_border_48x48"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"/>
+    android:background="@layout/radial_gradient">
+    <!--<LinearLayout android:id="@+id/header"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:background="@layout/header_gradient"-->
+        <!--android:paddingTop="5dip"-->
+        <!--android:paddingBottom="5dip"-->
+        <!-->-->
+        <!--<ImageView android:src="@drawable/a_icon_white_trans_border_48x48"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dip"/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
     <!-- Login Form -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -28,30 +28,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dip"
-        android:layout_below="@id/header">
+        >
+        <!--android:layout_below="@id/header"-->
+
         <!--  Email Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#372c24"
             android:text="User Name:"/>
         <EditText android:id="@+id/user_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
-            android:textColor="#372c24"
             android:singleLine="true"/>
-        <!--android:layout_marginBottom="20dip" /> -->
 
         <!--  Password Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="#372c24"
             android:text="Password:" />
         <EditText android:id="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
-            android:textColor="#372c24"
             android:singleLine="true"
             android:password="true"/>
 
@@ -61,7 +58,6 @@
             android:layout_height="wrap_content"
             android:text="Remember me?"
             android:id="@+id/rememberMeCheckBox"
-            android:textColor="#372c24"
             android:enabled="true"
             android:clickable="true"
             android:checked="true" />
@@ -91,7 +87,9 @@
             android:text="New to Airanza? Register here"
             android:gravity="center"
             android:textSize="20dip"
-            android:textColor="#0b84aa"/>
+            />
+        <!--android:textColor="#0b84aa"-->
+
 
     </LinearLayout>
     <!-- Login Form Ends -->

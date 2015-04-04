@@ -19,7 +19,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/resource_name"
-        android:textCursorDrawable="@drawable/color_cursor" >
+        >
         <requestFocus />
     </EditText>
 
@@ -29,7 +29,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/username"
-        android:textCursorDrawable="@drawable/color_cursor"
     />
 
     <LinearLayout>
@@ -40,7 +39,6 @@
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:textCursorDrawable="@drawable/color_cursor"
         />
         <ImageView
             android:layout_width="wrap_content"
@@ -58,7 +56,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/description"
-        android:textCursorDrawable="@drawable/color_cursor"
         />
 
 </TableLayout>

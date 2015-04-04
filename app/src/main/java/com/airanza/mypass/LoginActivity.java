@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 
 import java.sql.SQLException;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends ActionBarActivity {
     public static int MAX_LOGIN_ATTEMPTS = 5;
     private int loginAttempts = 0;
 
