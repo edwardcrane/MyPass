@@ -43,8 +43,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:singleLine="true" />
+
             <!-- Password Label -->
-            <TextView android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/reg_password_label"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Password:"/>
             <EditText android:id="@+id/reg_password"
@@ -55,7 +58,9 @@
                 android:layout_marginTop="5dip"/>
 
             <!-- Password Label -->
-            <TextView android:layout_width="fill_parent"
+            <TextView
+                android:id="@+id/reg_confirm_password_label"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="Confirm Password:"/>
             <EditText android:id="@+id/reg_confirm_password"
@@ -66,7 +71,8 @@
                 android:layout_marginTop="5dip"/>
 
             <!-- New Password Label -->
-            <TextView android:id="@+id/reg_new_password_label"
+            <TextView
+                android:id="@+id/reg_new_password_label"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="New Password:"
@@ -100,15 +106,6 @@
                 android:layout_marginTop="5dip"
                 android:singleLine="true"
                 android:layout_marginBottom="20dip"/>
-
-            <!--&lt;!&ndash; Register Button &ndash;&gt;-->
-            <!--<Button android:id="@+id/btnRegister"-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="10dip"-->
-                <!--android:text="Register New Account"-->
-                <!--android:longClickable="false"-->
-                <!--android:onClick="onRegisterButtonClick" />-->
 
             <!-- Link to Login Screen -->
             <TextView android:id="@+id/link_to_login"

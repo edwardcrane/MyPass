@@ -58,8 +58,10 @@ public class RegisterActivity extends ActionBarActivity {
             linkToLogin.setEnabled(false);
 
             usernameEditText.setText(intent.getStringExtra(MainActivity.LOGGED_IN_USER));
-            passwordEditText.setText(datasource.getPassword(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
-            confirmPasswordEditText.setText(datasource.getPassword(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
+            TextView oldPasswordLabelTextView = (TextView)findViewById(R.id.reg_password_label);
+            oldPasswordLabelTextView.setText("Old Password:");
+            TextView oldConfirmPasswordLabelTextView = (TextView)findViewById(R.id.reg_confirm_password_label);
+            oldConfirmPasswordLabelTextView.setText("Confirm Old Password:");
             passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
             emailEditText.setText(datasource.getEmail(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
         } else {
