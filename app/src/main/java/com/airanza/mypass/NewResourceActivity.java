@@ -30,23 +30,19 @@ public class NewResourceActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
-
-        final EditText editTextPassword = (EditText)findViewById(R.id.password);
-
-        editTextPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isPasswordVisible) {  // show password
-                    editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                } else {                  // Hide password
-                    editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }
-                editTextPassword.setSelection(editTextPassword.getText().length());
-                isPasswordVisible = !isPasswordVisible;
-            }
-        });
     }
 
+    public void onClickOnPassword(View view) {
+        final EditText editTextPassword = (EditText)findViewById(R.id.password);
+
+        if(!isPasswordVisible) {  // show password
+            editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {                  // Hide password
+            editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+        editTextPassword.setSelection(editTextPassword.getText().length());
+        isPasswordVisible = !isPasswordVisible;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -32,17 +32,25 @@
         android:textCursorDrawable="@drawable/color_cursor"
     />
 
+    <LinearLayout>
     <EditText
-        android:layout_weight="0"
         android:id="@+id/password"
         android:layout_width="0dp"
+        android:layout_weight="10"
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
         android:textCursorDrawable="@drawable/color_cursor"
-        android:drawableRight="@android:drawable/ic_menu_view"
         />
-
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:src="@android:drawable/ic_menu_view"
+            android:onClick="onClickOnPassword"
+            android:layout_gravity="right"
+            />
+    </LinearLayout>
     <EditText
         android:layout_weight="0"
         android:id="@+id/description"

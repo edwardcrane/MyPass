@@ -47,21 +47,18 @@ public class EditResourceActivity extends ActionBarActivity {
         ((EditText)findViewById(R.id.username)).setText(resource.getUsername());
         ((EditText)findViewById(R.id.password)).setText(resource.getPassword());
         ((EditText)findViewById(R.id.description)).setText(resource.getDescription());
+    }
 
+    public void onClickOnPassword(View view) {
         final EditText editTextPassword = (EditText)findViewById(R.id.password);
 
-        editTextPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isPasswordVisible) {  // show password
-                    editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                } else {                  // Hide password
-                    editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }
-                editTextPassword.setSelection(editTextPassword.getText().length());
-                isPasswordVisible = !isPasswordVisible;
-            }
-        });
+        if(!isPasswordVisible) {  // show password
+            editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {                  // Hide password
+            editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+        editTextPassword.setSelection(editTextPassword.getText().length());
+        isPasswordVisible = !isPasswordVisible;
     }
 
 
