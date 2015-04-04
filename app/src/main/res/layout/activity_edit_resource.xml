@@ -49,6 +49,7 @@
             android:src="@android:drawable/ic_menu_view"
             android:onClick="onClickOnPassword"
             android:layout_gravity="right"
+            android:background="@layout/white_border"
             />
     </LinearLayout>
     <EditText
