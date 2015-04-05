@@ -1,3 +1,23 @@
+/*
+ * Copyright (c) 2015.
+ *
+ * AIRANZA, INC.
+ * -------------
+ *   [2015] - [${YEAR}] Adobe Systems Incorporated
+ *   All Rights Reserved.
+ *
+ *  NOTICE:  All information contained herein is, and remains
+ *  the property of Airanza, Inc. and its suppliers,
+ *  if any.  The intellectual and technical concepts contained
+ *  herein are proprietary to Airanza Inc.
+ *  and its suppliers and may be covered by U.S. and Foreign Patents,
+ *  patents in process, and are protected by trade secret or copyright law
+ *
+ *  Dissemination of this information or reproduction of this material
+ *  is strictly forbidden unless prior written permission is obtained
+ *  from Airanza Inc.
+ */
+
 package com.airanza.mypass;
 
 import android.app.AlertDialog;
@@ -12,7 +32,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -33,7 +52,7 @@ public class EditResourceActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
-        resource = (Resource)intent.getSerializableExtra(EXTRA_RESOURCE);
+        resource = (Resource) intent.getSerializableExtra(EXTRA_RESOURCE);
 
         setContentView(R.layout.activity_edit_resource);
         try {
@@ -42,16 +61,16 @@ public class EditResourceActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
-        ((EditText)findViewById(R.id.resource_name)).setText(resource.getResourceName());
-        ((EditText)findViewById(R.id.username)).setText(resource.getUsername());
-        ((EditText)findViewById(R.id.password)).setText(resource.getPassword());
-        ((EditText)findViewById(R.id.description)).setText(resource.getDescription());
+        ((EditText) findViewById(R.id.resource_name)).setText(resource.getResourceName());
+        ((EditText) findViewById(R.id.username)).setText(resource.getUsername());
+        ((EditText) findViewById(R.id.password)).setText(resource.getPassword());
+        ((EditText) findViewById(R.id.description)).setText(resource.getDescription());
     }
 
     public void onClickOnPassword(View view) {
-        final EditText editTextPassword = (EditText)findViewById(R.id.password);
+        final EditText editTextPassword = (EditText) findViewById(R.id.password);
 
-        if(!isPasswordVisible) {  // show password
+        if (!isPasswordVisible) {  // show password
             editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
         } else {                  // Hide password
             editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -80,17 +99,17 @@ public class EditResourceActivity extends ActionBarActivity {
             return true;
         }
 
-        if(id == R.id.action_delete_resource) {
+        if (id == R.id.action_delete_resource) {
             deleteResource(null);
             return true;
         }
 
-        if(id == R.id.action_cancel_resource) {
+        if (id == R.id.action_cancel_resource) {
             cancelEntry(null);
             return true;
         }
 
-        if(id == R.id.action_save_resource) {
+        if (id == R.id.action_save_resource) {
             saveEntry(null);
             return true;
         }
@@ -99,10 +118,10 @@ public class EditResourceActivity extends ActionBarActivity {
     }
 
     public void saveEntry(View view) {
-                resource.setResourceName(((EditText)findViewById(R.id.resource_name)).getText().toString());
-                resource.setUsername(((EditText)findViewById(R.id.username)).getText().toString());
-                resource.setPassword(((EditText)findViewById(R.id.password)).getText().toString());
-                resource.setDescription(((EditText)findViewById(R.id.description)).getText().toString());
+        resource.setResourceName(((EditText) findViewById(R.id.resource_name)).getText().toString());
+        resource.setUsername(((EditText) findViewById(R.id.username)).getText().toString());
+        resource.setPassword(((EditText) findViewById(R.id.password)).getText().toString());
+        resource.setDescription(((EditText) findViewById(R.id.description)).getText().toString());
 
         datasource.update(resource);
 
