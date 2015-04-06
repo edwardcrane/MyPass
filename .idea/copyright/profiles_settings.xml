@@ -1,3 +1,7 @@
 <component name="CopyrightManager">
-  <settings default="Airanza Copyright Profile" />
+  <settings default="Airanza Copyright Profile">
+    <module2copyright>
+      <element module="All" copyright="Airanza Copyright Profile" />
+    </module2copyright>
+  </settings>
 </component>

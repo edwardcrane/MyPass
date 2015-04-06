@@ -2,7 +2,7 @@
  * Copyright (c) 2015.
  *
  * AIRANZA, INC.
- * -------------
+ * _____________
  *   [2015] - [${YEAR}] Adobe Systems Incorporated
  *   All Rights Reserved.
  *
@@ -28,8 +28,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -38,9 +41,6 @@ import android.widget.Toast;
 import java.sql.SQLException;
 
 public class LoginActivity extends ActionBarActivity {
-    public static int MAX_LOGIN_ATTEMPTS = 5;
-    private int loginAttempts = 0;
-
     static final int REGISTER_REQUEST = 2;
 
     private LoginDataSource datasource;
@@ -51,7 +51,7 @@ public class LoginActivity extends ActionBarActivity {
         // setting default screen to login.xml
         setContentView(R.layout.activity_login);
 
-        TextView registerScreen = (TextView) findViewById(R.id.link_to_register);
+        TextView linkToRegisterTextView = (TextView) findViewById(R.id.link_to_register);
 
         try {
             datasource = new LoginDataSource(this);
@@ -62,10 +62,10 @@ public class LoginActivity extends ActionBarActivity {
 
         // if a user is already registered, then don't allow new user.
         if(datasource.logins() > 0) {
-            registerScreen.setVisibility(View.INVISIBLE);
+            linkToRegisterTextView.setVisibility(View.INVISIBLE);
         } else {
             // Listening to register new account link
-            registerScreen.setOnClickListener(new View.OnClickListener() {
+            linkToRegisterTextView.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
                     // Switching to Register screen
@@ -80,10 +80,15 @@ public class LoginActivity extends ActionBarActivity {
         if(rememberedLastUser.length() > 0) {
             // place rememberedLastUser in the username field
             ((EditText)findViewById(R.id.user_name)).setText(rememberedLastUser);
-            ((EditText)findViewById(R.id.password)).requestFocus();
+            (findViewById(R.id.password)).requestFocus();
         }
         // check the "Remember Me?" box.
         ((CheckBox)findViewById(R.id.rememberMeCheckBox)).setChecked(rememberedLastUser.length() > 0);
+
+        addTextChangedListener();
+        // hide keyboard, no matter what field has focus:
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow((findViewById(R.id.password)).getWindowToken(), 0);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -115,41 +120,51 @@ public class LoginActivity extends ActionBarActivity {
         }
     }
 
-    public void onLoginButtonClick(View view) {
-        String username = ((EditText) findViewById(R.id.user_name)).getText().toString();
-        String password = ((EditText) findViewById(R.id.password)).getText().toString();
-        boolean isRememberMeChecked = ((CheckBox) findViewById(R.id.rememberMeCheckBox)).isChecked();
+    public void addTextChangedListener() {
+        EditText passwordEditText = (EditText)findViewById(R.id.password);
 
-        Intent result = new Intent("com.airanza.mypass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
+        Log.w(this.getClass().getName(), "addTextChangedListener to passwordEditText");
 
-        // if login is successful, send word to calling Activity that we succeeded:
-        if(checkLogin(username, password)) {
-            result.putExtra("logged_in_username", username);
-            if (getParent() == null) {
-                setResult(Activity.RESULT_OK, result);
-            } else {
-                getParent().setResult(Activity.RESULT_OK, result);
+        passwordEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable arg0) {
+
             }
-            datasource.updateRememberedLastUser(username, isRememberMeChecked);
 
-            finish();
-        } else {
-            Toast.makeText(getApplicationContext(), "Login Failed.  " + ((MAX_LOGIN_ATTEMPTS - loginAttempts) - 1) + " attempts remaining.", Toast.LENGTH_LONG).show();
-        }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
 
-        // if login failed & we have exceeded allowed attempts, then send signal to calling Activity
-        // that login failed:
-        if(!checkLogin(username, password) && ++loginAttempts >= MAX_LOGIN_ATTEMPTS) {
-                Toast.makeText(getApplicationContext(), "MORE THAN " + MAX_LOGIN_ATTEMPTS + " LOGIN ATTEMPTS.  SHUTTING DOWN", Toast.LENGTH_LONG).show();
-                Log.w(this.getClass().getName(), "MORE THAN " + MAX_LOGIN_ATTEMPTS + " LOGIN ATTEMPTS.  SHUTTING DOWN");
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                EditText usernameEditText = (EditText)findViewById(R.id.user_name);
+                EditText passwordEditText = (EditText)findViewById(R.id.password);
+                String username = usernameEditText.getText().toString();
 
-                if(getParent() == null) {
-                    setResult(Activity.RESULT_CANCELED, result);
-                } else {
-                    getParent().setResult(Activity.RESULT_CANCELED, result);
+                if(checkLogin(usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString()))
+                {
+                    boolean isRememberMeChecked = ((CheckBox) findViewById(R.id.rememberMeCheckBox)).isChecked();
+                    datasource.updateRememberedLastUser(username, isRememberMeChecked);
+
+                    // hide keyboard:
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
+
+                    Intent result = new Intent("com.airanza.mypass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
+
+                    // if login is successful, send word to calling Activity that we succeeded:
+                    result.putExtra("logged_in_username", username);
+                    if (getParent() == null) {
+                        setResult(Activity.RESULT_OK, result);
+                    } else {
+                        getParent().setResult(Activity.RESULT_OK, result);
+                    }
+
+                    finish();
                 }
-                finish();
-        }
+            }
+        });
     }
 }

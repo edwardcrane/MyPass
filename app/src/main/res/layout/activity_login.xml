@@ -28,19 +28,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@layout/radial_gradient">
-    <!--<LinearLayout android:id="@+id/header"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:background="@layout/header_gradient"-->
-        <!--android:paddingTop="5dip"-->
-        <!--android:paddingBottom="5dip"-->
-        <!-->-->
-        <!--<ImageView android:src="@drawable/a_icon_white_trans_border_48x48"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dip"/>-->
 
-    <!--</LinearLayout>-->
     <!-- Login Form -->
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -49,9 +37,8 @@
         android:layout_height="wrap_content"
         android:padding="10dip"
         >
-        <!--android:layout_below="@id/header"-->
 
-        <!--  Email Label -->
+        <!--  Username Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="User Name:"/>
@@ -82,21 +69,15 @@
             android:clickable="true"
             android:checked="true" />
 
-        <!-- Login button -->
-        <Button android:id="@+id/btnLogin"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Login"
-            android:onClick="onLoginButtonClick"/>
-
         <!-- Show Password Hint button -->
-        <Button android:id="@+id/btnShowPasswordHint"
+        <TextView android:id="@+id/btnShowPasswordHint"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:text="Show Password Hint"
-            android:onClick="onShowPasswordHintButtonClick"/>
+            android:onClick="onShowPasswordHintButtonClick"
+            android:gravity="center"
+            android:textSize="20dip"/>
 
         <!-- Link to Registration Screen -->
         <TextView android:id="@+id/link_to_register"
@@ -108,8 +89,6 @@
             android:gravity="center"
             android:textSize="20dip"
             />
-        <!--android:textColor="#0b84aa"-->
-
 
     </LinearLayout>
     <!-- Login Form Ends -->
