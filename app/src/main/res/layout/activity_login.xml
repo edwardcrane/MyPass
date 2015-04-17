@@ -69,13 +69,12 @@
             android:clickable="true"
             android:checked="true" />
 
-        <!-- Show Password Hint button -->
-        <TextView android:id="@+id/btnShowPasswordHint"
+        <!-- Show Password Hint link -->
+        <TextView android:id="@+id/show_password_hint"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dip"
             android:text="Show Password Hint"
-            android:onClick="onShowPasswordHintButtonClick"
             android:gravity="center"
             android:textSize="20dip"/>
 
@@ -89,7 +88,6 @@
             android:gravity="center"
             android:textSize="20dip"
             />
-
     </LinearLayout>
     <!-- Login Form Ends -->
     <LinearLayout android:id="@+id/footer"
@@ -97,8 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:background="@layout/footer_center_logo"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true" />
 
-    </LinearLayout>
 </RelativeLayout>
 </ScrollView>

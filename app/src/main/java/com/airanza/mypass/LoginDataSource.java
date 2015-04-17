@@ -2,7 +2,7 @@
  * Copyright (c) 2015.
  *
  * AIRANZA, INC.
- * -------------
+ * _____________
  *   [2015] - [${YEAR}] Adobe Systems Incorporated
  *   All Rights Reserved.
  *
@@ -39,7 +39,8 @@ public class LoginDataSource {
         LoginDBHelper.COLUMN_ID,
         LoginDBHelper.COLUMN_NAME_USERNAME,
         LoginDBHelper.COLUMN_NAME_PASSWORD,
-        LoginDBHelper.COLUMN_NAME_EMAIL
+        LoginDBHelper.COLUMN_NAME_EMAIL,
+        LoginDBHelper.COLUMN_NAME_REMEMBERED_LAST_USER
     };
 
     public LoginDataSource(Context context) {

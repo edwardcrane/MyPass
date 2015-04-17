@@ -21,7 +21,7 @@
 
 <resources>
 
-    <string name="app_name">MyPass</string>
+    <string name="app_name">APass</string>
     <string name="resource_name">Record Name</string>
     <string name="username">User Name</string>
     <string name="password">Password</string>

@@ -33,6 +33,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:hint="@string/resource_name"
+        android:singleLine="true"
         >
         <requestFocus/>
     </EditText>
@@ -43,6 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/username"
+        android:singleLine="true"
         />
 
     <LinearLayout
@@ -56,6 +58,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/password"
         android:inputType="textPassword"
+        android:singleLine="true"
         />
         <ImageView
             android:layout_width="wrap_content"

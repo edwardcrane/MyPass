@@ -23,9 +23,8 @@ package com.airanza.mypass;
 /**
  * Created by ecrane on 3/9/2015.
  */
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -41,9 +40,24 @@ import android.widget.Toast;
 import java.sql.SQLException;
 
 public class LoginActivity extends ActionBarActivity {
+    static final int LOGIN_REQUEST = 1;
     static final int REGISTER_REQUEST = 2;
 
     private LoginDataSource datasource;
+
+    // for saving login state information across Activity lifecycle as needed.
+    // there will be a grace period of STAY_LOGGED_IN_MINUTES whereby a user
+    // can navigate away from the screen and return if they have logged in during that
+    // grace period without entering their username and password again.
+    private SharedPreferences prefs = null;
+    static final String LOGGED_IN = "logged_in";
+    static final String LOGGED_IN_USER = "logged_in_user";
+    static final String LOGGED_IN_TIME = "logged_in_time";
+
+    private boolean logged_in = false;
+    private String logged_in_user = "";
+    private long logged_in_time = 0;
+    private final int STAY_LOGGED_IN_MINUTES = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +73,12 @@ public class LoginActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
+
+        findViewById(R.id.show_password_hint).setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                onShowPasswordHint();
+            }
+        });
 
         // if a user is already registered, then don't allow new user.
         if(datasource.logins() > 0) {
@@ -110,7 +130,7 @@ public class LoginActivity extends ActionBarActivity {
         return(datasource.isValidLogin(username, password));
     }
 
-    public void onShowPasswordHintButtonClick(View view) {
+    public void onShowPasswordHint() {
         String username = ((EditText) findViewById(R.id.user_name)).getText().toString();
         String passwordHint = datasource.getPasswordHint(username);
         if(passwordHint.length() > 0) {
@@ -127,14 +147,10 @@ public class LoginActivity extends ActionBarActivity {
 
         passwordEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void afterTextChanged(Editable arg0) {
-
-            }
+            public void afterTextChanged(Editable arg0) {}
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -152,19 +168,57 @@ public class LoginActivity extends ActionBarActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(passwordEditText.getWindowToken(), 0);
 
-                    Intent result = new Intent("com.airanza.mypass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
                     // if login is successful, send word to calling Activity that we succeeded:
-                    result.putExtra("logged_in_username", username);
-                    if (getParent() == null) {
-                        setResult(Activity.RESULT_OK, result);
-                    } else {
-                        getParent().setResult(Activity.RESULT_OK, result);
-                    }
+                    intent.putExtra(MainActivity.LOGGED_IN_USER, username);
+                    intent.putExtra(MainActivity.USER_EMAIL_ADDRESS, datasource.getEmail(username));
+                    startActivity(intent);
 
                     finish();
                 }
             }
         });
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        Log.i(getClass().getName(), "onSaveInstanceState: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
+        savedInstanceState.putBoolean(LOGGED_IN, logged_in);
+        savedInstanceState.putString(LOGGED_IN_USER, logged_in_user);
+        savedInstanceState.putLong(LOGGED_IN_TIME, logged_in_time);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    /**
+     * Try to restore the state.  Unfortunately, this seems to be called after onStart(), which
+     * is called AFTER onCreate().
+     * @param savedInstanceState
+     */
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        logged_in = savedInstanceState.getBoolean(LOGGED_IN);
+        logged_in_user = savedInstanceState.getString(LOGGED_IN_USER);
+        logged_in_time = savedInstanceState.getLong(LOGGED_IN_TIME);
+        Log.i(getClass().getName(), "onRestoreInstanceState: logged_in: [" + logged_in + "] logged_in_user: [" + logged_in_user + "] logged_in_time: [" + logged_in_time + "]");
+    }
+
+
+    public void saveLoginStateToPreferences() {
+        prefs = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(LOGGED_IN, logged_in);
+        editor.putString(LOGGED_IN_USER, logged_in_user);
+        editor.putLong(LOGGED_IN_TIME, logged_in_time);
+        editor.commit();
+    }
+
+    public void loadLoginStateFromPreferences() {
+        prefs = getPreferences(MODE_PRIVATE);
+        logged_in = prefs.getBoolean(LOGGED_IN, false);
+        logged_in_user = prefs.getString(LOGGED_IN_USER, "");
+        logged_in_time = prefs.getLong(LOGGED_IN_TIME, 0);
+    }
+
 }

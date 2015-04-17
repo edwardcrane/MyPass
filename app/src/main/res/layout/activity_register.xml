@@ -30,22 +30,6 @@
         android:layout_height="wrap_content"
         android:background="@layout/radial_gradient">
 
-        <!--&lt;!&ndash;  Header  Starts&ndash;&gt;-->
-        <!--<LinearLayout android:id="@+id/header"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@layout/header_gradient"-->
-            <!--android:paddingTop="5dip"-->
-            <!--android:paddingBottom="5dip">-->
-            <!--&lt;!&ndash; Logo Start&ndash;&gt;-->
-            <!--<ImageView android:src="@drawable/a_icon_white_trans_border_48x48"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="10dip"/>-->
-            <!--&lt;!&ndash; Logo Ends &ndash;&gt;-->
-        <!--</LinearLayout>-->
-        <!--&lt;!&ndash;  Header Ends &ndash;&gt;-->
-
         <!-- Registration Form -->
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,7 +53,8 @@
                 android:id="@+id/reg_password_label"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Password:"/>
+                android:text="Password:"
+                />
             <EditText android:id="@+id/reg_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -77,7 +62,7 @@
                 android:singleLine="true"
                 android:layout_marginTop="5dip"/>
 
-            <!-- Password Label -->
+            <!-- Confirm Password Label -->
             <TextView
                 android:id="@+id/reg_confirm_password_label"
                 android:layout_width="fill_parent"
@@ -98,6 +83,22 @@
                 android:text="New Password:"
                 android:visibility="invisible"/>
             <EditText android:id="@+id/reg_new_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:password="true"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"
+                android:enabled="false"
+                android:visibility="invisible"/>
+
+            <!-- Confirm New Password Label -->
+            <TextView
+                android:id="@+id/reg_confirm_new_password_label"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Confirm New Password:"
+                android:visibility="invisible"/>
+            <EditText android:id="@+id/reg_confirm_new_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
