@@ -42,6 +42,7 @@ import java.sql.SQLException;
 public class LoginActivity extends ActionBarActivity {
     static final int LOGIN_REQUEST = 1;
     static final int REGISTER_REQUEST = 2;
+    static final int CHANGE_LOGIN = 3;
 
     private LoginDataSource datasource;
 
@@ -53,6 +54,9 @@ public class LoginActivity extends ActionBarActivity {
     static final String LOGGED_IN = "logged_in";
     static final String LOGGED_IN_USER = "logged_in_user";
     static final String LOGGED_IN_TIME = "logged_in_time";
+
+    static final String USER_EMAIL_ADDRESS = "user_email_address";
+    static final String REGISTER_ACTION = "register_action";
 
     private boolean logged_in = false;
     private String logged_in_user = "";
@@ -171,8 +175,9 @@ public class LoginActivity extends ActionBarActivity {
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
                     // if login is successful, send word to calling Activity that we succeeded:
-                    intent.putExtra(MainActivity.LOGGED_IN_USER, username);
-                    intent.putExtra(MainActivity.USER_EMAIL_ADDRESS, datasource.getEmail(username));
+                    intent.putExtra(LOGGED_IN_USER, username);
+                    intent.putExtra(LOGGED_IN_TIME, System.currentTimeMillis());
+                    intent.putExtra(USER_EMAIL_ADDRESS, datasource.getEmail(username));
                     startActivity(intent);
 
                     finish();

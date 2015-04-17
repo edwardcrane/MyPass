@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -44,6 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -56,13 +58,9 @@ public class MainActivity extends ActionBarActivity {
     private ResourcesAdapter adapter = null;
 
     static final int SEND_EMAIL_REQUEST = 2;
-    static final int CHANGE_LOGIN = 3;
-
-    static final String LOGGED_IN_USER = "logged_in_user";
-    static final String USER_EMAIL_ADDRESS = "user_email_address";
-    static final String REGISTER_ACTION = "register_action";
 
     private String logged_in_user = "";
+    private long logged_in_time = 0;
 
     public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
 
@@ -77,8 +75,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        logged_in_user = getIntent().getStringExtra(LOGGED_IN_USER);
-        user_email_address = getIntent().getStringExtra(USER_EMAIL_ADDRESS);
+        logged_in_user = getIntent().getStringExtra(LoginActivity.LOGGED_IN_USER);
+        user_email_address = getIntent().getStringExtra(LoginActivity.USER_EMAIL_ADDRESS);
+        logged_in_time = getIntent().getLongExtra(LoginActivity.LOGGED_IN_TIME, 0);
 
         try {
             resourcedatasource = new ResourceDataSource(this);
@@ -168,6 +167,16 @@ public class MainActivity extends ActionBarActivity {
 
         if(id == R.id.action_email_backup) {
             onUserSelectedEmailBackupActionSend();
+            return true;
+        }
+
+        if(id == R.id.action_database_backup) {
+            this.exportDBToSD();
+            return true;
+        }
+
+        if(id == R.id.action_database_restore) {
+            this.importDBFromSD();
             return true;
         }
 
@@ -321,20 +330,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         switch(requestCode) {
-//            case LOGIN_REQUEST:
-//                if (resultCode == RESULT_OK) {
-//
-//                    Log.i(getClass().getName(), "LOGIN SUCCEEDED: " + requestCode + " " + resultCode + " " + data);
-//                } else {
-//                    Log.e(getClass().getName(), "LOGIN FAILED: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
-//                    logged_in_user = "";
-//                    // Exit this activity, which will also cause program to shut down:
-//                    finish();
-//                }
-//                break;
-            case CHANGE_LOGIN:
+            case LoginActivity.CHANGE_LOGIN:
                 if(resultCode == RESULT_OK) {
-                    logged_in_user = data.getStringExtra(LOGGED_IN_USER);
+                    logged_in_user = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
                     Toast.makeText(getApplicationContext(), "Logged in as [" + logged_in_user + "]", Toast.LENGTH_LONG).show();
                 } else {
                     // THERE IS NOTHING TO DO HERE UNLESS YOU WANT TO LOG USER OFF AND SHUT DOWN.
@@ -403,13 +401,78 @@ public class MainActivity extends ActionBarActivity {
         /* TODO:  set attributes of Intent to notify RegisterActivity that it should function as
         *  change login activity
         */
-        intent.putExtra(REGISTER_ACTION, CHANGE_LOGIN);
-        intent.putExtra(LOGGED_IN_USER, logged_in_user);
+        intent.putExtra(LoginActivity.REGISTER_ACTION, LoginActivity.CHANGE_LOGIN);
+        intent.putExtra(LoginActivity.LOGGED_IN_USER, logged_in_user);
 
         // start register activity.  Results are handled in onActivityResult();
-        startActivityForResult(intent, CHANGE_LOGIN);
+        startActivityForResult(intent, LoginActivity.CHANGE_LOGIN);
 
         // Log results of login change:
         Log.i(getClass().getName(), "onUserSelectedChangeLogin: logged_in_user: [" + logged_in_user + "]");
+    }
+
+    private void exportDBToSD() {
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if(sd.canWrite()) {
+                String currentDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+                String backupDBDir = "//apass//";
+                String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
+
+                File currentDB = new File(data, currentDBPath);
+
+                // create dir if nonexists:
+                File backupDBDirFile = new File(sd, backupDBDir);
+                backupDBDirFile.mkdirs();
+
+                File backupDB = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(currentDB).getChannel();
+                FileChannel dst = new FileOutputStream(backupDB).getChannel();
+
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "Cannot write to sd: " + sd, Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "BACKUP FAILED: ", e );
+            Toast.makeText(getApplicationContext(), "Backup Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void importDBFromSD(){
+        try {
+            File sd = Environment.getExternalStorageDirectory();
+            File data = Environment.getDataDirectory();
+
+            if(data.canWrite()) {
+                String appDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+                String backupDBDir = "//apass//";
+                String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
+
+                File appDB = new File(data, appDBPath);
+                File backupDB = new File(sd, backupDBPath);
+
+                FileChannel src = new FileInputStream(backupDB).getChannel();
+                FileChannel dst = new FileOutputStream(appDB).getChannel();
+
+                dst.transferFrom(src, 0, src.size());
+                src.close();
+                dst.close();
+                Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
+                Log.i(getClass().getName(), "DB Import Successful");
+            } else {
+                Toast.makeText(getApplicationContext(), "Cannot write to data: " + data, Toast.LENGTH_LONG).show();
+                Log.i(getClass().getName(), "Cannot write to data directory: " + data);
+            }
+        } catch(IOException e) {
+            Toast.makeText(this, "DB Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
     }
 }

@@ -74,7 +74,7 @@ public class RegisterActivity extends ActionBarActivity {
         TextView linkToLogin = (TextView) findViewById(R.id.link_to_login);
 
         Intent intent = getIntent();
-        if(intent.getIntExtra(MainActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST) == MainActivity.CHANGE_LOGIN) {
+        if(intent.getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST) == LoginActivity.CHANGE_LOGIN) {
 
             // hide confirm old password label and field:
             confirmOldPasswordLabelTextView.setVisibility(View.GONE);
@@ -100,13 +100,13 @@ public class RegisterActivity extends ActionBarActivity {
             linkToLogin.setEnabled(false);
 
             // setup username with current username:
-            usernameEditText.setText(intent.getStringExtra(MainActivity.LOGGED_IN_USER));
+            usernameEditText.setText(intent.getStringExtra(LoginActivity.LOGGED_IN_USER));
 
             // setup password hint
-            passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
+            passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
 
             // setup email address:
-            emailEditText.setText(datasource.getEmail(intent.getStringExtra(MainActivity.LOGGED_IN_USER)));
+            emailEditText.setText(datasource.getEmail(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
         } else {
             // remove new_password and label:
             ViewGroup vg = (ViewGroup)newPasswordTextView.getParent();
@@ -172,13 +172,13 @@ public class RegisterActivity extends ActionBarActivity {
         String email = emailEditText.getText().toString();
 
         Intent intent = getIntent();
-        int actionCode = intent.getIntExtra(MainActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST);
-        String oldUsername = intent.getStringExtra(MainActivity.LOGGED_IN_USER);
+        int actionCode = intent.getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST);
+        String oldUsername = intent.getStringExtra(LoginActivity.LOGGED_IN_USER);
 
         Intent result = new Intent("com.airanza.mypass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
 
-        if((actionCode != MainActivity.CHANGE_LOGIN && !password.equals(confirmPassword)) ||
-                (actionCode == MainActivity.CHANGE_LOGIN && !newPassword.equals(confirmNewPassword))) {
+        if((actionCode != LoginActivity.CHANGE_LOGIN && !password.equals(confirmPassword)) ||
+                (actionCode == LoginActivity.CHANGE_LOGIN && !newPassword.equals(confirmNewPassword))) {
             Toast.makeText(getApplicationContext(), "Password and Confirmation do not match!", Toast.LENGTH_LONG).show();
             return;
         }
@@ -186,8 +186,8 @@ public class RegisterActivity extends ActionBarActivity {
         // ensure that user enters all three field values:
         if(username.length() <= 0 ||
                 password.length() <= 0 ||
-                ((actionCode != MainActivity.CHANGE_LOGIN) && confirmPassword.length() <=0) ||
-                ((actionCode == MainActivity.CHANGE_LOGIN) && (newPassword.length() <= 0)
+                ((actionCode != LoginActivity.CHANGE_LOGIN) && confirmPassword.length() <=0) ||
+                ((actionCode == LoginActivity.CHANGE_LOGIN) && (newPassword.length() <= 0)
                     && (confirmNewPassword.length() <=0)) ||
                 passwordHint.length() <= 0 ||
                 email.length() <= 0) {
@@ -205,9 +205,9 @@ public class RegisterActivity extends ActionBarActivity {
 
         if (actionCode == LoginActivity.LOGIN_REQUEST) {
             datasource.createLogin(username, password, passwordHint, email);
-        } else if(actionCode == MainActivity.CHANGE_LOGIN) {
+        } else if(actionCode == LoginActivity.CHANGE_LOGIN) {
             datasource.update(oldUsername, username, password, newPassword, "old password hint", passwordHint, "old email", email, 0, 1);
-            result.putExtra(MainActivity.LOGGED_IN_USER, username);
+            result.putExtra(LoginActivity.LOGGED_IN_USER, username);
             // now we can throw away the old password.
             password = newPassword;
         }
