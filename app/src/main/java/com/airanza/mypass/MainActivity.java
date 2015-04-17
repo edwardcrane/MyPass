@@ -438,6 +438,7 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Cannot write to sd: " + sd, Toast.LENGTH_LONG).show();
+                Log.i(getClass().getName(), "Cannot write to sd directory: " + sd);
             }
         } catch (Exception e) {
             Log.e(getClass().getName(), "BACKUP FAILED: ", e );
@@ -445,6 +446,9 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * importDBFromSD does not work yet, as the data directory cannot be written to.  Further research.
+     */
     private void importDBFromSD(){
         try {
             File sd = Environment.getExternalStorageDirectory();
