@@ -455,7 +455,8 @@ public class MainActivity extends ActionBarActivity {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
 
-            if(data.canWrite()) {
+//            if(data.canWrite()) {
+            if(true) {
                 String appDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
                 String backupDBDir = "//apass//";
                 String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
@@ -469,6 +470,7 @@ public class MainActivity extends ActionBarActivity {
                 dst.transferFrom(src, 0, src.size());
                 src.close();
                 dst.close();
+                adapter.notifyDataSetChanged();
                 Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
                 Log.i(getClass().getName(), "DB Import Successful");
             } else {
