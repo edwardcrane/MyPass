@@ -450,6 +450,7 @@ public class MainActivity extends ActionBarActivity {
      * importDBFromSD does not work yet, as the data directory cannot be written to.  Further research.
      */
     private void importDBFromSD(){
+        resourcedatasource.close();
         try {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
@@ -471,12 +472,16 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
                 Log.i(getClass().getName(), "DB Import Successful");
             } else {
-                Toast.makeText(getApplicationContext(), "Cannot write to data: " + data, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "DB IMPORT FAILED.  Cannot write to data: " + data, Toast.LENGTH_LONG).show();
                 Log.i(getClass().getName(), "Cannot write to data directory: " + data);
             }
+            resourcedatasource.open();
         } catch(IOException e) {
-            Toast.makeText(this, "DB Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+            Toast.makeText(this, "DB IMPORT FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(getClass().getName(), "DB IMPORT FAILED", e);
+        } catch(SQLException e) {
+            Toast.makeText(this, "DB IMPORT FAILED - CANNOT OPEN DB: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(getClass().getName(), "DB IMPORT FAILED - CANNOT OPEN DB", e);
         }
     }
 }
