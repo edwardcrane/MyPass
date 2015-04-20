@@ -24,15 +24,11 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
     <group>
-    <item android:id="@+id/action_export" android:title="@string/action_export"
+    <item android:id="@+id/action_email_backup" android:title="Email CSV File"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_email_backup" android:title="Email Backup File"
+    <item android:id="@+id/action_database_backup" android:title="Backup (encrypted)"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_database_backup" android:title="Backup Database to SD Card"
-        android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_database_restore" android:title="Restore Database from SD Card"
-        android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_import_csv" android:title="@string/action_import_csv"
+    <item android:id="@+id/action_database_restore" android:title="Restore (encrypted)"
         android:orderInCategory="100" app:showAsAction="never" />
     </group>
 

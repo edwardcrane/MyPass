@@ -161,17 +161,6 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_export) {
-            onUserSelectedExport();
-            return true;
-        }
-
-        if (id == R.id.action_import_csv) {
-            onUserSelectedImportCSV();
-            return true;
-        }
-
         if(id == R.id.action_email_backup) {
             onUserSelectedEmailBackupActionSend();
             return true;
@@ -225,54 +214,6 @@ public class MainActivity extends ActionBarActivity {
         return(count);
     }
 
-    /**
-     * TODO: IMPLEMENT CORRECT TOKENIZER LOGIC WITH " delimiters and , separator
-     * TODO: ENSURE THAT MULTI-LINE FIELDS WORK PROPERLY
-     * @param is
-     * @return
-     * @throws IOException
-     */
-    public int importCSV(InputStream is) throws IOException {
-        int count = 0;
-        String line = "";
-        BufferedReader fileReader = new BufferedReader(new InputStreamReader(is));
-        fileReader.readLine();  // READ AND IGNORE HEADER:
-        while((line = fileReader.readLine()) != null) {
-//            String[] tokens = line.split("\",\"");
-            String[] tokens = line.split(",(?=([^\"]|\"[^\"]*\")*$)");
-            if(tokens.length > 0) {
-                // Create a new Resource object and fill its data
-                Resource resource = resourcedatasource.createResource(
-                tokens[1],
-                tokens[2],
-                tokens[3],
-                tokens[4]
-                );
-
-                values.add(resource);
-                count++;
-            }
-        }
-        return count;
-    }
-
-    public boolean onUserSelectedImportCSV() {
-        int count = 0;
-        try {
-            FileInputStream fis = openFileInput(EXPORT_FILE_NAME);
-            count = importCSV(fis);
-            fis.close();
-        } catch (IOException e) {
-            Log.e(getClass().getName(), e.getMessage(), e);
-        }
-        Toast.makeText(getApplicationContext(), "Imported " + count + " records from " + EXPORT_FILE_NAME, Toast.LENGTH_LONG).show();
-        if(count > 0) {
-            onResume();
-            return true;
-        }
-        else return false;
-    }
-
     public boolean onUserSelectedExport() {
         int count = 0;
         try {
@@ -304,8 +245,8 @@ public class MainActivity extends ActionBarActivity {
             if(user_email_address != null && user_email_address.length() > 0) {
                 addresses = new String[] { user_email_address };
             } else {
-                Toast.makeText(getApplicationContext(), "ERROR: There is no logged in user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.", Toast.LENGTH_LONG).show();
-                Log.e(this.getClass().getName(), "ERROR: There is no logged in user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.");
+                Toast.makeText(getApplicationContext(), "ERROR: There is no email address for user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.", Toast.LENGTH_LONG).show();
+                Log.e(this.getClass().getName(), "ERROR: There is no email address for user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.");
             }
 
             emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
