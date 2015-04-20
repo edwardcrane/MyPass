@@ -29,6 +29,7 @@
     <EditText
         android:layout_weight="0"
         android:id="@+id/resource_name"
+        android:imeOptions="flagNoExtractUi"
         android:textStyle="bold"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -41,6 +42,7 @@
     <EditText
         android:layout_weight="0"
         android:id="@+id/username"
+        android:imeOptions="flagNoExtractUi"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="@string/username"
@@ -50,6 +52,7 @@
     <LinearLayout>
     <EditText
         android:id="@+id/password"
+        android:imeOptions="flagNoExtractUi"
         android:layout_width="0dp"
         android:layout_weight="10"
         android:layout_height="wrap_content"

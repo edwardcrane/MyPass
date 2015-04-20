@@ -455,28 +455,23 @@ public class MainActivity extends ActionBarActivity {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
 
-//            if(data.canWrite()) {
-            if(true) {
-                String appDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
-                String backupDBDir = "//apass//";
-                String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
+            String appDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+            String backupDBDir = "//apass//";
+            String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
 
-                File appDB = new File(data, appDBPath);
-                File backupDB = new File(sd, backupDBPath);
+            File appDB = new File(data, appDBPath);
+            File backupDB = new File(sd, backupDBPath);
 
-                FileChannel src = new FileInputStream(backupDB).getChannel();
-                FileChannel dst = new FileOutputStream(appDB).getChannel();
+            FileChannel src = new FileInputStream(backupDB).getChannel();
+            FileChannel dst = new FileOutputStream(appDB).getChannel();
 
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-                adapter.notifyDataSetChanged();
-                Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
-                Log.i(getClass().getName(), "DB Import Successful");
-            } else {
-                Toast.makeText(getApplicationContext(), "DB IMPORT FAILED.  Cannot write to data: " + data, Toast.LENGTH_LONG).show();
-                Log.i(getClass().getName(), "Cannot write to data directory: " + data);
-            }
+            dst.transferFrom(src, 0, src.size());
+            src.close();
+            dst.close();
+            adapter.notifyDataSetChanged();
+            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
+            Log.i(getClass().getName(), "DB Import Successful");
+
             resourcedatasource.open();
         } catch(IOException e) {
             Toast.makeText(this, "DB IMPORT FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();

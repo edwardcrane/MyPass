@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="User Name:"/>
             <EditText android:id="@+id/reg_fullname"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
@@ -56,6 +57,7 @@
                 android:text="Password:"
                 />
             <EditText android:id="@+id/reg_password"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
@@ -69,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:text="Confirm Password:"/>
             <EditText android:id="@+id/reg_confirm_password"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
@@ -78,6 +81,7 @@
             <!-- New Password Label -->
             <TextView
                 android:id="@+id/reg_new_password_label"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="New Password:"
@@ -99,6 +103,7 @@
                 android:text="Confirm New Password:"
                 android:visibility="invisible"/>
             <EditText android:id="@+id/reg_confirm_new_password"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
@@ -112,6 +117,7 @@
                 android:layout_height="wrap_content"
                 android:text="Password Hint:"/>
             <EditText android:id="@+id/reg_password_hint"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
@@ -122,6 +128,7 @@
                 android:layout_height="wrap_content"
                 android:text="Email:"/>
             <EditText android:id="@+id/reg_email"
+                android:imeOptions="flagNoExtractUi"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
