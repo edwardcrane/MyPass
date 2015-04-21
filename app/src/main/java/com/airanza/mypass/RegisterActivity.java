@@ -166,7 +166,11 @@ public class RegisterActivity extends ActionBarActivity {
         String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String confirmPassword = confirmPasswordEditText.getText().toString();
-        String newPassword = newPasswordEditText.getText().toString();
+
+        String newPassword = "";
+        if(getIntent().getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST) == LoginActivity.CHANGE_LOGIN) {
+            newPassword = newPasswordEditText.getText().toString();
+        }
         String confirmNewPassword = confirmNewPasswordEditText.getText().toString();
         String passwordHint = passwordHintEditText.getText().toString();
         String email = emailEditText.getText().toString();
