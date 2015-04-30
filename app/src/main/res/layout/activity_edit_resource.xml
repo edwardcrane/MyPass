@@ -17,14 +17,18 @@
   ~  is strictly forbidden unless prior written permission is obtained
   ~  from Airanza Inc.
   -->
-
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_edit_resource"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@layout/radial_gradient"
     android:orientation="horizontal" >
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
     <EditText
         android:layout_weight="0"
@@ -77,5 +81,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/description"
         />
+    </TableLayout>
 
-</TableLayout>
+    <LinearLayout android:id="@+id/footer"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@layout/footer_center_logo"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

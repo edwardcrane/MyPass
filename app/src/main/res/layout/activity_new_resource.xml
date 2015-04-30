@@ -18,7 +18,7 @@
   ~  from Airanza Inc.
   -->
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_new_resource"
     android:layout_width="match_parent"
@@ -26,6 +26,10 @@
     android:background="@layout/radial_gradient"
     android:orientation="horizontal" >
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
     <EditText
         android:layout_weight="0"
         android:id="@+id/resource_name"
@@ -82,5 +86,12 @@
         android:layout_height="wrap_content"
         android:hint="@string/description"
         />
+    </TableLayout>
+    <LinearLayout android:id="@+id/footer"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:background="@layout/footer_center_logo"
+        android:layout_alignParentBottom="true" />
 
-</TableLayout>
+</RelativeLayout>

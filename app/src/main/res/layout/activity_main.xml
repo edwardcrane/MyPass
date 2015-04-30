@@ -41,7 +41,22 @@
         android:drawableLeft="@android:drawable/ic_menu_search"
         />
 
+        <!--<com.google.ads.AdView-->
+            <!--xmlns:googleads="http://schemas.android.com/apk/lib/com.google.ads"-->
+            <!--android:id="@+id/ad"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--googleads:adSize="BANNER"-->
+            <!--googleads:adUnitId="@string/admob_id" />-->
+
     </LinearLayout>
+
+    <LinearLayout android:id="@+id/footer"
+    android:orientation="horizontal"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:background="@layout/footer_center_logo"
+    android:layout_alignParentBottom="true" />
 
     <ListView
         android:layout_width="match_parent"
@@ -54,4 +69,4 @@
         android:headerDividersEnabled="false">
     </ListView>
 
-</LinearLayout>
+    </LinearLayout>
