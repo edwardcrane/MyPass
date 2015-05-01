@@ -31,7 +31,6 @@
         android:layout_height="wrap_content">
 
     <EditText
-        android:imeOptions="flagNoExtractUi"
         android:id="@+id/findString"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

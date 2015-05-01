@@ -32,7 +32,8 @@
         >
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden">
         </activity>
 
         <activity android:name=".SplashActivity"
@@ -44,15 +45,18 @@
         </activity>
 
         <activity android:name=".LoginActivity"
-            android:label="Login">
+            android:label="Login"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name=".RegisterActivity"
-            android:label="Login Info">
+            android:label="Login Info"
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name=".NewResourceActivity"
             android:label="New"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.airanza.mypass.MainActivity" />
@@ -60,7 +64,8 @@
         <activity
             android:name=".EditResourceActivity"
             android:label="Edit"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.airanza.mypass.MainActivity" />

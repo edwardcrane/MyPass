@@ -43,7 +43,6 @@
             android:layout_height="wrap_content"
             android:text="User Name:"/>
         <EditText android:id="@+id/user_name"
-            android:imeOptions="flagNoExtractUi"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
@@ -54,7 +53,6 @@
             android:layout_height="wrap_content"
             android:text="Password:" />
         <EditText android:id="@+id/password"
-            android:imeOptions="flagNoExtractUi"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
