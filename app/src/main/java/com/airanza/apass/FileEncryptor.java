@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

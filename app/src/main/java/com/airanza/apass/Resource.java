@@ -2,7 +2,7 @@
  * Copyright (c) 2015.
  *
  * AIRANZA, INC.
- * -------------
+ * _____________
  *   [2015] - [${YEAR}] Adobe Systems Incorporated
  *   All Rights Reserved.
  *
@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import java.io.Serializable;
 

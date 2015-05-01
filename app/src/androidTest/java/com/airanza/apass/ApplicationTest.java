@@ -18,30 +18,16 @@
  *  from Airanza Inc.
  */
 
-apply plugin: 'com.android.application'
+package com.airanza.apass;
 
-android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+import android.app.Application;
+import android.test.ApplicationTestCase;
 
-    defaultConfig {
-        applicationId "com.airanza.apass"
-        minSdkVersion 14
-        targetSdkVersion 21
-        versionCode 1
-        versionName "1.0"
+/**
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
+ */
+public class ApplicationTest extends ApplicationTestCase<Application> {
+    public ApplicationTest() {
+        super(Application.class);
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
-
-dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile files('libs/opencsv-3.2.jar')
-    compile 'com.google.android.gms:play-services:7.3.0'
 }

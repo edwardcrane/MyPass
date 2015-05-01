@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 /**
  * Created by ecrane on 3/9/2015.

@@ -20,7 +20,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.airanza.mypass" >
+    package="com.airanza.apass" >
 
     <application
         android:allowBackup="true"
@@ -31,12 +31,12 @@
         android:debuggable="true"
         >
         <activity
-            android:name=".MainActivity"
+            android:name="com.airanza.apass.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden">
         </activity>
 
-        <activity android:name=".SplashActivity"
+        <activity android:name="com.airanza.apass.SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,31 +44,31 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity"
+        <activity android:name="com.airanza.apass.LoginActivity"
             android:label="Login"
             android:windowSoftInputMode="stateHidden">
         </activity>
-        <activity android:name=".RegisterActivity"
+        <activity android:name="com.airanza.apass.RegisterActivity"
             android:label="Login Info"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
-            android:name=".NewResourceActivity"
+            android:name="com.airanza.apass.NewResourceActivity"
             android:label="New"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.airanza.apass.MainActivity"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.airanza.mypass.MainActivity" />
+                android:value="com.airanza.apass.MainActivity" />
         </activity>
         <activity
-            android:name=".EditResourceActivity"
+            android:name="com.airanza.apass.EditResourceActivity"
             android:label="Edit"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.airanza.apass.MainActivity"
             android:windowSoftInputMode="stateHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.airanza.mypass.MainActivity" />
+                android:value="com.airanza.apass.MainActivity" />
         </activity>
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>

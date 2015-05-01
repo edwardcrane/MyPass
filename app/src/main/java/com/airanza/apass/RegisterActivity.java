@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 /**
  * Created by ecrane on 3/9/2015.
@@ -179,7 +179,7 @@ public class RegisterActivity extends ActionBarActivity {
         int actionCode = intent.getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST);
         String oldUsername = intent.getStringExtra(LoginActivity.LOGGED_IN_USER);
 
-        Intent result = new Intent("com.airanza.mypass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
+        Intent result = new Intent("com.airanza.apass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
 
         if((actionCode != LoginActivity.CHANGE_LOGIN && !password.equals(confirmPassword)) ||
                 (actionCode == LoginActivity.CHANGE_LOGIN && !newPassword.equals(confirmNewPassword))) {

@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import android.content.ContentValues;
 import android.content.Context;

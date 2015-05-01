@@ -2,7 +2,7 @@
  * Copyright (c) 2015.
  *
  * AIRANZA, INC.
- * -------------
+ * _____________
  *   [2015] - [${YEAR}] Adobe Systems Incorporated
  *   All Rights Reserved.
  *
@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -34,7 +34,7 @@ import android.widget.Toast;
 import java.sql.SQLException;
 
 public class NewResourceActivity extends ActionBarActivity {
-    public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
+    public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
 
     private ResourceDataSource datasource;
 

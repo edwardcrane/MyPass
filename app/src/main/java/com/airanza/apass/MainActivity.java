@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,13 +37,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.sql.SQLException;
@@ -66,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
     private String logged_in_user = "";
     private long logged_in_time = 0;
 
-    public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
+    public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
 
     private final static String EXPORT_FILE_NAME = "exportCSV.csv";
 
@@ -365,7 +362,7 @@ public class MainActivity extends ActionBarActivity {
             File data = Environment.getDataDirectory();
 
             if(sd.canWrite()) {
-                String currentDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+                String currentDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
                 String backupDBDir = "//apass//";
                 String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
 
@@ -406,7 +403,7 @@ public class MainActivity extends ActionBarActivity {
             File data = Environment.getDataDirectory();
 
             if(sd.canWrite()) {
-                String currentDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+                String currentDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
                 String backupDBDir = "//apass//";
                 String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
 
@@ -450,7 +447,7 @@ public class MainActivity extends ActionBarActivity {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
 
-            String appDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+            String appDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
             String backupDBDir = "//apass//";
             String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
 
@@ -493,7 +490,7 @@ public class MainActivity extends ActionBarActivity {
             File sd = Environment.getExternalStorageDirectory();
             File data = Environment.getDataDirectory();
 
-            String appDBPath = "//data//" + "com.airanza.mypass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+            String appDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
             String backupDBDir = "//apass//";
             String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
 

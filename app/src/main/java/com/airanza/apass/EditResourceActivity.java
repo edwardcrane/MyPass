@@ -2,7 +2,7 @@
  * Copyright (c) 2015.
  *
  * AIRANZA, INC.
- * -------------
+ * _____________
  *   [2015] - [${YEAR}] Adobe Systems Incorporated
  *   All Rights Reserved.
  *
@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -40,7 +40,7 @@ import java.sql.SQLException;
 // TODO:  Figure out a way to make the Toast strings portable across languages (such as a string with %s embedded) subbing in resource
 
 public class EditResourceActivity extends ActionBarActivity {
-    public final static String EXTRA_RESOURCE = "com.airanza.mypass.RESOURCE";
+    public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
 
     private ResourceDataSource datasource;
     private Resource resource;

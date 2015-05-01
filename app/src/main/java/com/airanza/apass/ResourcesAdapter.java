@@ -2,7 +2,7 @@
  * Copyright (c) 2015.
  *
  * AIRANZA, INC.
- * -------------
+ * _____________
  *   [2015] - [${YEAR}] Adobe Systems Incorporated
  *   All Rights Reserved.
  *
@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.mypass;
+package com.airanza.apass;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
