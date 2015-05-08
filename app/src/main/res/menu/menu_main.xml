@@ -26,9 +26,9 @@
     <group>
     <item android:id="@+id/action_email_backup" android:title="Email CSV File"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_database_backup" android:title="Backup (encrypted)"
+    <item android:id="@+id/action_database_backup" android:title="@string/action_save_encrypted_file"
         android:orderInCategory="100" app:showAsAction="never" />
-    <item android:id="@+id/action_database_restore" android:title="Restore (encrypted)"
+    <item android:id="@+id/action_database_restore" android:title="@string/action_load_encrypted_file"
         android:orderInCategory="100" app:showAsAction="never" />
     </group>
 

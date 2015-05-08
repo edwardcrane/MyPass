@@ -64,7 +64,7 @@ public class AndroidEncryptor {
 
             // create dir if nonexists:
             File backupDBDirFile = new File(sd, destination);
-            backupDBDirFile.mkdirs();
+            backupDBDirFile.getParentFile().mkdirs();
 
             File backupDB = new File(sd, destination);
 

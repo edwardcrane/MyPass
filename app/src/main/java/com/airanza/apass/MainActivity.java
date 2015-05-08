@@ -161,12 +161,12 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if(id == R.id.action_database_backup) {
-            this.exportDBToSDEncrypted();
+            this.saveDBEncrypted();
             return true;
         }
 
         if(id == R.id.action_database_restore) {
-            this.importDBFromSDEncrypted();
+            this.loadDBEncrypted();
             return true;
         }
 
@@ -372,49 +372,84 @@ public class MainActivity extends ActionBarActivity {
         return(backupDBPath);
     }
 
-
-    public void getFilenameFromUser(String sDefaultFileName) {
-        // Crete FileChooser and register a callback
+    protected void saveDBEncrypted() {
+        // Create FileChooser and register a callback
         FileChooser fileOpenDialog = new FileChooser(
                 MainActivity.this,
                 "FileOpen..",
                 new FileChooser.FileChooserListener() {
                     @Override
                     public void onChosenDir(String chosenDir) {
-                        // The code in this method will be executed when the dialog OK button is pressed.
-                        System.out.println("chosenDir: " + chosenDir);
+                        // execute when the dialog OK button is pressed.
+                        try {
+                            AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), chosenDir);
+                            Log.e(getClass().getName(), "File " + chosenDir + " Saved Successfully!");
+                            Toast.makeText(getApplicationContext(), "File " + chosenDir + " Saved Successfully!", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Log.e(getClass().getName(), "FILE "+ chosenDir + " SAVE FAILED: ", e);
+                            Toast.makeText(getApplicationContext(), "FILE " + chosenDir + " SAVE FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
         );
-        // you can change the default filename using the public ariable "Default_File_Name"
-        fileOpenDialog.default_file_name = sDefaultFileName;
+
+        // change the default filename using the public variable "default_file_name".
+        fileOpenDialog.default_file_name = getDefaultBackupDBFilename();
         fileOpenDialog.chooseFile_or_Dir(fileOpenDialog.default_file_name);
     }
 
-    protected void exportDBToSDEncrypted() {
-        // TODO:  Get destination filename from user here using FileChooser(?).
-        try {
-            AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), getDefaultBackupDBFilename());
-            Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "BACKUP FAILED: ", e);
-            Toast.makeText(getApplicationContext(), "Backup Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
+    protected void loadDBEncrypted() {
+        // Create FileChooser and register a callback
+        FileChooser fileOpenDialog = new FileChooser(
+                MainActivity.this,
+                "FileOpen..",
+                new FileChooser.FileChooserListener() {
+                    @Override
+                    public void onChosenDir(String chosenDir) {
+                        // execute when the dialog OK button is pressed.
+                        try {
+                            resourcedatasource.close();
+                            AndroidEncryptor.importDBFromSDEncrypted(chosenDir, getAppDBPath());
+                            resourcedatasource.open();
+                            Log.e(getClass().getName(), "File " + chosenDir + " Loaded Successfully!");
+                            Toast.makeText(getApplicationContext(), "File " + chosenDir + " Loaded Successfully!", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            Log.e(getClass().getName(), "FILE " + chosenDir + " LOAD FAILED: ", e);
+                            Toast.makeText(getApplicationContext(), "FILE " + chosenDir + " LOAD FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+        );
+
+        // change the default filename using the public variable "default_file_name".
+        fileOpenDialog.default_file_name = getDefaultBackupDBFilename();
+        fileOpenDialog.chooseFile_or_Dir(fileOpenDialog.default_file_name);
     }
 
-    protected void importDBFromSDEncrypted() {
-        // TODO: Get source filename from user here using FileChooser(?).
-        try {
-            // close db so we can copy without blocking:
-            resourcedatasource.close();
-            AndroidEncryptor.importDBFromSDEncrypted(getDefaultBackupDBFilename(), getAppDBPath());
-            // re-open DB to make sure it was copied correctly:
-            resourcedatasource.open();
-            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
-            Log.i(getClass().getName(), "DB Import Successful");
-        } catch (Exception e) {
-            Toast.makeText(this, "RESTORE FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e(getClass().getName(), "RESTORE FAILED: ", e);
-        }
-    }
+//    protected void exportDBToSDEncrypted() {
+//        // TODO:  Get destination filename from user here using FileChooser(?).
+//        try {
+//            AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), getDefaultBackupDBFilename());
+//            Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
+//        } catch (Exception e) {
+//            Log.e(getClass().getName(), "BACKUP FAILED: ", e);
+//            Toast.makeText(getApplicationContext(), "Backup Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//        }
+//    }
+
+//    protected void importDBFromSDEncrypted() {
+//        // TODO: Get source filename from user here using FileChooser(?).
+//        try {
+//            // close db so we can copy without blocking:
+//            resourcedatasource.close();
+//            AndroidEncryptor.importDBFromSDEncrypted(getDefaultBackupDBFilename(), getAppDBPath());
+//            // re-open DB to make sure it was copied correctly:
+//            resourcedatasource.open();
+//            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
+//            Log.i(getClass().getName(), "DB Import Successful");
+//        } catch (Exception e) {
+//            Toast.makeText(this, "RESTORE FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+//            Log.e(getClass().getName(), "RESTORE FAILED: ", e);
+//        }
+//    }
 }
