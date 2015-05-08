@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,18 +36,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.airanza.androidutils.AndroidEncryptor;
+import com.airanza.androidutils.FileChooser;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.nio.channels.FileChannel;
 import java.sql.SQLException;
 import java.util.List;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.spec.SecretKeySpec;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -69,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
 
     public final static String APP_EXTENSION = ".apa";  // extension for exported, encrypted files.
     private final static String ENCRYPTION_KEY = "APassApp";
+    private final static String CYPHER_TRANSFORMATION = "DES/ECB/PKCS5Padding";
 
     // This is retrieved from logindatasource, but if not found, this is the default:
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
@@ -356,171 +353,67 @@ public class MainActivity extends ActionBarActivity {
         Log.i(getClass().getName(), "onUserSelectedChangeLogin: logged_in_user: [" + logged_in_user + "]");
     }
 
-    private void copyDBToSD() {
+    /**
+     * getAppDBPath
+     * @return the fully qualified file name of the application database.
+     */
+    private String getAppDBPath() {
+        String appDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
+        return(appDBPath);
+    }
+
+    /**
+     * getDefaultBackupDBFilename
+     * @return the fully qualified file name of the default backup file.
+     */
+    private String getDefaultBackupDBFilename() {
+        String backupDBDir = "//apass//";
+        String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
+        return(backupDBPath);
+    }
+
+
+    public void getFilenameFromUser(String sDefaultFileName) {
+        // Crete FileChooser and register a callback
+        FileChooser fileOpenDialog = new FileChooser(
+                MainActivity.this,
+                "FileOpen..",
+                new FileChooser.FileChooserListener() {
+                    @Override
+                    public void onChosenDir(String chosenDir) {
+                        // The code in this method will be executed when the dialog OK button is pressed.
+                        System.out.println("chosenDir: " + chosenDir);
+                    }
+                }
+        );
+        // you can change the default filename using the public ariable "Default_File_Name"
+        fileOpenDialog.default_file_name = sDefaultFileName;
+        fileOpenDialog.chooseFile_or_Dir(fileOpenDialog.default_file_name);
+    }
+
+    protected void exportDBToSDEncrypted() {
         try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if(sd.canWrite()) {
-                String currentDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
-                String backupDBDir = "//apass//";
-                String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
-
-                File currentDB = new File(data, currentDBPath);
-
-                // create dir if nonexists:
-                File backupDBDirFile = new File(sd, backupDBDir);
-                backupDBDirFile.mkdirs();
-
-                File backupDB = new File(sd, backupDBPath);
-
-                FileChannel src = new FileInputStream(currentDB).getChannel();
-                FileChannel dst = new FileOutputStream(backupDB).getChannel();
-
-                dst.transferFrom(src, 0, src.size());
-                src.close();
-                dst.close();
-                Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Cannot write to sd: " + sd, Toast.LENGTH_LONG).show();
-                Log.i(getClass().getName(), "Cannot write to sd directory: " + sd);
-            }
+            AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), getDefaultBackupDBFilename());
+//            FileEncryptor.encryptFile(getAppDBPath(), getDefaultBackupDBFilename());
+            Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Log.e(getClass().getName(), "BACKUP FAILED: ", e );
+            Log.e(getClass().getName(), "BACKUP FAILED: ", e);
             Toast.makeText(getApplicationContext(), "Backup Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private void exportDBToSDEncrypted() {
-        byte k[] = ENCRYPTION_KEY.getBytes();
-        SecretKeySpec key = new SecretKeySpec(k, "DES/ECB/PKCS5Padding".split("/")[0]);
-
+    protected void importDBFromSDEncrypted() {
         try {
-            Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            if(sd.canWrite()) {
-                String currentDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
-                String backupDBDir = "//apass//";
-                String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
-
-                File currentDB = new File(data, currentDBPath);
-
-                // create dir if nonexists:
-                File backupDBDirFile = new File(sd, backupDBDir);
-                backupDBDirFile.mkdirs();
-
-                File backupDB = new File(sd, backupDBPath);
-
-                FileInputStream fIn = new FileInputStream(currentDB);
-                FileOutputStream fOut = new FileOutputStream(backupDB);
-
-                CipherOutputStream cOut = new CipherOutputStream(fOut, cipher);
-
-                byte[] buffer = new byte[8192];
-                int length;
-                while((length = fIn.read(buffer)) != -1)
-                    cOut.write(buffer, 0, length);
-                fIn.close();
-                cOut.close();
-
-                Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(getApplicationContext(), "Cannot write to sd: " + sd, Toast.LENGTH_LONG).show();
-                Log.i(getClass().getName(), "Cannot write to sd directory: " + sd);
-            }
+            // close db so we can copy without blocking:
+            resourcedatasource.close();
+            AndroidEncryptor.importDBFromSDEncrypted(getDefaultBackupDBFilename(), getAppDBPath());
+            // re-open DB to make sure it was copied correctly:
+            resourcedatasource.open();
+            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
+            Log.i(getClass().getName(), "DB Import Successful");
         } catch (Exception e) {
-            Log.e(getClass().getName(), "BACKUP FAILED: ", e );
-            Toast.makeText(getApplicationContext(), "Backup Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * importDBFromSD does not work yet, as the data directory cannot be written to.  Further research.
-     */
-    private void copyDBFromSD(){
-        resourcedatasource.close();
-        try {
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            String appDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
-            String backupDBDir = "//apass//";
-            String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME;
-
-            File appDB = new File(data, appDBPath);
-            File backupDB = new File(sd, backupDBPath);
-
-            FileChannel src = new FileInputStream(backupDB).getChannel();
-            FileChannel dst = new FileOutputStream(appDB).getChannel();
-
-            dst.transferFrom(src, 0, src.size());
-            src.close();
-            dst.close();
-            adapter.notifyDataSetChanged();
-            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
-            Log.i(getClass().getName(), "DB Import Successful");
-
-            resourcedatasource.open();
-        } catch(IOException e) {
-            Toast.makeText(this, "DB IMPORT FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e(getClass().getName(), "DB IMPORT FAILED", e);
-        } catch(SQLException e) {
-            Toast.makeText(this, "DB IMPORT FAILED - CANNOT OPEN DB: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e(getClass().getName(), "DB IMPORT FAILED - CANNOT OPEN DB", e);
-        }
-    }
-
-    /**
-     * importDBFromSD does not work yet, as the data directory cannot be written to.  Further research.
-     */
-    private void importDBFromSDEncrypted(){
-        byte k[] = this.ENCRYPTION_KEY.getBytes();
-        SecretKeySpec key = new SecretKeySpec(k, "DES/ECB/PKCS5Padding".split("/")[0]);
-
-        resourcedatasource.close();
-
-        try {
-            Cipher cipher = Cipher.getInstance("DES/ECB/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, key);
-
-            File sd = Environment.getExternalStorageDirectory();
-            File data = Environment.getDataDirectory();
-
-            String appDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
-            String backupDBDir = "//apass//";
-            String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
-
-            File appDB = new File(data, appDBPath);
-            File backupDB = new File(sd, backupDBPath);
-
-            FileInputStream in = new FileInputStream(backupDB);
-            FileOutputStream fOut = new FileOutputStream(appDB);
-            CipherOutputStream cOut = new CipherOutputStream(fOut, cipher);
-
-            byte[] buffer = new byte[8192];
-            int length;
-            while((length = in.read(buffer)) != -1)
-                cOut.write(buffer, 0, length);
-            in.close();
-            cOut.close();
-
-            resourcedatasource.open();
-
-            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
-            Log.i(getClass().getName(), "DB Import Successful");
-        } catch(IOException e) {
-            Toast.makeText(this, "DB IMPORT FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e(getClass().getName(), "DB IMPORT FAILED", e);
-        } catch(SQLException e) {
-            Toast.makeText(this, "DB IMPORT FAILED - CANNOT OPEN DB: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e(getClass().getName(), "DB IMPORT FAILED - CANNOT OPEN DB", e);
-        } catch(Exception e) {
-            Toast.makeText(this, "DB IMPORT FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            Log.e(getClass().getName(), "DB IMPORT FAILED", e);
+            Toast.makeText(this, "RESTORE FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(getClass().getName(), "RESTORE FAILED: ", e);
         }
     }
 }

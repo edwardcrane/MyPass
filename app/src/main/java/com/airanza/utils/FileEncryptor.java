@@ -18,7 +18,7 @@
  *  from Airanza Inc.
  */
 
-package com.airanza.apass;
+package com.airanza.utils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -32,9 +32,9 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class FileEncryptor {
 
-    private final static int BUFFER_SIZE = 8192;
-    private final static String ENCRYPTION_ALGO = "DES/ECB/PKCS5Padding";
-    private final static String ENCRYPTION_KEY = "APassApp";
+    public final static int BUFFER_SIZE = 8192;
+    public final static String ENCRYPTION_ALGO = "DES/ECB/PKCS5Padding";
+    public final static String ENCRYPTION_KEY = "APassApp";
 
     private static SecretKeySpec getKey() {
         byte k[] = ENCRYPTION_KEY.getBytes();
