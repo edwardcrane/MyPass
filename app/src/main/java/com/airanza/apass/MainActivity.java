@@ -392,9 +392,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void exportDBToSDEncrypted() {
+        // TODO:  Get destination filename from user here using FileChooser(?).
         try {
             AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), getDefaultBackupDBFilename());
-//            FileEncryptor.encryptFile(getAppDBPath(), getDefaultBackupDBFilename());
             Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Log.e(getClass().getName(), "BACKUP FAILED: ", e);
@@ -403,6 +403,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void importDBFromSDEncrypted() {
+        // TODO: Get source filename from user here using FileChooser(?).
         try {
             // close db so we can copy without blocking:
             resourcedatasource.close();
