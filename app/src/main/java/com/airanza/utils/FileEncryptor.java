@@ -22,6 +22,8 @@ package com.airanza.utils;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import javax.crypto.Cipher;
 import javax.crypto.CipherOutputStream;
@@ -41,6 +43,38 @@ public class FileEncryptor {
         return(new SecretKeySpec(k, ENCRYPTION_ALGO.split("/")[0]));
     }
 
+    public static void cryptStream(int cipherMode, InputStream in, OutputStream out) throws Exception {
+        Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGO);
+        cipher.init(cipherMode, getKey());
+
+        CipherOutputStream cipherOutputStream = new CipherOutputStream(out, cipher);
+        byte[] buffer = new byte[BUFFER_SIZE];
+        int length;
+        while ((length = in.read(buffer)) != -1)
+            cipherOutputStream.write(buffer, 0, length);
+        in.close();
+        cipherOutputStream.close();
+    }
+
+    /**
+     * cryptFile() encrypts or decrypts files from infile to outfile, based on whether cipherMode is
+     *              Cipher.ENCRYPT or Cipher.DECRYPT.
+     *
+     * @param cipherMode    Cipher.ENCRYPT or Cipher.DECRYPT
+     * @param infile        Source Filename to be encrypted or decrypted.
+     * @param outfile       Destination Filename to be encrypted or decrypted.
+     * @throws Exception
+     */
+    public static void cryptFile(int cipherMode, String infile, String outfile) throws Exception {
+        FileInputStream in = new FileInputStream(infile);
+        FileOutputStream fileOut = new FileOutputStream(outfile);
+
+        cryptStream(cipherMode, in, fileOut);
+
+        in.close();
+        fileOut.close();
+    }
+
     /**
      * encryptFile
      *
@@ -50,20 +84,7 @@ public class FileEncryptor {
      */
     public static void encryptFile(String infile, String outfile)
             throws Exception {
-
-        Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGO);
-        cipher.init(Cipher.ENCRYPT_MODE, getKey());
-
-        FileInputStream in = new FileInputStream(infile);
-        FileOutputStream fileOut = new FileOutputStream(outfile);
-
-        CipherOutputStream out = new CipherOutputStream(fileOut, cipher);
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int length;
-        while ((length = in.read(buffer)) != -1)
-            out.write(buffer, 0, length);
-        in.close();
-        out.close();
+        cryptFile(Cipher.ENCRYPT_MODE, infile, outfile);
     }
 
     /**
@@ -75,19 +96,7 @@ public class FileEncryptor {
      */
     public static void decryptFile(String infile, String outfile)
             throws Exception {
-        Cipher cipher = Cipher.getInstance(ENCRYPTION_ALGO);
-        cipher.init(Cipher.DECRYPT_MODE, getKey());
-
-        FileInputStream in = new FileInputStream(infile);
-        FileOutputStream fileOut = new FileOutputStream(outfile);
-
-        CipherOutputStream out = new CipherOutputStream(fileOut, cipher);
-        byte[] buffer = new byte[BUFFER_SIZE];
-        int length;
-        while ((length = in.read(buffer)) != -1)
-            out.write(buffer, 0, length);
-        in.close();
-        out.close();
+        cryptFile(Cipher.DECRYPT_MODE, infile, outfile);
     }
 
     public static void main(String args[]) {

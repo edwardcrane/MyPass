@@ -32,24 +32,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by ecrane on 5/8/2015.
  */
 public class AndroidEncryptor {
-    /**
-     * importDBFromSD
-     * TODO:  Must implement File Chooser so we can select importable file.
-     */
+
     public static void importDBFromSDEncrypted(String source, String destination) throws Exception {
-        byte k[] = FileEncryptor.ENCRYPTION_KEY.getBytes();
-        SecretKeySpec key = new SecretKeySpec(k, FileEncryptor.ENCRYPTION_ALGO.split("/")[0]);
-
-        Cipher cipher = Cipher.getInstance(FileEncryptor.ENCRYPTION_ALGO);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-
         File sd = Environment.getExternalStorageDirectory();
         File data = Environment.getDataDirectory();
 
@@ -57,26 +46,16 @@ public class AndroidEncryptor {
         File backupDB = new File(sd, source);
 
         FileInputStream in = new FileInputStream(backupDB);
-        FileOutputStream fOut = new FileOutputStream(appDB);
-        CipherOutputStream cOut = new CipherOutputStream(fOut, cipher);
+        FileOutputStream out = new FileOutputStream(appDB);
 
-        byte[] buffer = new byte[FileEncryptor.BUFFER_SIZE];
-        int length;
-        while((length = in.read(buffer)) != -1)
-            cOut.write(buffer, 0, length);
+        FileEncryptor.cryptStream(Cipher.DECRYPT_MODE, in, out);
+
         in.close();
-        cOut.close();
-
+        out.close();
         Log.i("FileEncryptor", "DB Import Successful");
     }
 
     public static void exportDBToSDEncrypted(String source, String destination) throws Exception {
-        byte k[] = FileEncryptor.ENCRYPTION_KEY.getBytes();
-        SecretKeySpec key = new SecretKeySpec(k, FileEncryptor.ENCRYPTION_ALGO.split("/")[0]);
-
-        Cipher cipher = Cipher.getInstance(FileEncryptor.ENCRYPTION_ALGO);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-
         File sd = Environment.getExternalStorageDirectory();
         File data = Environment.getDataDirectory();
 
@@ -89,17 +68,13 @@ public class AndroidEncryptor {
 
             File backupDB = new File(sd, destination);
 
-            FileInputStream fIn = new FileInputStream(currentDB);
-            FileOutputStream fOut = new FileOutputStream(backupDB);
+            FileInputStream in = new FileInputStream(currentDB);
+            FileOutputStream out = new FileOutputStream(backupDB);
 
-            CipherOutputStream cOut = new CipherOutputStream(fOut, cipher);
+            FileEncryptor.cryptStream(Cipher.ENCRYPT_MODE, in, out);
 
-            byte[] buffer = new byte[FileEncryptor.BUFFER_SIZE];
-            int length;
-            while((length = fIn.read(buffer)) != -1)
-                cOut.write(buffer, 0, length);
-            fIn.close();
-            cOut.close();
+            in.close();
+            out.close();
         } else {
             Toast.makeText(null, "Cannot write to sd: " + sd, Toast.LENGTH_LONG).show();
             throw new IOException("Cannot write to SD directory: " + sd);
