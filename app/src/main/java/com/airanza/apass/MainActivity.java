@@ -425,31 +425,4 @@ public class MainActivity extends ActionBarActivity {
         fileOpenDialog.default_file_name = getDefaultBackupDBFilename();
         fileOpenDialog.chooseFile_or_Dir(fileOpenDialog.default_file_name);
     }
-
-//    protected void exportDBToSDEncrypted() {
-//        // TODO:  Get destination filename from user here using FileChooser(?).
-//        try {
-//            AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), getDefaultBackupDBFilename());
-//            Toast.makeText(getApplicationContext(), "Backup Successful!", Toast.LENGTH_LONG).show();
-//        } catch (Exception e) {
-//            Log.e(getClass().getName(), "BACKUP FAILED: ", e);
-//            Toast.makeText(getApplicationContext(), "Backup Failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//        }
-//    }
-
-//    protected void importDBFromSDEncrypted() {
-//        // TODO: Get source filename from user here using FileChooser(?).
-//        try {
-//            // close db so we can copy without blocking:
-//            resourcedatasource.close();
-//            AndroidEncryptor.importDBFromSDEncrypted(getDefaultBackupDBFilename(), getAppDBPath());
-//            // re-open DB to make sure it was copied correctly:
-//            resourcedatasource.open();
-//            Toast.makeText(this, "DB Imported!", Toast.LENGTH_LONG).show();
-//            Log.i(getClass().getName(), "DB Import Successful");
-//        } catch (Exception e) {
-//            Toast.makeText(this, "RESTORE FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//            Log.e(getClass().getName(), "RESTORE FAILED: ", e);
-//        }
-//    }
 }
