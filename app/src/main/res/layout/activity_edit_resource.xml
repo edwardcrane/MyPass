@@ -30,53 +30,53 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-    <EditText
-        android:layout_weight="0"
-        android:id="@+id/resource_name"
-        android:textStyle="bold"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/resource_name"
-        android:singleLine="true"
-        >
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:layout_weight="0"
-        android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/username"
-        android:singleLine="true"
-    />
-
-    <LinearLayout>
-    <EditText
-        android:id="@+id/password"
-        android:layout_width="0dp"
-        android:layout_weight="10"
-        android:layout_height="wrap_content"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:singleLine="true"
-        />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <EditText
             android:layout_weight="0"
-            android:src="@android:drawable/ic_menu_view"
-            android:onClick="onClickOnPassword"
-            android:layout_gravity="right"
-            android:background="@layout/white_border"
+            android:id="@+id/resource_name"
+            android:textStyle="bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/resource_name"
+            android:singleLine="true"
+            >
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:layout_weight="0"
+            android:id="@+id/username"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:singleLine="true"
+        />
+
+        <LinearLayout>
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="0dp"
+                android:layout_weight="10"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:singleLine="true"
             />
-    </LinearLayout>
-    <EditText
-        android:layout_weight="0"
-        android:id="@+id/description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="@string/description"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:src="@android:drawable/ic_menu_view"
+                android:onClick="onClickOnPassword"
+                android:layout_gravity="right"
+                android:background="@layout/white_border"
+                />
+        </LinearLayout>
+        <EditText
+            android:layout_weight="0"
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"
         />
     </TableLayout>
 

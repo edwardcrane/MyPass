@@ -180,7 +180,23 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
+        if(id == R.id.action_show_splash) {
+            onShowSplash();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    protected void onShowSplash() {
+        // create Intent
+        Intent intent = new Intent(this, SplashActivity.class);
+
+        // set Intent such that the SplashActivity can check whether it should be in startup mode or "About" mode
+        intent.putExtra(SplashActivity.SPLASH_ACTION, SplashActivity.SPLASH_ABOUT);
+
+        // start the activity (user can cxl with back key).
+        startActivity(intent);
     }
 
     /**
