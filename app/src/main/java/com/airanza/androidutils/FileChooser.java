@@ -69,9 +69,9 @@ public class FileChooser {
     private ArrayAdapter<String> m_listAdapter = null;
     private boolean m_goToUpper = false;
 
-    //////////////////////////////////////////////////////
-    // Callback interface for selected directory
-    //////////////////////////////////////////////////////
+    /**
+     * FileChooserListener is callback interface for selected directory
+     */
     public interface FileChooserListener
     {
         public void onChosenDir(String chosenDir);
@@ -100,10 +100,10 @@ public class FileChooser {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    // chooseFile_or_Dir() - load directory chooser dialog for initial
-    // default sdcard directory
-    ///////////////////////////////////////////////////////////////////////
+    /**
+     * chooseFile_or_Dir() - load directory chooser dialog for initial
+     * default sdcard directory
+     */
     public void chooseFile_or_Dir()
     {
         // Initial directory is sdcard directory
@@ -111,10 +111,11 @@ public class FileChooser {
         else chooseFile_or_Dir(m_dir);
     }
 
-    ////////////////////////////////////////////////////////////////////////////////
-    // chooseFile_or_Dir(String dir) - load directory chooser dialog for initial
-    // input 'dir' directory
-    ////////////////////////////////////////////////////////////////////////////////
+    /**
+     * chooseFile_or_Dir(String dir) - load directory chooser dialog for initial
+     * input 'dir' directory
+     * @param dir
+     */
     public void chooseFile_or_Dir(String dir)
     {
         File dirFile = new File(dir);
@@ -263,7 +264,7 @@ public class FileChooser {
         ////////////////////////////////////////////////
         m_titleView1 = new TextView(m_context);
         m_titleView1.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        //m_titleView1.setTextAppearance(m_context, android.R.style.TextAppearance_Large);
+        m_titleView1.setTextAppearance(m_context, android.R.style.TextAppearance_Large);
         //m_titleView1.setTextColor( m_context.getResources().getColor(android.R.color.black) );
 
         if (Select_type == FileOpen    ) m_titleView1.setText("Open:");
@@ -325,9 +326,7 @@ public class FileChooser {
             titleLayout1.addView(newDirButton);
         }
 
-        /////////////////////////////////////////////////////
         // Create View with folder path and entry text box //
-        /////////////////////////////////////////////////////
         LinearLayout titleLayout = new LinearLayout(m_context);
         titleLayout.setOrientation(LinearLayout.VERTICAL);
 
