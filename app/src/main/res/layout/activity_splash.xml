@@ -28,32 +28,30 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:src="@drawable/airanza_logo_white_trans_border" />
-
-    <TableLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-        <TextView
-            android:id="@+id/terms_of_use_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:linksClickable="true"
-            android:text="@string/terms_of_use_url" />
-        <TextView
-            android:id="@+id/airanza_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:linksClickable="true"
-            android:text="@string/airanza_url" />
-        <TextView
-            android:id="@+id/privacy_policy_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:linksClickable="true"
-            android:text="@string/privacy_policy_url" />
-    </TableLayout>
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true">
+            <TextView
+                android:id="@+id/terms_of_use_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:linksClickable="true"
+                android:text="@string/terms_of_use_url" />
+            <TextView
+                android:id="@+id/airanza_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:linksClickable="true"
+                android:text="@string/airanza_url" />
+            <TextView
+                android:id="@+id/privacy_policy_link"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:linksClickable="true"
+                android:text="@string/privacy_policy_url" />
+    </RelativeLayout>
 </RelativeLayout>
