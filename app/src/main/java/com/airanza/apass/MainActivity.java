@@ -386,7 +386,7 @@ public class MainActivity extends ActionBarActivity {
         // Create FileChooser and register a callback
         FileChooser fileOpenDialog = new FileChooser(
                 MainActivity.this,
-                "FileOpen..",
+                "FileSave..",
                 new FileChooser.FileChooserListener() {
                     @Override
                     public void onChosenDir(String chosenDir) {
@@ -402,6 +402,12 @@ public class MainActivity extends ActionBarActivity {
                     }
                 }
         );
+
+        // create the default directory if nonexists:
+        File defaultBackupDirectory = (new File(getDefaultBackupDBFilename())).getParentFile();
+        if(!defaultBackupDirectory.exists()) {
+            defaultBackupDirectory.mkdirs();
+        }
 
         // change the default filename using the public variable "default_file_name".
         fileOpenDialog.default_file_name = getDefaultBackupDBFilename();

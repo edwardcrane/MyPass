@@ -36,8 +36,8 @@ import javax.crypto.Cipher;
 public class AndroidEncryptor {
 
     public static void decrypt(String source, String destination) throws Exception {
-        File destinationFile = new File(destination);
         File sourceFile = new File(source);
+        File destinationFile = new File(destination);
 
         FileInputStream in = new FileInputStream(sourceFile);
         FileOutputStream out = new FileOutputStream(destinationFile);
@@ -46,22 +46,21 @@ public class AndroidEncryptor {
 
         in.close();
         out.close();
-
         Log.i("AndroidEncryptor", "decrypt " + source + " -> " + destination + " Successful.");
     }
 
     public static void encrypt(String source, String destination) throws Exception {
-            File soureFile = new File(source);
-            File destinationFile = new File(destination);
-            destinationFile.getParentFile().mkdirs();
+        File sourceFile = new File(source);
+        File destinationFile = new File(destination);
+        destinationFile.getParentFile().mkdirs();
 
-            FileInputStream in = new FileInputStream(soureFile);
-            FileOutputStream out = new FileOutputStream(destinationFile);
+        FileInputStream in = new FileInputStream(sourceFile);
+        FileOutputStream out = new FileOutputStream(destinationFile);
 
-            FileEncryptor.cryptStream(Cipher.ENCRYPT_MODE, in, out);
+        FileEncryptor.cryptStream(Cipher.ENCRYPT_MODE, in, out);
 
-            in.close();
-            out.close();
-            Log.i("AndroidEncryptor", "encrypt " + source + " -> " + destination + " Successful.");
+        in.close();
+        out.close();
+        Log.i("AndroidEncryptor", "encrypt " + source + " -> " + destination + " Successful.");
     }
 }
