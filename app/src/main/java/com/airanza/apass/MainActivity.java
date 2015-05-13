@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -57,15 +58,12 @@ public class MainActivity extends ActionBarActivity {
     static final int SEND_EMAIL_REQUEST = 2;
 
     private String logged_in_user = "";
-    private long logged_in_time = 0;
 
     public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
 
     private final static String EXPORT_FILE_NAME = "exportCSV.csv";
 
     public final static String APP_EXTENSION = ".apa";  // extension for exported, encrypted files.
-    private final static String ENCRYPTION_KEY = "APassApp";
-    private final static String CYPHER_TRANSFORMATION = "DES/ECB/PKCS5Padding";
 
     // This is retrieved from logindatasource, but if not found, this is the default:
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
@@ -78,7 +76,6 @@ public class MainActivity extends ActionBarActivity {
 
         logged_in_user = getIntent().getStringExtra(LoginActivity.LOGGED_IN_USER);
         user_email_address = getIntent().getStringExtra(LoginActivity.USER_EMAIL_ADDRESS);
-        logged_in_time = getIntent().getLongExtra(LoginActivity.LOGGED_IN_TIME, 0);
 
         try {
             resourcedatasource = new ResourceDataSource(this);
@@ -347,17 +344,13 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
     }
 
-    public void onStop()
-    {
-        super.onStop();  // always call the superclass method first
-    }
-
     public void onUserSelectedChangeLogin() {
         Log.i(getClass().getName(), "onUserSelectedChangeLogin(): Starting Register Activity.  logged_in_user: [" + logged_in_user + "]");
         Intent intent = new Intent(this, RegisterActivity.class);
 
-        /* TODO:  set attributes of Intent to notify RegisterActivity that it should function as
-        *  change login activity
+        /* Set attributes of Intent to notify RegisterActivity that it should function as
+        *  change login activity.  Unset, it will behave as a timeout Splash screen and
+        *  then open login when timed out.
         */
         intent.putExtra(LoginActivity.REGISTER_ACTION, LoginActivity.CHANGE_LOGIN);
         intent.putExtra(LoginActivity.LOGGED_IN_USER, logged_in_user);
@@ -374,8 +367,9 @@ public class MainActivity extends ActionBarActivity {
      * @return the fully qualified file name of the application database.
      */
     private String getAppDBPath() {
-        String appDBPath = "//data//" + "com.airanza.apass" + "//databases//" + ResourceDBHelper.DATABASE_NAME;
-        return(appDBPath);
+        File data = Environment.getDataDirectory();
+        String path = data.getPath() + "/data/" + "com.airanza.apass" + "/databases/" + ResourceDBHelper.DATABASE_NAME;
+        return(path);
     }
 
     /**
@@ -383,9 +377,9 @@ public class MainActivity extends ActionBarActivity {
      * @return the fully qualified file name of the default backup file.
      */
     private String getDefaultBackupDBFilename() {
-        String backupDBDir = "//apass//";
-        String backupDBPath = backupDBDir + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
-        return(backupDBPath);
+        File sd = Environment.getExternalStorageDirectory();
+        String path = sd.getPath() + "/apass/" + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
+        return(path);
     }
 
     protected void saveDBEncrypted() {
@@ -398,7 +392,7 @@ public class MainActivity extends ActionBarActivity {
                     public void onChosenDir(String chosenDir) {
                         // execute when the dialog OK button is pressed.
                         try {
-                            AndroidEncryptor.exportDBToSDEncrypted(getAppDBPath(), chosenDir);
+                            AndroidEncryptor.encrypt(getAppDBPath(), chosenDir);
                             Log.e(getClass().getName(), "File " + chosenDir + " Saved Successfully!");
                             Toast.makeText(getApplicationContext(), "File " + chosenDir + " Saved Successfully!", Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
@@ -425,7 +419,7 @@ public class MainActivity extends ActionBarActivity {
                         // execute when the dialog OK button is pressed.
                         try {
                             resourcedatasource.close();
-                            AndroidEncryptor.importDBFromSDEncrypted(chosenDir, getAppDBPath());
+                            AndroidEncryptor.decrypt(chosenDir, getAppDBPath());
                             resourcedatasource.open();
                             Log.e(getClass().getName(), "File " + chosenDir + " Loaded Successfully!");
                             Toast.makeText(getApplicationContext(), "File " + chosenDir + " Loaded Successfully!", Toast.LENGTH_LONG).show();

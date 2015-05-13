@@ -183,10 +183,11 @@ public class FileChooser {
                 // Call registered listener supplied with the chosen directory
                 if (m_FileChooserListener != null){
                     {
-                        if (Select_type == FileOpen || Select_type == FileSave)
-                        {
-                            selected_file_name= input_text.getText() +"";
-                            m_FileChooserListener.onChosenDir(m_dir + "/" + selected_file_name);}
+                        if (Select_type == FileOpen || Select_type == FileSave) {
+                            selected_file_name = input_text.getText() + "";
+                            File f = new File(selected_file_name);
+                            m_FileChooserListener.onChosenDir(m_dir + File.separatorChar + f.getName());
+                        }
                         else
                         {
                             m_FileChooserListener.onChosenDir(m_dir);

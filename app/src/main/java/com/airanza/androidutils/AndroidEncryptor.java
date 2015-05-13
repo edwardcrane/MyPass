@@ -20,16 +20,13 @@
 
 package com.airanza.androidutils;
 
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.airanza.utils.FileEncryptor;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import javax.crypto.Cipher;
 
@@ -38,46 +35,33 @@ import javax.crypto.Cipher;
  */
 public class AndroidEncryptor {
 
-    public static void importDBFromSDEncrypted(String source, String destination) throws Exception {
-        File sd = Environment.getExternalStorageDirectory();
-        File data = Environment.getDataDirectory();
+    public static void decrypt(String source, String destination) throws Exception {
+        File destinationFile = new File(destination);
+        File sourceFile = new File(source);
 
-        File appDB = new File(data, destination);
-        File backupDB = new File(sd, source);
-
-        FileInputStream in = new FileInputStream(backupDB);
-        FileOutputStream out = new FileOutputStream(appDB);
+        FileInputStream in = new FileInputStream(sourceFile);
+        FileOutputStream out = new FileOutputStream(destinationFile);
 
         FileEncryptor.cryptStream(Cipher.DECRYPT_MODE, in, out);
 
         in.close();
         out.close();
-        Log.i("FileEncryptor", "DB Import Successful");
+
+        Log.i("AndroidEncryptor", "decrypt " + source + " -> " + destination + " Successful.");
     }
 
-    public static void exportDBToSDEncrypted(String source, String destination) throws Exception {
-        File sd = Environment.getExternalStorageDirectory();
-        File data = Environment.getDataDirectory();
+    public static void encrypt(String source, String destination) throws Exception {
+            File soureFile = new File(source);
+            File destinationFile = new File(destination);
+            destinationFile.getParentFile().mkdirs();
 
-        if(sd.canWrite()) {
-            File currentDB = new File(data, source);
-
-            // create dir if nonexists:
-            File backupDBDirFile = new File(sd, destination);
-            backupDBDirFile.getParentFile().mkdirs();
-
-            File backupDB = new File(sd, destination);
-
-            FileInputStream in = new FileInputStream(currentDB);
-            FileOutputStream out = new FileOutputStream(backupDB);
+            FileInputStream in = new FileInputStream(soureFile);
+            FileOutputStream out = new FileOutputStream(destinationFile);
 
             FileEncryptor.cryptStream(Cipher.ENCRYPT_MODE, in, out);
 
             in.close();
             out.close();
-        } else {
-            Toast.makeText(null, "Cannot write to sd: " + sd, Toast.LENGTH_LONG).show();
-            throw new IOException("Cannot write to SD directory: " + sd);
-        }
+            Log.i("AndroidEncryptor", "encrypt " + source + " -> " + destination + " Successful.");
     }
 }
