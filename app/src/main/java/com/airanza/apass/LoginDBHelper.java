@@ -23,7 +23,10 @@ package com.airanza.apass;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
+
+import java.io.File;
 
 /**
  * Created by ecrane on 1/8/2015.
@@ -61,6 +64,24 @@ public class LoginDBHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_LOGIN);
+    }
+
+    /**
+     * getPath
+     * @return the fully qualified file name of the application database.
+     */
+    public static String getPath() {
+        File data = Environment.getDataDirectory();
+        String path = data.getPath() + "/data/" + "com.airanza.apass" + "/databases/" + DATABASE_NAME;
+        return(path);
+    }
+
+    /**
+     * getEncryptedBackupPath
+     * @return the fully qualified file name of the database's encrypted backup
+     */
+    public static String getEncryptedBackupPath() {
+        return(getPath() + ".cryp");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

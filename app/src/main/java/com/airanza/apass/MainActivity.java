@@ -363,20 +363,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
-     * getAppDBPath
-     * @return the fully qualified file name of the application database.
-     */
-    private String getAppDBPath() {
-        File data = Environment.getDataDirectory();
-        String path = data.getPath() + "/data/" + "com.airanza.apass" + "/databases/" + ResourceDBHelper.DATABASE_NAME;
-        return(path);
-    }
-
-    /**
      * getDefaultBackupDBFilename
      * @return the fully qualified file name of the default backup file.
      */
-    private String getDefaultBackupDBFilename() {
+    public static String getDefaultBackupDBFilename() {
         File sd = Environment.getExternalStorageDirectory();
         String path = sd.getPath() + "/apass/" + ResourceDBHelper.DATABASE_NAME + APP_EXTENSION;
         return(path);
@@ -392,7 +382,7 @@ public class MainActivity extends ActionBarActivity {
                     public void onChosenDir(String chosenDir) {
                         // execute when the dialog OK button is pressed.
                         try {
-                            AndroidEncryptor.encrypt(getAppDBPath(), chosenDir);
+                            AndroidEncryptor.encrypt(ResourceDBHelper.getPath(), chosenDir);
                             Log.e(getClass().getName(), "File " + chosenDir + " Saved Successfully!");
                             Toast.makeText(getApplicationContext(), "File " + chosenDir + " Saved Successfully!", Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
@@ -425,7 +415,7 @@ public class MainActivity extends ActionBarActivity {
                         // execute when the dialog OK button is pressed.
                         try {
                             resourcedatasource.close();
-                            AndroidEncryptor.decrypt(chosenDir, getAppDBPath());
+                            AndroidEncryptor.decrypt(chosenDir, ResourceDBHelper.getPath());
                             resourcedatasource.open();
                             Log.e(getClass().getName(), "File " + chosenDir + " Loaded Successfully!");
                             Toast.makeText(getApplicationContext(), "File " + chosenDir + " Loaded Successfully!", Toast.LENGTH_LONG).show();

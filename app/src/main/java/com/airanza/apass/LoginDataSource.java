@@ -26,6 +26,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.airanza.androidutils.AndroidEncryptor;
+
 import java.sql.SQLException;
 
 /**
@@ -71,6 +73,7 @@ public class LoginDataSource {
                 LoginDBHelper.TABLE_NAME,
                 null,
                 values);
+        updateEncryptedBackup();
     }
 
     public void update(String username, String newUsername, String password, String newPassword, String passwordHint, String newPasswordHint, String email, String newEmail, int rememberMe, int newRememberMe) {
@@ -84,6 +87,8 @@ public class LoginDataSource {
 
         database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
 
+        updateEncryptedBackup();
+
         Log.w(this.getClass().getName(), "Updated: " + newUsername);
     }
 
@@ -96,6 +101,9 @@ public class LoginDataSource {
             args.put(LoginDBHelper.COLUMN_NAME_REMEMBERED_LAST_USER, 0);
         }
         database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
+
+        updateEncryptedBackup();
+
         Log.v(this.getClass().getName(), "Updated: [" + username + "] rememberMe[" + rememberMe + "]");
     }
 
@@ -136,6 +144,8 @@ public class LoginDataSource {
         int i = database.delete(LoginDBHelper.TABLE_NAME, LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'", null);
         if(i != 1) {
             Log.w(this.getClass().getName(), "Deleting [" + username + "] failed.  Delete returned [" + i + "] rows.");
+        } else {
+            updateEncryptedBackup();
         }
     }
 
@@ -291,5 +301,14 @@ public class LoginDataSource {
         passwordHint = cursor.getString(cursor.getColumnIndexOrThrow(LoginDBHelper.COLUMN_NAME_PASSWORD_HINT));
         cursor.close();
         return passwordHint;
+    }
+
+    public void updateEncryptedBackup() {
+        // write an encrypted backup to the databases directory with the "cryp" extension:
+        try {
+            AndroidEncryptor.encrypt(dbHelper.getPath(), dbHelper.getEncryptedBackupPath());
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "Failed to update encrypted backup " + dbHelper.getPath(), e);
+        }
     }
 }

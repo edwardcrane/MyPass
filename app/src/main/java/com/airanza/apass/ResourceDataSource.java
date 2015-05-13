@@ -26,6 +26,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.airanza.androidutils.AndroidEncryptor;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +81,8 @@ public class ResourceDataSource {
         Resource res = cursorToResource(cursor);
         cursor.close();
 
+        updateEncryptedBackup();
+
         return(res);
     }
 
@@ -94,6 +98,8 @@ public class ResourceDataSource {
 
         database.update(ResourceDBHelper.TABLE_NAME, args, filterString, null);
 
+        updateEncryptedBackup();
+
         Log.w(this.getClass().getName(), "Updated: " + resource.getResourceName());
     }
 
@@ -102,6 +108,8 @@ public class ResourceDataSource {
         int i = database.delete(ResourceDBHelper.TABLE_NAME, ResourceDBHelper.COLUMN_ID + " = " + id, null);
         if(i != 1) {
             Log.w(this.getClass().getName(), "Deleting [" + resource + "] failed.  Delete returned [" + i + "] rows.");
+        } else {
+            updateEncryptedBackup();
         }
     }
 
@@ -161,5 +169,14 @@ public class ResourceDataSource {
         res.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_PASSWORD)));
         res.setDescription(cursor.getString(cursor.getColumnIndexOrThrow(ResourceDBHelper.COLUMN_NAME_DESCRIPTION)));
         return res;
+    }
+
+    public void updateEncryptedBackup() {
+        // write an encrypted backup to the databases directory with the "cryp" extension:
+        try {
+            AndroidEncryptor.encrypt(dbHelper.getPath(), dbHelper.getEncryptedBackupPath());
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "Failed to update encrypted backup " + dbHelper.getPath(), e);
+        }
     }
 }
