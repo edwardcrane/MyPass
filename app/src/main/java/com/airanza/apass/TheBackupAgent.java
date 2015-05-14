@@ -43,8 +43,9 @@ public class TheBackupAgent extends BackupAgentHelper {
     @Override
     public void onCreate() {
         FileBackupHelper fileBackupHelper = new FileBackupHelper(this,
-                ResourceDBHelper.getEncryptedBackupPath(),
-                LoginDBHelper.getEncryptedBackupPath());
+                ResourceDBHelper.getPath(),
+                LoginDBHelper.getPath()) {
+        };
 
         addHelper(APASS_FILES_BACKUP_KEY, fileBackupHelper);
     }

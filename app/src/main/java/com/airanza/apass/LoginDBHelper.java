@@ -76,14 +76,6 @@ public class LoginDBHelper extends SQLiteOpenHelper {
         return(path);
     }
 
-    /**
-     * getEncryptedBackupPath
-     * @return the fully qualified file name of the database's encrypted backup
-     */
-    public static String getEncryptedBackupPath() {
-        return(getPath() + ".cryp");
-    }
-
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w(LoginDBHelper.class.getName(), " Upgrading database from version " + oldVersion + " to version " + newVersion + ", which will destroy all old data.");
         // this database is only a cache for online data, so its upgrade policy is

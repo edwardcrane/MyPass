@@ -32,8 +32,8 @@
     <string name="button_new_resource">New Record...</string>
     <string name="button_cancel">Cancel</string>
     <string name="action_settings">Settings</string>
-    <string name="action_save_encrypted_file">Save Encrypted File</string>
-    <string name="action_load_encrypted_file">Load Encrypted File</string>
+    <string name="action_save_encrypted_file">Save Encrypted File...</string>
+    <string name="action_load_encrypted_file">Load Encrypted File...</string>
     <string name="action_show_splash">About...</string>
     <string name="display_message">Display Message</string>
     <string name="list_default_value">List Default Value</string>

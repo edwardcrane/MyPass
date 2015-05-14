@@ -309,7 +309,6 @@ public class MainActivity extends ActionBarActivity {
 
     public void findResource(View view) {
         String findString = ((EditText)findViewById(R.id.findString)).getText().toString();
-        System.out.println("Searching [" + findString + "].");
         adapter.clear();
 
         for (Resource r : resourcedatasource.findResources(findString)) {
@@ -417,6 +416,7 @@ public class MainActivity extends ActionBarActivity {
                             resourcedatasource.close();
                             AndroidEncryptor.decrypt(chosenDir, ResourceDBHelper.getPath());
                             resourcedatasource.open();
+                            adapter.notifyDataSetChanged();
                             Log.e(getClass().getName(), "File " + chosenDir + " Loaded Successfully!");
                             Toast.makeText(getApplicationContext(), "File " + chosenDir + " Loaded Successfully!", Toast.LENGTH_LONG).show();
                         } catch (Exception e) {

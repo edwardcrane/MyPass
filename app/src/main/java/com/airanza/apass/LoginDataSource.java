@@ -20,6 +20,8 @@
 
 package com.airanza.apass;
 
+import android.app.backup.BackupManager;
+import android.app.backup.RestoreObserver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -36,6 +38,7 @@ import java.sql.SQLException;
 public class LoginDataSource {
     private SQLiteDatabase database;
     private LoginDBHelper dbHelper;
+    private Context mContext;
 
     private String[] allColumns = {
         LoginDBHelper.COLUMN_ID,
@@ -46,6 +49,7 @@ public class LoginDataSource {
     };
 
     public LoginDataSource(Context context) {
+        mContext = context;
         dbHelper = new LoginDBHelper(context);
     }
 
@@ -73,7 +77,7 @@ public class LoginDataSource {
                 LoginDBHelper.TABLE_NAME,
                 null,
                 values);
-        updateEncryptedBackup();
+        requestBackup();
     }
 
     public void update(String username, String newUsername, String password, String newPassword, String passwordHint, String newPasswordHint, String email, String newEmail, int rememberMe, int newRememberMe) {
@@ -87,7 +91,7 @@ public class LoginDataSource {
 
         database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
 
-        updateEncryptedBackup();
+        requestBackup();
 
         Log.w(this.getClass().getName(), "Updated: " + newUsername);
     }
@@ -102,7 +106,7 @@ public class LoginDataSource {
         }
         database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
 
-        updateEncryptedBackup();
+        requestBackup();
 
         Log.v(this.getClass().getName(), "Updated: [" + username + "] rememberMe[" + rememberMe + "]");
     }
@@ -145,7 +149,7 @@ public class LoginDataSource {
         if(i != 1) {
             Log.w(this.getClass().getName(), "Deleting [" + username + "] failed.  Delete returned [" + i + "] rows.");
         } else {
-            updateEncryptedBackup();
+            requestBackup();
         }
     }
 
@@ -303,12 +307,8 @@ public class LoginDataSource {
         return passwordHint;
     }
 
-    public void updateEncryptedBackup() {
-        // write an encrypted backup to the databases directory with the "cryp" extension:
-        try {
-            AndroidEncryptor.encrypt(dbHelper.getPath(), dbHelper.getEncryptedBackupPath());
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Failed to update encrypted backup " + dbHelper.getPath(), e);
-        }
+    public void requestBackup() {
+        BackupManager backupManager = new BackupManager(mContext);
+        backupManager.dataChanged();
     }
 }

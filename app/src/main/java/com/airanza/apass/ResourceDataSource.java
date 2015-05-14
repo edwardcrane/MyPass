@@ -20,6 +20,8 @@
 
 package com.airanza.apass;
 
+import android.app.backup.BackupManager;
+import android.app.backup.RestoreObserver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -38,6 +40,7 @@ import java.util.List;
 public class ResourceDataSource {
     private SQLiteDatabase database;
     private ResourceDBHelper dbHelper;
+    private Context mContext;
 
     private String[] allColumns = {
         ResourceDBHelper.COLUMN_ID,
@@ -48,6 +51,7 @@ public class ResourceDataSource {
     };
 
     public ResourceDataSource(Context context) {
+        mContext = context;
         dbHelper = new ResourceDBHelper(context);
     }
 
@@ -81,7 +85,7 @@ public class ResourceDataSource {
         Resource res = cursorToResource(cursor);
         cursor.close();
 
-        updateEncryptedBackup();
+        requestBackup();
 
         return(res);
     }
@@ -98,7 +102,7 @@ public class ResourceDataSource {
 
         database.update(ResourceDBHelper.TABLE_NAME, args, filterString, null);
 
-        updateEncryptedBackup();
+        requestBackup();
 
         Log.w(this.getClass().getName(), "Updated: " + resource.getResourceName());
     }
@@ -109,7 +113,7 @@ public class ResourceDataSource {
         if(i != 1) {
             Log.w(this.getClass().getName(), "Deleting [" + resource + "] failed.  Delete returned [" + i + "] rows.");
         } else {
-            updateEncryptedBackup();
+            requestBackup();
         }
     }
 
@@ -171,12 +175,8 @@ public class ResourceDataSource {
         return res;
     }
 
-    public void updateEncryptedBackup() {
-        // write an encrypted backup to the databases directory with the "cryp" extension:
-        try {
-            AndroidEncryptor.encrypt(dbHelper.getPath(), dbHelper.getEncryptedBackupPath());
-        } catch (Exception e) {
-            Log.e(getClass().getName(), "Failed to update encrypted backup " + dbHelper.getPath(), e);
-        }
+    public void requestBackup() {
+        BackupManager backupManager = new BackupManager(mContext);
+        backupManager.dataChanged();
     }
 }

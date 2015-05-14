@@ -69,14 +69,6 @@ public class ResourceDBHelper extends SQLiteOpenHelper {
         return(path);
     }
 
-    /**
-     * getEncryptedBackupPath
-     * @return the fully qualified file name of the database's encrypted backup
-     */
-    public static String getEncryptedBackupPath() {
-        return(getPath() + ".cryp");
-    }
-
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
     }
