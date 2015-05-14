@@ -1,0 +1,13 @@
+Google Backup API for Backup & Restore
+Use the adb shell to send commands to the running app on the mobile device.
+
+on my PC adb is located in C:\Users\ecrane\AppData\Local\Android\sdk\platform-tools.
+
+To queue up a backup:
+    adb shell bmgr backup com.airanza.apass
+
+To run the queued backup requests for all apps now:
+    adb shell bmgr run
+
+To run the restore immediately:
+    adb shll bmgr restore com.airanza.apass
