@@ -34,6 +34,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.sql.SQLException;
 
 // TODO: modify confirmation box, to use a special message if the text has been modified.
@@ -65,6 +68,15 @@ public class EditResourceActivity extends ActionBarActivity {
         ((EditText) findViewById(R.id.username)).setText(resource.getUsername());
         ((EditText) findViewById(R.id.password)).setText(resource.getPassword());
         ((EditText) findViewById(R.id.description)).setText(resource.getDescription());
+
+        // ADD ADS:
+        AdView mBottomAdView = (AdView) findViewById(R.id.edit_bottom_adview);
+        AdRequest bottomAdRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .build();
+        mBottomAdView.loadAd(bottomAdRequest);
+
     }
 
     public void onClickOnPassword(View view) {

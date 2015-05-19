@@ -31,6 +31,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.sql.SQLException;
 
 public class NewResourceActivity extends ActionBarActivity {
@@ -50,6 +53,14 @@ public class NewResourceActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
         }
+
+        // ADD ADS:
+        AdView mBottomAdView = (AdView) findViewById(R.id.new_bottom_adview);
+        AdRequest bottomAdRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .build();
+        mBottomAdView.loadAd(bottomAdRequest);
     }
 
     public void onClickOnPassword(View view) {

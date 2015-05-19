@@ -20,6 +20,7 @@
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_new_resource"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,7 +30,8 @@
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_above="@+id/new_bottom_ad_layout">
     <EditText
         android:layout_weight="0"
         android:id="@+id/resource_name"
@@ -84,11 +86,28 @@
         android:hint="@string/description"
         />
     </TableLayout>
-    <LinearLayout android:id="@+id/footer"
-        android:orientation="horizontal"
+
+    <!--<LinearLayout android:id="@+id/footer"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@layout/footer_center_logo"-->
+        <!--android:layout_alignParentBottom="true" />-->
+
+    <RelativeLayout android:id="@+id/new_bottom_ad_layout"
+        android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="@layout/footer_center_logo"
-        android:layout_alignParentBottom="true" />
+        android:background="@layout/banner_ad_default_logo"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/new_bottom_adview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="@string/new_activity_bottom_banner_ad_unit_id" />
+    </RelativeLayout>
 
 </RelativeLayout>
