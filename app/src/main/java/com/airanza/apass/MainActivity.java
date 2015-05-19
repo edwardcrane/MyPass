@@ -47,6 +47,10 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.AdRequest.Builder;
+
 public class MainActivity extends ActionBarActivity {
 
     private ResourceDataSource resourcedatasource;
@@ -104,6 +108,21 @@ public class MainActivity extends ActionBarActivity {
         );
 
         addTextChangedListener();
+
+        // ADD ADS:
+        AdView mTopAdView = (AdView) findViewById(R.id.main_top_adview);
+        AdRequest topAadRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .build();
+        mTopAdView.loadAd(topAadRequest);
+
+        AdView mBottomAdView = (AdView) findViewById(R.id.main_bottom_adview);
+        AdRequest bottomAdRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .build();
+        mBottomAdView.loadAd(bottomAdRequest);
     }
 
     /**
