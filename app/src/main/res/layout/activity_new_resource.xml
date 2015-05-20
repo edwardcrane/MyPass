@@ -39,8 +39,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:hint="@string/resource_name"
-        android:singleLine="true"
-        >
+        android:singleLine="true">
         <requestFocus/>
     </EditText>
 
@@ -86,13 +85,6 @@
         android:hint="@string/description"
         />
     </TableLayout>
-
-    <!--<LinearLayout android:id="@+id/footer"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:background="@layout/footer_center_logo"-->
-        <!--android:layout_alignParentBottom="true" />-->
 
     <RelativeLayout android:id="@+id/new_bottom_ad_layout"
         android:orientation="vertical"

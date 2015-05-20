@@ -61,7 +61,8 @@
             android:name="com.airanza.apass.NewResourceActivity"
             android:label="New"
             android:parentActivityName="com.airanza.apass.MainActivity"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateVisible"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.airanza.apass.MainActivity" />
