@@ -45,9 +45,11 @@
     <string name="terms_of_use_url">&lt;a href="http://www.airanza.com/APass/tou.html"&gt;Terms of Use&lt;/a&gt;</string>
     <string name="privacy_policy_url">&lt;a href="http://www.airanza.com/APass/privacy.html"&gt;Privacy Policy&lt;/a&gt;</string>
     <!--<string name="admob_id">TESTER</string>-->
-    <string name="main_activity_top_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="main_activity_bottom_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="edit_activity_bottom_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="new_activity_bottom_banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="admob_id">pub-6141378478306258</string>
+    <string name="main_activity_top_banner_ad_unit_id">ca-app-pub-6141378478306258/9235092323</string>
+    <string name="main_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/7618758328</string>
+    <string name="edit_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/9095491524</string>
+    <string name="new_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/4525691123</string>
+    <string name="test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
 
 </resources>
