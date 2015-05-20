@@ -41,7 +41,7 @@ public class NewResourceActivity extends ActionBarActivity {
 
     private ResourceDataSource datasource;
 
-    private boolean isPasswordVisible = false;
+    private boolean isPasswordVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
