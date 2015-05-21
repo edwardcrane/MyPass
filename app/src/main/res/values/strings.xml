@@ -31,11 +31,19 @@
     <string name="button_find_resource">Find</string>
     <string name="button_new_resource">New Record...</string>
     <string name="button_cancel">Cancel</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- Menu Strings -->
+    <string name="action_email_csv_file">Email CSV File</string>
+    <string name="action_advanced">Advanced...</string>
     <string name="action_save_encrypted_file">Save Encrypted File...</string>
     <string name="action_load_encrypted_file">Load Encrypted File...</string>
+    <string name="action_change_login">Change Login...</string>
     <string name="action_show_splash">About...</string>
-    <string name="display_message">Display Message</string>
+    <string name="action_add_resource">Add</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+
     <string name="list_default_value">List Default Value</string>
     <string name="delete_resource_dialog_positive_button_text">OK</string>
     <string name="delete_resource_dialog_negative_button_text">Cancel</string>

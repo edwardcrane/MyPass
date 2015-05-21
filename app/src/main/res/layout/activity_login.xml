@@ -48,6 +48,16 @@
             android:layout_marginTop="5dip"
             android:singleLine="true"/>
 
+        <!-- Remember Me Checkbox-->
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Remember me?"
+            android:id="@+id/rememberMeCheckBox"
+            android:enabled="true"
+            android:clickable="true"
+            android:checked="true" />
+
         <!--  Password Label -->
         <TextView android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -58,16 +68,6 @@
             android:layout_marginTop="5dip"
             android:singleLine="true"
             android:password="true"/>
-
-        <!-- Remember Me Checkbox-->
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Remember me?"
-            android:id="@+id/rememberMeCheckBox"
-            android:enabled="true"
-            android:clickable="true"
-            android:checked="true" />
 
         <!-- Show Password Hint link -->
         <TextView android:id="@+id/show_password_hint"

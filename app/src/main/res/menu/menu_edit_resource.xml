@@ -23,14 +23,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/action_cancel_resource"
         android:icon="@android:drawable/ic_menu_close_clear_cancel"
-        android:title="Cancel"
+        android:title="@string/action_cancel"
         app:showAsAction="always" />
     <item android:id="@+id/action_delete_resource"
         android:icon="@android:drawable/ic_menu_delete"
-        android:title="Delete"
+        android:title="@string/action_delete"
         app:showAsAction="always" />
     <item android:id="@+id/action_save_resource"
         android:icon="@android:drawable/ic_menu_save"
-        android:title="Save"
+        android:title="@string/action_save"
         app:showAsAction="always" />
 </menu>
