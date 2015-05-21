@@ -54,6 +54,7 @@
             android:layout_height="wrap_content"
             android:text="Remember me?"
             android:id="@+id/rememberMeCheckBox"
+            android:layout_marginBottom="25dp"
             android:enabled="true"
             android:clickable="true"
             android:checked="true" />

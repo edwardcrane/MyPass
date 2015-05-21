@@ -58,7 +58,7 @@ public class NewResourceActivity extends ActionBarActivity {
         AdView mBottomAdView = (AdView) findViewById(R.id.new_bottom_adview);
         AdRequest bottomAdRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                 .build();
         mBottomAdView.loadAd(bottomAdRequest);
     }

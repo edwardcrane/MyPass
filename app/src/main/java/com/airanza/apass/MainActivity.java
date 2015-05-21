@@ -20,7 +20,9 @@
 
 package com.airanza.apass;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -113,14 +115,14 @@ public class MainActivity extends ActionBarActivity {
         AdView mTopAdView = (AdView) findViewById(R.id.main_top_adview);
         AdRequest topAadRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                 .build();
         mTopAdView.loadAd(topAadRequest);
 
         AdView mBottomAdView = (AdView) findViewById(R.id.main_bottom_adview);
         AdRequest bottomAdRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice("03E2E4F5EE38F1A8EF3355F642CCBA94")
+                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                 .build();
         mBottomAdView.loadAd(bottomAdRequest);
     }
@@ -168,7 +170,34 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if(id == R.id.action_email_backup) {
-            onUserSelectedEmailBackupActionSend();
+            // warn user that CSV files are not encrypted and may be vulnerable to hackers.
+            // if they accept, then go right ahead.
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+            alertDialog.setTitle(getText(R.string.unencrypted_risk_dialog_title));
+            alertDialog.setMessage(getText(R.string.unencrypted_risk_dialog_message));
+            alertDialog.setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert));
+
+            alertDialog.setNegativeButton(getText(R.string.unencrypted_risk_dialog_negative_button_text),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // Write your code here to invoke NO event
+                            Log.w(getClass().getName(), getString(R.string.unencrypted_risk_dialog_user_declined_message));
+                            Toast.makeText(getApplicationContext(), getString(R.string.unencrypted_risk_dialog_user_declined_message), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+            alertDialog.setPositiveButton(getText(R.string.unencrypted_risk_dialog_positive_button_text),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Log.w(getClass().getName(), getString(R.string.unencrypted_risk_dialog_user_accepted_message));
+                            onUserSelectedEmailBackupActionSend();
+                        }
+                    });
+
+
+            final AlertDialog alert = alertDialog.create();
+            alert.show();
+
             return true;
         }
 
@@ -331,8 +360,8 @@ public class MainActivity extends ActionBarActivity {
         }
 
         // values array is updated via the adapter:
-        if (values.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "No Records matching \"" + findString + "\" were found", Toast.LENGTH_LONG).show();
+        if (values.isEmpty() && !findString.equals("")) {
+            Toast.makeText(getApplicationContext(), "No Records matching \"" + findString + "\" were found", Toast.LENGTH_SHORT).show();
         }
     }
 
