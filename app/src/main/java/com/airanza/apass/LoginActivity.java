@@ -30,6 +30,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
@@ -138,9 +139,14 @@ public class LoginActivity extends ActionBarActivity {
         String username = ((EditText) findViewById(R.id.user_name)).getText().toString();
         String passwordHint = datasource.getPasswordHint(username);
         if(passwordHint.length() > 0) {
-            Toast.makeText(getApplicationContext(), "Password Hint: [" + passwordHint + "]", Toast.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(getApplicationContext(), "Password Hint: [" + passwordHint + "]",
+                    Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
         } else {
-            Toast.makeText(getApplicationContext(), "Please specify valid User Name.", Toast.LENGTH_LONG).show();
+            Toast toast = Toast.makeText(getApplicationContext(), "Please specify valid User Name.", Toast.LENGTH_LONG);
+            toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
+            toast.show();
         }
     }
 

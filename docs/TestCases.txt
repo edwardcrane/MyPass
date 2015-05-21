@@ -11,3 +11,42 @@ To run the queued backup requests for all apps now:
 
 To run the restore immediately:
     adb shll bmgr restore com.airanza.apass
+
+
+Test Case for overall backup per the Google Backup API website (http://developer.android.com/guide/topics/data/backup.html):
+
+On device open system SETTINGS, Backup & Reset, enable "Back up my data" and "Automatic Restore".
+
+Testing Your Backup Agent
+
+
+Once you've implemented your backup agent, you can test the backup and restore functionality with the following procedure, using bmgr.
+1.Install your application on a suitable Android system image
+    If using the emulator, create and use an AVD with Android 2.2 (API Level 8).
+    If using a device, the device must be running Android 2.2 or greater and have Google Play built in.
+
+2.Ensure that backup is enabled
+    If using the emulator, you can enable backup with the following command from your SDK tools/ path: adb shell bmgr enable true
+    If using a device, open the system Settings, select Backup & reset, then enable Back up my data and Automatic restore.
+
+3.Open your application and initialize some data
+    If you've properly implemented backup in your application, then it should request a
+    backup each time the data changes. For example, each time the user changes some data,
+    your app should call dataChanged(), which adds a backup request to the Backup Manager
+    queue. For testing purposes, you can also make a request with the following bmgr command:
+
+        adb shell bmgr backup your.package.name
+
+4.Initiate a backup operation:
+
+    adb shell bmgr run
+
+This forces the Backup Manager to perform all backup requests that are in its queue.
+
+5.Uninstall your application:
+
+    adb uninstall your.package.name
+
+6.Re-install your application.
+
+If your backup agent is successful, all the data you initialized in step 4 is restored.
