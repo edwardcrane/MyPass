@@ -153,8 +153,6 @@ public class LoginActivity extends ActionBarActivity {
     public void addTextChangedListener() {
         EditText passwordEditText = (EditText)findViewById(R.id.password);
 
-        Log.w(this.getClass().getName(), "addTextChangedListener to passwordEditText");
-
         passwordEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable arg0) {}

@@ -24,6 +24,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,9 +32,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -75,10 +78,17 @@ public class MainActivity extends ActionBarActivity {
     private final static String DEFAULT_EXPORT_EMAIL_ADDRESS = "crane.edward@gmail.com";
     private static String user_email_address = DEFAULT_EXPORT_EMAIL_ADDRESS;
 
+    private int nDefaultSearchTextColor = Color.TRANSPARENT;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        nDefaultSearchTextColor = ((EditText)findViewById(R.id.findString)).getTextColors().getDefaultColor();
+
+        // hide keyboard unless explicitly required by user clicking:
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         logged_in_user = getIntent().getStringExtra(LoginActivity.LOGGED_IN_USER);
         user_email_address = getIntent().getStringExtra(LoginActivity.USER_EMAIL_ADDRESS);
@@ -361,7 +371,13 @@ public class MainActivity extends ActionBarActivity {
 
         // values array is updated via the adapter:
         if (values.isEmpty() && !findString.equals("")) {
-            Toast.makeText(getApplicationContext(), "No Records matching \"" + findString + "\" were found", Toast.LENGTH_SHORT).show();
+            ((EditText)findViewById(R.id.findString)).setTextColor(Color.RED);
+            Toast toast = Toast.makeText(getApplicationContext(), "No Records matching \"" + findString + "\" were found", Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.show();
+        } else {
+            // SET TEXT TO DEFAULT COLOR (saved in onCreate):
+            ((EditText)findViewById(R.id.findString)).setTextColor(nDefaultSearchTextColor);
         }
     }
 
