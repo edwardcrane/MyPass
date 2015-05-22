@@ -10,7 +10,7 @@ To run the queued backup requests for all apps now:
     adb shell bmgr run
 
 To run the restore immediately:
-    adb shll bmgr restore com.airanza.apass
+    adb shell bmgr restore com.airanza.apass
 
 
 Test Case for overall backup per the Google Backup API website (http://developer.android.com/guide/topics/data/backup.html):

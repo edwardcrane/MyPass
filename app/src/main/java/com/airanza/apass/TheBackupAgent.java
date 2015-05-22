@@ -21,7 +21,13 @@
 package com.airanza.apass;
 
 import android.app.backup.BackupAgentHelper;
+import android.app.backup.BackupDataInput;
+import android.app.backup.BackupDataOutput;
 import android.app.backup.FileBackupHelper;
+import android.os.ParcelFileDescriptor;
+import android.util.Log;
+
+import java.io.IOException;
 
 /**
  * TheBackupAgent uses Google's backup api to backup app data in case the app is
@@ -42,11 +48,25 @@ public class TheBackupAgent extends BackupAgentHelper {
     // Allocate a helper and add it to the backup agent
     @Override
     public void onCreate() {
+        Log.d(getClass().getName(), "onCreate()");
+
         FileBackupHelper fileBackupHelper = new FileBackupHelper(this,
                 ResourceDBHelper.getPath(),
                 LoginDBHelper.getPath()) {
         };
 
         addHelper(APASS_FILES_BACKUP_KEY, fileBackupHelper);
+    }
+
+    @Override
+    public void onBackup(ParcelFileDescriptor oldState, BackupDataOutput data, ParcelFileDescriptor newState) throws IOException {
+        Log.d(getClass().getName(), "onBackup()");
+        super.onBackup(oldState, data, newState);
+    }
+
+    @Override
+    public void onRestore(BackupDataInput data, int appVersionCode, ParcelFileDescriptor newState) throws IOException {
+        Log.d(getClass().getName(), "onRestore()");
+        super.onRestore(data, appVersionCode, newState);
     }
 }
