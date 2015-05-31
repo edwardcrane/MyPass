@@ -217,7 +217,7 @@ public class MainActivity extends ActionBarActivity {
         }
 
         if(id == R.id.action_database_restore) {
-            this.loadDBEncrypted();
+            this.loadDBEncryptedChecked();
             return true;
         }
 
@@ -461,6 +461,36 @@ public class MainActivity extends ActionBarActivity {
         // change the default filename using the public variable "default_file_name".
         fileOpenDialog.default_file_name = getDefaultBackupDBFilename();
         fileOpenDialog.chooseFile_or_Dir(fileOpenDialog.default_file_name);
+    }
+
+    protected void loadDBEncryptedChecked() {
+        // warn user that loading data from file will destroy existing data.
+        // if they accept, then go right ahead.
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(getText(R.string.overwrite_data_dialog_title));
+        alertDialog.setMessage(getText(R.string.overwrite_data_dialog_message));
+        alertDialog.setIcon(getResources().getDrawable(android.R.drawable.ic_dialog_alert));
+
+        alertDialog.setNegativeButton(getText(R.string.overwrite_data_dialog_negative_button_text),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to invoke NO event
+                        Log.w(getClass().getName(), getString(R.string.overwrite_data_dialog_user_declined_message));
+                        Toast.makeText(getApplicationContext(), getString(R.string.overwrite_data_dialog_user_declined_message), Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        alertDialog.setPositiveButton(getText(R.string.overwrite_data_dialog_positive_button_text),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.w(getClass().getName(), getString(R.string.overwrite_data_dialog_user_accepted_message));
+                        loadDBEncrypted();
+                    }
+                });
+
+
+        final AlertDialog alert = alertDialog.create();
+        alert.show();
     }
 
     protected void loadDBEncrypted() {

@@ -22,10 +22,13 @@ package com.airanza.apass;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -43,6 +46,13 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        try {
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            ((TextView)findViewById(R.id.ver_name)).setText(getString(R.string.app_name) + " version: " + packageInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(getClass().getName(), e.getMessage(), e);
+        }
 
         ((TextView)findViewById(R.id.terms_of_use_link)).setMovementMethod(LinkMovementMethod.getInstance());
         ((TextView)findViewById(R.id.terms_of_use_link)).setText(Html.fromHtml(getResources().getString(R.string.terms_of_use_url)));

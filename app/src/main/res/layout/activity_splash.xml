@@ -30,6 +30,18 @@
         android:src="@drawable/airanza_logo_white_trans_border" />
     <RelativeLayout
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
+        <TextView
+            android:id="@+id/ver_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="version:" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true">
             <TextView

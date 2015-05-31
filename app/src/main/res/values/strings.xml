@@ -48,9 +48,17 @@
     <string name="unencrypted_risk_dialog_title">SECURITY WARNING</string>
     <string name="unencrypted_risk_dialog_message">Unencrypted CSV files may pose a security risk if accessible to hackers.  Do you wish to continue anyway?</string>
     <string name="unencrypted_risk_dialog_positive_button_text">Accept Risk and Continue</string>
-    <string name="unencrypted_risk_dialog_negative_button_text">CANCEL</string>
+    <string name="unencrypted_risk_dialog_negative_button_text">Cancel</string>
     <string name="unencrypted_risk_dialog_user_declined_message">Action Canceled.  No unencrypted CSV file was created.</string>
     <string name="unencrypted_risk_dialog_user_accepted_message">Unencrypted CSV File Risk Accepted.  Sending.</string>
+
+    <!-- OVERWRITE DATA RISK DIALOG -->
+    <string name="overwrite_data_dialog_title">OVERWRITE DATA WARNING</string>
+    <string name="overwrite_data_dialog_message">Loading data will DISCARD EXISTING RECORDS.  You may wish to create a backup file first.  Do you wish to continue?</string>
+    <string name="overwrite_data_dialog_positive_button_text">I Understand, Please Continue</string>
+    <string name="overwrite_data_dialog_negative_button_text">Cancel</string>
+    <string name="overwrite_data_dialog_user_declined_message">Data Load Canceled.  No changes have been made.</string>
+    <string name="overwrite_data_dialog_user_accepted_message">User chose to import, all existing records were discarded.</string>
 
     <string name="list_default_value">List Default Value</string>
     <string name="delete_resource_dialog_positive_button_text">OK</string>
