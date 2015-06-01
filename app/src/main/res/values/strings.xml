@@ -66,8 +66,8 @@
     <string name="delete_resource_confirm_title">Confirm Delete...</string>
     <string name="delete_resource_confirm_message">Are you sure you want to delete this?</string>
     <string name="airanza_url">&lt;a href="http://www.airanza.com"&gt;www.airanza.com&lt;/a&gt;</string>
-    <string name="terms_of_use_url">&lt;a href="http://www.airanza.com/APass/tou.html"&gt;Terms of Use&lt;/a&gt;</string>
-    <string name="privacy_policy_url">&lt;a href="http://www.airanza.com/APass/privacy.html"&gt;Privacy Policy&lt;/a&gt;</string>
+    <string name="terms_of_use_url">&lt;a href="http://www.airanza.com/products/apass/tou"&gt;Terms of Use&lt;/a&gt;</string>
+    <string name="privacy_policy_url">&lt;a href="http://www.airanza.com/products/apass/privacy"&gt;Privacy Policy&lt;/a&gt;</string>
     <!--<string name="admob_id">TESTER</string>-->
     <string name="admob_id">pub-6141378478306258</string>
     <string name="main_activity_top_banner_ad_unit_id">ca-app-pub-6141378478306258/9235092323</string>
