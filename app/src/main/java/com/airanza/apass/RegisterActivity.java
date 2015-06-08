@@ -20,9 +20,6 @@
 
 package com.airanza.apass;
 
-/**
- * Created by ecrane on 3/9/2015.
- */
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -59,13 +56,13 @@ public class RegisterActivity extends ActionBarActivity {
         EditText usernameEditText = (EditText) findViewById(R.id.reg_fullname);
         EditText passwordEditText = (EditText) findViewById(R.id.reg_password);
 
-        TextView confirmOldPasswordLabelTextView = (TextView)findViewById(R.id.reg_confirm_password_label);
+//        TextView confirmOldPasswordLabelTextView = (TextView)findViewById(R.id.reg_confirm_password_label);
         EditText confirmOldPasswordEditText = (EditText) findViewById(R.id.reg_confirm_password);
 
-        TextView newPasswordTextView = (TextView) findViewById(R.id.reg_new_password_label);
+//        TextView newPasswordTextView = (TextView) findViewById(R.id.reg_new_password_label);
         EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
 
-        TextView confirmNewPasswordTextView = (TextView) findViewById(R.id.reg_confirm_new_password_label);
+//        TextView confirmNewPasswordTextView = (TextView) findViewById(R.id.reg_confirm_new_password_label);
         EditText confirmNewPasswordEditText = (EditText) findViewById(R.id.reg_confirm_new_password);
 
         EditText passwordHintEditText = (EditText) findViewById(R.id.reg_password_hint);
@@ -76,20 +73,12 @@ public class RegisterActivity extends ActionBarActivity {
         Intent intent = getIntent();
         if(intent.getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST) == LoginActivity.CHANGE_LOGIN) {
 
-            // hide confirm old password label and field:
-            confirmOldPasswordLabelTextView.setVisibility(View.GONE);
+            // hide confirm old password:
             confirmOldPasswordEditText.setVisibility(View.GONE);
 
-            // make new password label and field visible
-            newPasswordTextView.setVisibility(View.VISIBLE);
-            newPasswordTextView.setEnabled(true);
+            // make new password visible
             newPasswordEditText.setVisibility(View.VISIBLE);
             newPasswordEditText.setEnabled(true);
-
-            // make confirm new password label visible & enabled
-            confirmNewPasswordTextView.setVisibility(View.VISIBLE);
-            confirmNewPasswordTextView.setEnabled(true);
-            confirmNewPasswordTextView.setText("Confirm New Password:");
 
             // make confirm new password field visible & enabled
             confirmNewPasswordEditText.setVisibility(View.VISIBLE);
@@ -109,8 +98,7 @@ public class RegisterActivity extends ActionBarActivity {
             emailEditText.setText(datasource.getEmail(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
         } else {
             // remove new_password and label:
-            ViewGroup vg = (ViewGroup)newPasswordTextView.getParent();
-            vg.removeView(newPasswordTextView);
+            ViewGroup vg = (ViewGroup)newPasswordEditText.getParent();
             vg.removeView(newPasswordEditText);
 
             // Listening to Login Screen link

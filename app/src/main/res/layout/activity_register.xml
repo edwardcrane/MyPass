@@ -38,51 +38,33 @@
             android:layout_height="wrap_content"
             android:padding="10dip"
             >
-            <!-- User Name Label -->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="User Name:"/>
+            <!-- User Name -->
             <EditText android:id="@+id/reg_fullname"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
+                android:hint="@string/register_username_hint"
                 android:singleLine="true" />
 
-            <!-- Password Label -->
-            <TextView
-                android:id="@+id/reg_password_label"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Password:"
-                />
+            <!-- Password -->
             <EditText android:id="@+id/reg_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
                 android:singleLine="true"
+                android:hint="@string/register_password_hint"
                 android:layout_marginTop="5dip"/>
 
-            <!-- Confirm Password Label -->
-            <TextView
-                android:id="@+id/reg_confirm_password_label"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Confirm Password:"/>
+            <!-- Confirm Password -->
             <EditText android:id="@+id/reg_confirm_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
                 android:singleLine="true"
+                android:hint="@string/register_confirm_password_hint"
                 android:layout_marginTop="5dip"/>
 
-            <!-- New Password Label -->
-            <TextView
-                android:id="@+id/reg_new_password_label"
-                android:imeOptions="flagNoExtractUi"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="New Password:"
-                android:visibility="invisible"/>
+            <!-- New Password -->
             <EditText android:id="@+id/reg_new_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -90,15 +72,10 @@
                 android:singleLine="true"
                 android:layout_marginTop="5dip"
                 android:enabled="false"
+                android:hint="@string/register_new_password_hint"
                 android:visibility="invisible"/>
 
-            <!-- Confirm New Password Label -->
-            <TextView
-                android:id="@+id/reg_confirm_new_password_label"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Confirm New Password:"
-                android:visibility="invisible"/>
+            <!-- Confirm New Password -->
             <EditText android:id="@+id/reg_confirm_new_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -106,27 +83,24 @@
                 android:singleLine="true"
                 android:layout_marginTop="5dip"
                 android:enabled="false"
+                android:hint="@string/register_confirm_new_password_hint"
                 android:visibility="invisible"/>
 
-            <!-- Password Hint Label -->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Password Hint:"/>
+            <!-- Password Hint -->
             <EditText android:id="@+id/reg_password_hint"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
+                android:hint="@string/register_password_hint_hint"
                 android:layout_marginTop="5dip"/>
 
-            <!--  Email Label -->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Email:"/>
+            <!--  Email -->
             <EditText android:id="@+id/reg_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:singleLine="true"
+                android:hint="@string/register_email_hint"
                 android:layout_marginBottom="20dip"/>
 
             <!-- Link to Login Screen -->

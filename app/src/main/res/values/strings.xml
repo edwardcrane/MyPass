@@ -44,6 +44,22 @@
     <string name="action_delete">Delete</string>
     <string name="action_save">Save</string>
 
+    <!-- LOGIN DIALOG VALUES -->
+    <string name="login_username_hint">User Name</string>
+    <string name="login_password_hint">Password</string>
+    <string name="login_remember_my_username">Remember my User Name?</string>
+    <string name="login_signup_for_apass">Sign Up for APass</string>
+    <string name="login_show_password_hint">Show Password Hint</string>
+
+    <!-- REGISTER DIALOG VALUES -->
+    <string name="register_username_hint">User Name</string>
+    <string name="register_password_hint">Password</string>
+    <string name="register_confirm_password_hint">Confirm Password</string>
+    <string name="register_new_password_hint">New Password</string>
+    <string name="register_confirm_new_password_hint">Confirm New Password</string>
+    <string name="register_password_hint_hint">Password Hint</string>
+    <string name="register_email_hint">Email</string>
+
     <!-- ACCEPT UNENCRYPTED DATA RISK DIALOG -->
     <string name="unencrypted_risk_dialog_title">SECURITY WARNING</string>
     <string name="unencrypted_risk_dialog_message">Unencrypted CSV files may pose a security risk if accessible to hackers.  Do you wish to continue anyway?</string>

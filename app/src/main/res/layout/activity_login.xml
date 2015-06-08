@@ -38,13 +38,11 @@
         android:padding="10dip"
         >
 
-        <!--  Username Label -->
-        <TextView android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="User Name:"/>
+        <!--  Username -->
         <EditText android:id="@+id/user_name"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:hint="@string/login_username_hint"
             android:layout_marginTop="5dip"
             android:singleLine="true"/>
 
@@ -52,32 +50,28 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remember me?"
+            android:text="Remember my User Name?"
             android:id="@+id/rememberMeCheckBox"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="5dp"
             android:enabled="true"
             android:clickable="true"
             android:checked="true" />
 
-        <!--  Password Label -->
-        <TextView android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Password:" />
+        <!--  Password -->
         <EditText android:id="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
             android:singleLine="true"
+            android:hint="@string/login_password_hint"
             android:password="true"/>
 
         <!-- Show Password Hint link -->
         <TextView android:id="@+id/show_password_hint"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dip"
-            android:text="Show Password Hint"
-            android:gravity="center"
-            android:textSize="20dip"/>
+            android:text="@string/login_show_password_hint"
+            android:gravity="center"/>
 
         <!-- Link to Registration Screen -->
         <TextView android:id="@+id/link_to_register"
@@ -85,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dip"
             android:layout_marginBottom="40dip"
-            android:text="New to Airanza? Register here"
+            android:text="@string/login_signup_for_apass"
             android:gravity="center"
             android:textSize="20dip"
             />
