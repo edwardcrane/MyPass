@@ -26,12 +26,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -51,66 +50,6 @@ public class RegisterActivity extends ActionBarActivity {
         } catch (SQLException e) {
             Log.w(this.getClass().getName(), e);
             return;
-        }
-
-        EditText usernameEditText = (EditText) findViewById(R.id.reg_fullname);
-        EditText passwordEditText = (EditText) findViewById(R.id.reg_password);
-
-//        TextView confirmOldPasswordLabelTextView = (TextView)findViewById(R.id.reg_confirm_password_label);
-        EditText confirmOldPasswordEditText = (EditText) findViewById(R.id.reg_confirm_password);
-
-//        TextView newPasswordTextView = (TextView) findViewById(R.id.reg_new_password_label);
-        EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
-
-//        TextView confirmNewPasswordTextView = (TextView) findViewById(R.id.reg_confirm_new_password_label);
-        EditText confirmNewPasswordEditText = (EditText) findViewById(R.id.reg_confirm_new_password);
-
-        EditText passwordHintEditText = (EditText) findViewById(R.id.reg_password_hint);
-        EditText emailEditText = (EditText) findViewById(R.id.reg_email);
-
-        TextView linkToLogin = (TextView) findViewById(R.id.link_to_login);
-
-        Intent intent = getIntent();
-        if(intent.getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST) == LoginActivity.CHANGE_LOGIN) {
-
-            // hide confirm old password:
-            confirmOldPasswordEditText.setVisibility(View.GONE);
-
-            // make new password visible
-            newPasswordEditText.setVisibility(View.VISIBLE);
-            newPasswordEditText.setEnabled(true);
-
-            // make confirm new password field visible & enabled
-            confirmNewPasswordEditText.setVisibility(View.VISIBLE);
-            confirmNewPasswordEditText.setEnabled(true);
-
-            // hide link to login:
-            linkToLogin.setVisibility(View.INVISIBLE);
-            linkToLogin.setEnabled(false);
-
-            // setup username with current username:
-            usernameEditText.setText(intent.getStringExtra(LoginActivity.LOGGED_IN_USER));
-
-            // setup password hint
-            passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
-
-            // setup email address:
-            emailEditText.setText(datasource.getEmail(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
-        } else {
-            // remove new_password and label:
-            ViewGroup vg = (ViewGroup)newPasswordEditText.getParent();
-            vg.removeView(newPasswordEditText);
-
-            // Listening to Login Screen link
-            linkToLogin.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View arg0) {
-                    // grab values and try to create the login:
-
-                    // Switching to Login Screen/closing register screen
-                    finish();
-                }
-            });
         }
     }
 
@@ -143,11 +82,9 @@ public class RegisterActivity extends ActionBarActivity {
 
     public void onRegisterButtonClick(View view) {
 
-        EditText usernameEditText = (EditText) findViewById(R.id.reg_fullname);
+        EditText usernameEditText = (EditText) findViewById(R.id.reg_username);
         EditText passwordEditText = (EditText) findViewById(R.id.reg_password);
         EditText confirmPasswordEditText = (EditText) findViewById(R.id.reg_confirm_password);
-        EditText newPasswordEditText = (EditText) findViewById(R.id.reg_new_password);
-        EditText confirmNewPasswordEditText = (EditText) findViewById(R.id.reg_confirm_new_password);
         EditText passwordHintEditText = (EditText) findViewById(R.id.reg_password_hint);
         EditText emailEditText = (EditText) findViewById(R.id.reg_email);
 
@@ -156,10 +93,6 @@ public class RegisterActivity extends ActionBarActivity {
         String confirmPassword = confirmPasswordEditText.getText().toString();
 
         String newPassword = "";
-        if(getIntent().getIntExtra(LoginActivity.REGISTER_ACTION, LoginActivity.LOGIN_REQUEST) == LoginActivity.CHANGE_LOGIN) {
-            newPassword = newPasswordEditText.getText().toString();
-        }
-        String confirmNewPassword = confirmNewPasswordEditText.getText().toString();
         String passwordHint = passwordHintEditText.getText().toString();
         String email = emailEditText.getText().toString();
 
@@ -170,8 +103,13 @@ public class RegisterActivity extends ActionBarActivity {
         Intent result = new Intent("com.airanza.apass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
 
         if((actionCode != LoginActivity.CHANGE_LOGIN && !password.equals(confirmPassword)) ||
-                (actionCode == LoginActivity.CHANGE_LOGIN && !newPassword.equals(confirmNewPassword))) {
-            Toast.makeText(getApplicationContext(), "Password and Confirmation do not match!", Toast.LENGTH_LONG).show();
+                (actionCode == LoginActivity.CHANGE_LOGIN && !newPassword.equals(confirmPassword))) {
+            Toast t = Toast.makeText(getApplicationContext(), "Password and Confirmation do not match!  Please re-enter.", Toast.LENGTH_LONG);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
+            passwordEditText.setText("");
+            confirmPasswordEditText.setText("");
+            passwordEditText.requestFocus();
             return;
         }
 
@@ -180,18 +118,22 @@ public class RegisterActivity extends ActionBarActivity {
                 password.length() <= 0 ||
                 ((actionCode != LoginActivity.CHANGE_LOGIN) && confirmPassword.length() <=0) ||
                 ((actionCode == LoginActivity.CHANGE_LOGIN) && (newPassword.length() <= 0)
-                    && (confirmNewPassword.length() <=0)) ||
+                    && (confirmPassword.length() <=0)) ||
                 passwordHint.length() <= 0 ||
                 email.length() <= 0) {
             // display an error message and allow the user to try again:
-            Toast.makeText(getApplicationContext(), "All fields must be completed.  Please try again.", Toast.LENGTH_LONG).show();
+            Toast t = Toast.makeText(getApplicationContext(), "All fields must be completed.  Please try again.", Toast.LENGTH_LONG);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
             return;
         }
 
         // we cannot have duplicate login:
         if(datasource.isExistingUsername(username)  && actionCode == LoginActivity.LOGIN_REQUEST) {
             // display an error message and allow the user to try again:
-            Toast.makeText(getApplicationContext(), "User Name [" + username + "] already exists.  Please try again.", Toast.LENGTH_LONG).show();
+            Toast t = Toast.makeText(getApplicationContext(), "User Name [" + username + "] already exists.  Please try again.", Toast.LENGTH_LONG);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
             return;
         }
 
@@ -203,9 +145,15 @@ public class RegisterActivity extends ActionBarActivity {
             // now we can throw away the old password.
             password = newPassword;
         }
-        if(!datasource.isValidLogin(username, password)) {
+        if(datasource.isValidLogin(username, password)) {
+            // if good login created, send username & password back to caller LoginActivity:
+            result.putExtra(LoginActivity.LOGGED_IN_USER, username);
+            result.putExtra(LoginActivity.LOGGED_IN_PASSWORD, password);
+        } else {
             // display an error message and allow the user to try again or cancel:
-            Toast.makeText(getApplicationContext(), "USER NAME [" + username + "] WAS NOT CREATED.  Please try again.", Toast.LENGTH_LONG).show();
+            Toast t = Toast.makeText(getApplicationContext(), "USER NAME [" + username + "] WAS NOT CREATED.  Please try again.", Toast.LENGTH_LONG);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
             Log.w(this.getClass().getName(), "LOGIN CREATION FAILED FOR [" + username + "] [" + password + "] [" + email + "]");
             return;
         }

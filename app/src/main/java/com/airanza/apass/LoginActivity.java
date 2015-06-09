@@ -54,6 +54,7 @@ public class LoginActivity extends ActionBarActivity {
     private SharedPreferences prefs = null;
     static final String LOGGED_IN = "logged_in";
     static final String LOGGED_IN_USER = "logged_in_user";
+    static final String LOGGED_IN_PASSWORD = "logged_in_password";
     static final String LOGGED_IN_TIME = "logged_in_time";
 
     static final String USER_EMAIL_ADDRESS = "user_email_address";
@@ -70,8 +71,6 @@ public class LoginActivity extends ActionBarActivity {
         // setting default screen to login.xml
         setContentView(R.layout.activity_login);
 
-        TextView linkToRegisterTextView = (TextView) findViewById(R.id.link_to_register);
-
         try {
             datasource = new LoginDataSource(this);
             datasource.open();
@@ -85,20 +84,10 @@ public class LoginActivity extends ActionBarActivity {
             }
         });
 
-        // if a user is already registered, then don't allow new user.
-        if(datasource.logins() > 0) {
-            linkToRegisterTextView.setVisibility(View.INVISIBLE);
-        } else {
-            // Listening to register new account link
-            linkToRegisterTextView.setOnClickListener(new View.OnClickListener() {
-
-                public void onClick(View v) {
-                    // Switching to Register screen
-                    Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
-                    startActivityForResult(intent, REGISTER_REQUEST);
-                    // process the result in this.onActivityResult();
-                }
-            });
+        // if there are no users registered, then open the RegisterActivity:
+        if(datasource.logins() == 0) {
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+            startActivityForResult(intent, REGISTER_REQUEST);
         }
 
         String rememberedLastUser = datasource.getRememberedLastUser();
@@ -121,6 +110,15 @@ public class LoginActivity extends ActionBarActivity {
         if(requestCode == REGISTER_REQUEST) {
             if(resultCode == RESULT_OK) {
                 Log.i(getClass().getName(), "REGISTER SUCCEEDED: " + requestCode + " " + resultCode + " " + data);
+                // set username and password to result from Register:
+                String newUser = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
+                String newPass = data.getStringExtra(LoginActivity.LOGGED_IN_PASSWORD);
+                if(newUser != null && !newUser.isEmpty()) {
+                    ((EditText)findViewById(R.id.user_name)).setText(newUser);
+                }
+                if(newPass != null && !newPass.isEmpty()) {
+                    ((EditText)findViewById(R.id.password)).setText(newPass);
+                }
             } else {
                 Log.e(getClass().getName(), "REGISTER FAILED: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
                 // Exit this activity, which will also cause progam to shut down:

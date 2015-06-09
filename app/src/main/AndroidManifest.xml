@@ -50,11 +50,15 @@
         </activity>
 
         <activity android:name="com.airanza.apass.LoginActivity"
-            android:label="Login"
+            android:label="Login to APAss"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name="com.airanza.apass.RegisterActivity"
-            android:label="Login Info"
+            android:label="Create APass Login"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+        <activity android:name="com.airanza.apass.ChangeRegistrationActivity"
+            android:label="Change APass Login Info"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity

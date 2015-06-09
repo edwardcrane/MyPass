@@ -403,9 +403,19 @@ public class MainActivity extends ActionBarActivity {
         super.onPause();
     }
 
+    @Override
+    public void onBackPressed() {
+        if(!((EditText)findViewById(R.id.findString)).getText().toString().isEmpty()) {
+            // clear the search string first.
+            ((EditText)findViewById(R.id.findString)).setText("");
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     public void onUserSelectedChangeLogin() {
-        Log.i(getClass().getName(), "onUserSelectedChangeLogin(): Starting Register Activity.  logged_in_user: [" + logged_in_user + "]");
-        Intent intent = new Intent(this, RegisterActivity.class);
+        Log.i(getClass().getName(), "onUserSelectedChangeLogin(): Starting ChangeRegistrationActivity.  logged_in_user: [" + logged_in_user + "]");
+        Intent intent = new Intent(this, ChangeRegistrationActivity.class);
 
         /* Set attributes of Intent to notify RegisterActivity that it should function as
         *  change login activity.  Unset, it will behave as a timeout Splash screen and
