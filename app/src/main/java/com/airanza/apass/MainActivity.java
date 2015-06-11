@@ -125,14 +125,14 @@ public class MainActivity extends ActionBarActivity {
         AdView mTopAdView = (AdView) findViewById(R.id.main_top_adview);
         AdRequest topAadRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(getString(R.string.primary_android_admob_test_device))
+//                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                 .build();
         mTopAdView.loadAd(topAadRequest);
 
         AdView mBottomAdView = (AdView) findViewById(R.id.main_bottom_adview);
         AdRequest bottomAdRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(getString(R.string.primary_android_admob_test_device))
+//                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                 .build();
         mBottomAdView.loadAd(bottomAdRequest);
     }

@@ -73,7 +73,7 @@ public class EditResourceActivity extends ActionBarActivity {
         AdView mBottomAdView = (AdView) findViewById(R.id.edit_bottom_adview);
         AdRequest bottomAdRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(getString(R.string.primary_android_admob_test_device))
+//                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                 .build();
         mBottomAdView.loadAd(bottomAdRequest);
 
