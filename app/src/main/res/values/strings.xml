@@ -52,12 +52,14 @@
     <string name="login_signup_for_apass">Sign Up for APass</string>
 
     <!-- REGISTER DIALOG VALUES -->
+    <string name="register_create_login_title">Create APass Login</string>
     <string name="register_username_hint">User Name</string>
     <string name="register_password_hint">Password</string>
     <string name="register_confirm_password_hint">Confirm Password</string>
     <string name="register_password_hint_hint">Password Hint</string>
     <string name="register_email_hint">Email</string>
     <string name="register_confirm_email_hint">Confirm Email</string>
+    <string name="register_password_and_confirm_do_not_match">Password and Confirmation do not match!  Please re-enter.</string>
 
     <!-- CHANGE REGISTRATION DIALOG VALUES -->
     <string name="change_registration_username_hint">User Name</string>

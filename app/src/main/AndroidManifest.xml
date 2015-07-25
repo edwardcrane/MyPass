@@ -54,7 +54,7 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name="com.airanza.apass.RegisterActivity"
-            android:label="Create APass Login"
+            android:label="@string/register_create_login_title"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name="com.airanza.apass.ChangeRegistrationActivity"
