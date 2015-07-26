@@ -109,7 +109,7 @@ public class NewResourceActivity extends ActionBarActivity {
                 ((EditText)findViewById(R.id.password)).getText().toString(),       // password
                 ((EditText)findViewById(R.id.description)).getText().toString());   // description
 
-        Toast.makeText(getApplicationContext(), "Saved [" + resource + "]", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), String.format(getString(R.string.new_saved_successfully), resource), Toast.LENGTH_LONG).show();
         finish();
     }
 

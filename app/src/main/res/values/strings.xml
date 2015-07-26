@@ -27,29 +27,41 @@
     <string name="password">Password</string>
     <string name="description">Description</string>
     <string name="findString">Search</string>
+    <string name="no_matching_records_found">No Records Matching \"%s\" Were Found.</string>
     <string name="button_save">Save</string>
     <string name="button_find_resource">Find</string>
-    <string name="button_new_resource">New Record...</string>
+    <string name="button_new_resource">New Record…</string>
     <string name="button_cancel">Cancel</string>
 
     <!-- Menu Strings -->
     <string name="action_email_csv_file">Email CSV File</string>
-    <string name="action_advanced">Advanced...</string>
-    <string name="action_save_encrypted_file">Save Encrypted File...</string>
-    <string name="action_load_encrypted_file">Load Encrypted File...</string>
-    <string name="action_change_login">Change Login...</string>
-    <string name="action_show_splash">About...</string>
+    <string name="action_advanced">Advanced…</string>
+    <string name="action_save_encrypted_file">Save Encrypted File…</string>
+    <string name="action_load_encrypted_file">Load Encrypted File…</string>
+    <string name="action_change_login">Change Login…</string>
+    <string name="action_show_splash">About…</string>
     <string name="action_add_resource">Add</string>
     <string name="action_cancel">Cancel</string>
     <string name="action_delete">Delete</string>
     <string name="action_save">Save</string>
 
     <!-- LOGIN DIALOG VALUES -->
+    <string name="login_title">Login to APass</string>
     <string name="login_username_hint">User Name</string>
     <string name="login_password_hint">Password</string>
     <string name="login_remember_my_username">Remember my User Name?</string>
     <string name="login_show_password_hint">Show Password Hint</string>
     <string name="login_signup_for_apass">Sign Up for APass</string>
+    <string name="login_display_password_hint">Password Hint: [%s]</string>
+    <string name="login_password_hint_enter_valid_username">Please specify valid User Name.</string>
+
+    <!-- NEW DIALOG VALUES -->
+    <string name="new_title">New</string>
+    <string name="new_saved_successfully">Saved [%s]</string>
+
+    <!-- EDIT DIALOG VALUES -->
+    <string name="edit_title">Edit</string>
+    <string name="edit_resource_updated">Updated Resource [%s]</string>
 
     <!-- REGISTER DIALOG VALUES -->
     <string name="register_create_login_title">Create APass Login</string>
@@ -60,8 +72,15 @@
     <string name="register_email_hint">Email</string>
     <string name="register_confirm_email_hint">Confirm Email</string>
     <string name="register_password_and_confirm_do_not_match">Password and Confirmation do not match!  Please re-enter.</string>
+    <string name="register_fields_must_be_completed">All fields must be completed.  Please try again.</string>
+    <string name="register_user_already_exists">User Name [%s] already exists.  Please try again.</string>
+    <string name="register_user_was_not_created">USER NAME [%s] WAS NOT CREATED.  Please try again.</string>
+
+    <!-- SPLASH DIALOG VALUES -->
+    <string name="splash_version">version:</string>
 
     <!-- CHANGE REGISTRATION DIALOG VALUES -->
+    <string name="change_registration_title">Change Login Info</string>
     <string name="change_registration_username_hint">User Name</string>
     <string name="change_registration_password_hint">Old Password</string>
     <string name="change_registration_new_password_hint">New Password</string>
@@ -69,6 +88,12 @@
     <string name="change_registration_password_hint_hint">Password Hint</string>
     <string name="change_registration_email_hint">Email</string>
     <string name="change_registration_confirm_email_hint">Confirm Email</string>
+    <string name="change_registration_username_password_invalid">Username and Password must be valid!</string>
+    <string name="change_registration_password_confirm_do_not_match">New Password and Confirmation do not match!  Please re-enter.</string>
+    <string name="change_registration_password_hint_new_password">New Password Hint must be specified for New Password.</string>
+    <string name="change_registration_email_confirm_do_not_match">New Email and Confirmation do not match!  Please re-enter.</string>
+    <string name="change_registration_username_not_updated">USER NAME [%s] WAS NOT UPDATED.  Please try again.</string>
+    <string name="change_registration_username_updated_successfully">USERNAME [%s] WAS UPDATED SUCCESSFULLY!</string>
 
     <!-- ACCEPT UNENCRYPTED DATA RISK DIALOG -->
     <string name="unencrypted_risk_dialog_title">SECURITY WARNING</string>
@@ -89,7 +114,7 @@
     <string name="list_default_value">List Default Value</string>
     <string name="delete_resource_dialog_positive_button_text">OK</string>
     <string name="delete_resource_dialog_negative_button_text">Cancel</string>
-    <string name="delete_resource_confirm_title">Confirm Delete...</string>
+    <string name="delete_resource_confirm_title">Confirm Delete…</string>
     <string name="delete_resource_confirm_message">Are you sure you want to delete this?</string>
     <string name="airanza_url">&lt;a href="http://www.airanza.com"&gt;www.airanza.com&lt;/a&gt;</string>
     <string name="terms_of_use_url">&lt;a href="http://www.airanza.com/products/apass/tou"&gt;Terms of Use&lt;/a&gt;</string>
@@ -102,5 +127,6 @@
     <string name="new_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/4525691123</string>
     <string name="test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="primary_android_admob_test_device">03E2E4F5EE38F1A8EF3355F642CCBA94</string>
+    <string name="login_remember_user_name_hint">Remember my User Name?</string>
 
 </resources>

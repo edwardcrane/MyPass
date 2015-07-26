@@ -104,7 +104,7 @@ public class RegisterActivity extends ActionBarActivity {
 
         if((actionCode != LoginActivity.CHANGE_LOGIN && !password.equals(confirmPassword)) ||
                 (actionCode == LoginActivity.CHANGE_LOGIN && !newPassword.equals(confirmPassword))) {
-            Toast t = Toast.makeText(getApplicationContext(), "Password and Confirmation do not match!  Please re-enter.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getText(R.string.register_password_and_confirm_do_not_match), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             passwordEditText.setText("");
@@ -122,7 +122,7 @@ public class RegisterActivity extends ActionBarActivity {
                 passwordHint.length() <= 0 ||
                 email.length() <= 0) {
             // display an error message and allow the user to try again:
-            Toast t = Toast.makeText(getApplicationContext(), "All fields must be completed.  Please try again.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getText(R.string.register_fields_must_be_completed), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             return;
@@ -131,7 +131,7 @@ public class RegisterActivity extends ActionBarActivity {
         // we cannot have duplicate login:
         if(datasource.isExistingUsername(username)  && actionCode == LoginActivity.LOGIN_REQUEST) {
             // display an error message and allow the user to try again:
-            Toast t = Toast.makeText(getApplicationContext(), "User Name [" + username + "] already exists.  Please try again.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), String.format(getString(R.string.register_user_already_exists), username), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             return;
@@ -151,10 +151,10 @@ public class RegisterActivity extends ActionBarActivity {
             result.putExtra(LoginActivity.LOGGED_IN_PASSWORD, password);
         } else {
             // display an error message and allow the user to try again or cancel:
-            Toast t = Toast.makeText(getApplicationContext(), "USER NAME [" + username + "] WAS NOT CREATED.  Please try again.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), String.format(getString(R.string.register_user_was_not_created), username), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
-            Log.w(this.getClass().getName(), "LOGIN CREATION FAILED FOR [" + username + "] [" + password + "] [" + email + "]");
+            Log.w(this.getClass().getName(), String.format(getString(R.string.register_user_was_not_created), username));
             return;
         }
 

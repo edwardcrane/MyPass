@@ -50,7 +50,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Remember my User Name?"
+            android:text="@string/login_remember_user_name_hint"
             android:id="@+id/rememberMeCheckBox"
             android:layout_marginBottom="5dp"
             android:enabled="true"

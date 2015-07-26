@@ -137,12 +137,11 @@ public class LoginActivity extends ActionBarActivity {
         String username = ((EditText) findViewById(R.id.user_name)).getText().toString();
         String passwordHint = datasource.getPasswordHint(username);
         if(passwordHint.length() > 0) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Password Hint: [" + passwordHint + "]",
-                    Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), String.format(getString(R.string.login_display_password_hint), passwordHint), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Please specify valid User Name.", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.login_password_hint_enter_valid_username), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);
             toast.show();
         }

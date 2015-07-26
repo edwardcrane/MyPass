@@ -30,9 +30,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -55,12 +53,6 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         }
 
         EditText usernameEditText = (EditText) findViewById(R.id.change_reg_username);
-        EditText passwordEditText = (EditText) findViewById(R.id.change_reg_password);
-
-        EditText newPasswordEditText = (EditText) findViewById(R.id.change_reg_new_password);
-
-        EditText confirmNewPasswordEditText = (EditText) findViewById(R.id.change_reg_confirm_new_password);
-
         EditText passwordHintEditText = (EditText) findViewById(R.id.change_reg_password_hint);
         EditText emailEditText = (EditText) findViewById(R.id.change_reg_email);
 
@@ -133,7 +125,7 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         String confirmEmail = confirmEmailEditText.getText().toString();
 
         if(!datasource.isValidLogin(username, password)) {
-            Toast t = Toast.makeText(getApplicationContext(), "Username and Password must be valid!", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_username_password_invalid), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             return;
@@ -141,14 +133,14 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
 
         // if new password is not blank, new password confirmation must match:
         if((!newPassword.equals("")) && !newPassword.equals(confirmNewPassword)) {
-            Toast t = Toast.makeText(getApplicationContext(), "New Password and Confirmation do not match!  Please re-enter.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_password_confirm_do_not_match), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             newPasswordEditText.setText("");
             confirmNewPasswordEditText.setText("");
             newPasswordEditText.requestFocus();
             if(passwordHint.equals("")) {
-                Toast t1 = Toast.makeText(getApplicationContext(), "New Password Hint must be specified for New Password", Toast.LENGTH_LONG);
+                Toast t1 = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_password_hint_new_password), Toast.LENGTH_LONG);
                 t1.setGravity(Gravity.CENTER, 0, 0);
                 t1.show();
                 passwordHintEditText.requestFocus();
@@ -158,7 +150,7 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
 
         // if email is not blank, new email is not same as old email, new email confirmation must match:
         if((!email.equals("")) && !email.equals(datasource.getEmail(oldUsername)) && !email.equals(confirmEmail)) {
-            Toast t = Toast.makeText(getApplicationContext(), "New Email and Confirmation do not match!  Please re-enter.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_email_confirm_do_not_match), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             emailEditText.setText("");
@@ -171,13 +163,13 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
 
         if(!datasource.isValidLogin(username, newPassword)) {
             // display an error message and allow the user to try again or cancel:
-            Toast t = Toast.makeText(getApplicationContext(), "USER NAME [" + username + "] WAS NOT UPDATED.  Please try again.", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), String.format(getString(R.string.change_registration_username_not_updated), username), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             Log.w(this.getClass().getName(), "LOGIN UPDATE FAILED FOR [" + username + "] [" + password + "] [" + email + "]");
             return;
         } else {
-            Toast t = Toast.makeText(getApplicationContext(), "USERNAME [" + username + "] WAS UPDATED SUCCESSFULLY!", Toast.LENGTH_LONG);
+            Toast t = Toast.makeText(getApplicationContext(), String.format(getString(R.string.change_registration_username_updated_successfully), username), Toast.LENGTH_LONG);
             t.setGravity(Gravity.CENTER, 0, 0);
             t.show();
             Log.w(this.getClass().getName(), "USERNAME [" + username + "] [" + password + "] [" + email + "] WAS UPDATED SUCCESSFULLY!");

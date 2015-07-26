@@ -133,7 +133,7 @@ public class EditResourceActivity extends ActionBarActivity {
 
         datasource.update(resource);
 
-        Toast.makeText(getApplicationContext(), "Updated Resource [" + resource + "]", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), String.format(getString(R.string.edit_resource_updated), resource), Toast.LENGTH_LONG).show();
         Log.w(this.getClass().getName(), "Updated Resource [" + resource + "]");
 
         finish();

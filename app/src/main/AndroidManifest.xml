@@ -50,7 +50,7 @@
         </activity>
 
         <activity android:name="com.airanza.apass.LoginActivity"
-            android:label="Login to APass"
+            android:label="@string/login_title"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name="com.airanza.apass.RegisterActivity"
@@ -58,12 +58,12 @@
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity android:name="com.airanza.apass.ChangeRegistrationActivity"
-            android:label="Change APass Login Info"
+            android:label="@string/change_registration_title"
             android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name="com.airanza.apass.NewResourceActivity"
-            android:label="New"
+            android:label="@string/new_title"
             android:parentActivityName="com.airanza.apass.MainActivity"
             android:windowSoftInputMode="stateVisible"
             >
@@ -73,7 +73,7 @@
         </activity>
         <activity
             android:name="com.airanza.apass.EditResourceActivity"
-            android:label="Edit"
+            android:label="@string/edit_title"
             android:parentActivityName="com.airanza.apass.MainActivity"
             android:windowSoftInputMode="stateHidden">
             <meta-data

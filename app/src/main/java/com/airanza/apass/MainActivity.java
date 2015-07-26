@@ -372,7 +372,7 @@ public class MainActivity extends ActionBarActivity {
         // values array is updated via the adapter:
         if (values.isEmpty() && !findString.equals("")) {
             ((EditText)findViewById(R.id.findString)).setTextColor(Color.RED);
-            Toast toast = Toast.makeText(getApplicationContext(), "No Records matching \"" + findString + "\" were found", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), String.format(getString(R.string.no_matching_records_found), findString), Toast.LENGTH_LONG);
             toast.setGravity(Gravity.CENTER, 0, 0);
             toast.show();
         } else {
