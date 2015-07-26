@@ -285,7 +285,7 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
             return false;
         }
-        Toast.makeText(getApplicationContext(), "Exported " + count + " records to " + EXPORT_FILE_NAME, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), String.format(getString(R.string.export_exported_value_count), count, EXPORT_FILE_NAME), Toast.LENGTH_LONG).show();
         if(count > -1)
             return true;
         else return false;
@@ -306,21 +306,21 @@ public class MainActivity extends ActionBarActivity {
             if(user_email_address != null && user_email_address.length() > 0) {
                 addresses = new String[] { user_email_address };
             } else {
-                Toast.makeText(getApplicationContext(), "ERROR: There is no email address for user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), String.format(getString(R.string.export_email_address_missing), logged_in_user), Toast.LENGTH_LONG).show();
                 Log.e(this.getClass().getName(), "ERROR: There is no email address for user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.");
             }
 
             emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
-            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "MyPass Backup File");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Backup of Entries in MyPass.");
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.email_encrypted_file_subject));
+            emailIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.email_encrypted_file_body));
 
             File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
             if (!attachment.exists() || !attachment.canRead()) {
-                Toast.makeText(getApplicationContext(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].", Toast.LENGTH_LONG).show();
-                Log.e(this.getClass().getName(), "ATTACHMENT ERROR!  Exists: [" + attachment.exists() + "] canRead: [" + attachment.canRead() + "].");
+                Toast.makeText(getApplicationContext(), String.format(getString(R.string.email_encrypted_file_attachment_error), attachment.exists(), attachment.canRead()), Toast.LENGTH_LONG).show();
+                Log.e(this.getClass().getName(), String.format(getString(R.string.email_encrypted_file_attachment_error), attachment.exists(), attachment.canRead()));
             } else {
                 Uri uri = Uri.fromFile(attachment);
-                Toast.makeText(getApplicationContext(), "ATTACHING: " + uri.getPath(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), String.format(getString(R.string.email_encrypted_file_attaching), uri.getPath()), Toast.LENGTH_LONG).show();
                 emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
             }
 
@@ -328,7 +328,7 @@ public class MainActivity extends ActionBarActivity {
             startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
 
         } catch(android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, "There are no email clients installed.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.email_encrypted_file_no_email_clients_configured), Toast.LENGTH_LONG).show();
             return false;
         } catch(Exception e) {
             Log.e(getClass().getName(), e.getMessage(), e);
@@ -342,7 +342,7 @@ public class MainActivity extends ActionBarActivity {
             case LoginActivity.CHANGE_LOGIN:
                 if(resultCode == RESULT_OK) {
                     logged_in_user = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
-                    Toast.makeText(getApplicationContext(), "Logged in as [" + logged_in_user + "]", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), String.format(getString(R.string.logged_in_as_message), logged_in_user), Toast.LENGTH_LONG).show();
                 } else {
                     // THERE IS NOTHING TO DO HERE UNLESS YOU WANT TO LOG USER OFF AND SHUT DOWN.
                 }
@@ -453,10 +453,10 @@ public class MainActivity extends ActionBarActivity {
                         try {
                             AndroidEncryptor.encrypt(ResourceDBHelper.getPath(), chosenDir);
                             Log.e(getClass().getName(), "File " + chosenDir + " Saved Successfully!");
-                            Toast.makeText(getApplicationContext(), "File " + chosenDir + " Saved Successfully!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_saved_successfully), chosenDir), Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
                             Log.e(getClass().getName(), "FILE "+ chosenDir + " SAVE FAILED: ", e);
-                            Toast.makeText(getApplicationContext(), "FILE " + chosenDir + " SAVE FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_save_failed), chosenDir, e.getMessage()), Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -518,10 +518,10 @@ public class MainActivity extends ActionBarActivity {
                             resourcedatasource.open();
                             adapter.notifyDataSetChanged();
                             Log.e(getClass().getName(), "File " + chosenDir + " Loaded Successfully!");
-                            Toast.makeText(getApplicationContext(), "File " + chosenDir + " Loaded Successfully!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_loaded_successfully), chosenDir), Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
                             Log.e(getClass().getName(), "FILE " + chosenDir + " LOAD FAILED: ", e);
-                            Toast.makeText(getApplicationContext(), "FILE " + chosenDir + " LOAD FAILED: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_load_failed), chosenDir, e.getMessage()), Toast.LENGTH_LONG).show();
                         }
                     }
                 }

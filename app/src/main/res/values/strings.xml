@@ -45,6 +45,10 @@
     <string name="action_delete">Delete</string>
     <string name="action_save">Save</string>
 
+    <!-- EXPORT VALUES -->
+    <string name="export_exported_value_count">Exported %d records to %s</string>
+    <string name="export_email_address_missing">ERROR: There is no email address for user [%s].  USING DEFAULT EMAIL ADDRESS.</string>
+
     <!-- LOGIN DIALOG VALUES -->
     <string name="login_title">Login to APass</string>
     <string name="login_username_hint">User Name</string>
@@ -54,6 +58,8 @@
     <string name="login_signup_for_apass">Sign Up for APass</string>
     <string name="login_display_password_hint">Password Hint: [%s]</string>
     <string name="login_password_hint_enter_valid_username">Please specify valid User Name.</string>
+    <!-- LOGGED IN MESSAGE -->
+    <string name="logged_in_as_message">Logged in as [%s]</string>
 
     <!-- NEW DIALOG VALUES -->
     <string name="new_title">New</string>
@@ -112,21 +118,48 @@
     <string name="overwrite_data_dialog_user_accepted_message">User chose to import, all existing records were discarded.</string>
 
     <string name="list_default_value">List Default Value</string>
+
+    <!-- DELETE DIALOG VALUES -->
     <string name="delete_resource_dialog_positive_button_text">OK</string>
     <string name="delete_resource_dialog_negative_button_text">Cancel</string>
     <string name="delete_resource_confirm_title">Confirm Delete…</string>
     <string name="delete_resource_confirm_message">Are you sure you want to delete this?</string>
+
+    <!-- URL VALUES -->
     <string name="airanza_url">&lt;a href="http://www.airanza.com"&gt;www.airanza.com&lt;/a&gt;</string>
     <string name="terms_of_use_url">&lt;a href="http://www.airanza.com/products/apass/tou"&gt;Terms of Use&lt;/a&gt;</string>
     <string name="privacy_policy_url">&lt;a href="http://www.airanza.com/products/apass/privacy"&gt;Privacy Policy&lt;/a&gt;</string>
+
+    <!-- SAVE ENCRYPTED FILE VALUES -->
+    <string name="file_saved_successfully">File %s Saved Successfully!"</string>
+    <string name="file_save_failed">FILE %s SAVE FAILED: %s</string>
+    <string name="file_loaded_successfully">File %s Loaded Successfully</string>
+    <string name="file_load_failed">FILE %s LOAD FAILED: %s</string>
+
+    <!-- EMAIL FILE VALUES -->
+    <string name="email_encrypted_file_subject">MyPass Backup File</string>
+    <string name="email_encrypted_file_body">Backup of Entries in MyPass.</string>
+    <string name="email_encrypted_file_attaching">ATTACHING: %s</string>
+    <string name="email_encrypted_file_attachment_error">ATTACHMENT ERROR!  Exists: [%b] canRead: [%b].</string>
+    <string name="email_encrypted_file_no_email_clients_configured">There are no email clients installed.</string>
+
+    <!-- ADMOB VALUES -->
     <!--<string name="admob_id">TESTER</string>-->
-    <string name="admob_id">pub-6141378478306258</string>
-    <string name="main_activity_top_banner_ad_unit_id">ca-app-pub-6141378478306258/9235092323</string>
-    <string name="main_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/7618758328</string>
-    <string name="edit_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/9095491524</string>
-    <string name="new_activity_bottom_banner_ad_unit_id">ca-app-pub-6141378478306258/4525691123</string>
-    <string name="test_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
-    <string name="primary_android_admob_test_device">03E2E4F5EE38F1A8EF3355F642CCBA94</string>
+    <string name="admob_id" translatable="false">pub-6141378478306258</string>
+    <string name="main_activity_top_banner_ad_unit_id" translatable="false">ca-app-pub-6141378478306258/9235092323</string>
+    <string name="main_activity_bottom_banner_ad_unit_id" translatable="false">ca-app-pub-6141378478306258/7618758328</string>
+    <string name="edit_activity_bottom_banner_ad_unit_id" translatable="false">ca-app-pub-6141378478306258/9095491524</string>
+    <string name="new_activity_bottom_banner_ad_unit_id" translatable="false">ca-app-pub-6141378478306258/4525691123</string>
+    <string name="test_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="primary_android_admob_test_device" translatable="false">03E2E4F5EE38F1A8EF3355F642CCBA94</string>
     <string name="login_remember_user_name_hint">Remember my User Name?</string>
+
+    <!-- APPRATER VALUES -->
+    <string name="apprater_rate_title">Rate %s</string>
+    <string name="apprater_rate_message">If you enjoy using %s, would you mind taking a moment to rate it?  Thanks for your support!</string>
+    <string name="apprater_rate_now">Yes, Rate %s</string>
+    <string name="apprater_rate_later">Remind me Later</string>
+    <string name="apprater_rate_cancel">No, Thanks</string>
+    <string name="apprater_market_url" translatable="false">market://details?id=%s</string>
 
 </resources>

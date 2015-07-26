@@ -35,8 +35,8 @@ android {
         applicationId "com.airanza.apass"
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 9
-        versionName "1.9"
+        versionCode 10
+        versionName "1.010"
     }
     buildTypes {
         release {
