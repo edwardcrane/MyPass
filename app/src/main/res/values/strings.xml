@@ -46,7 +46,7 @@
     <string name="action_save">Save</string>
 
     <!-- EXPORT VALUES -->
-    <string name="export_exported_value_count">Exported %d records to %s</string>
+    <string name="export_exported_value_count">Exported %1$d records to %2$s</string>
     <string name="export_email_address_missing">ERROR: There is no email address for user [%s].  USING DEFAULT EMAIL ADDRESS.</string>
 
     <!-- LOGIN DIALOG VALUES -->
@@ -68,6 +68,8 @@
     <!-- EDIT DIALOG VALUES -->
     <string name="edit_title">Edit</string>
     <string name="edit_resource_updated">Updated Resource [%s]</string>
+    <string name="edit_resource_deleted">Deleted Resource [%s]</string>
+    <string name="edit_resource_not_deleted">Resource [%s] NOT DELETED.</string>
 
     <!-- REGISTER DIALOG VALUES -->
     <string name="register_create_login_title">Create APass Login</string>
@@ -132,15 +134,15 @@
 
     <!-- SAVE ENCRYPTED FILE VALUES -->
     <string name="file_saved_successfully">File %s Saved Successfully!"</string>
-    <string name="file_save_failed">FILE %s SAVE FAILED: %s</string>
+    <string name="file_save_failed">FILE %1$s SAVE FAILED: %2$s</string>
     <string name="file_loaded_successfully">File %s Loaded Successfully</string>
-    <string name="file_load_failed">FILE %s LOAD FAILED: %s</string>
+    <string name="file_load_failed">FILE %1$s LOAD FAILED: %2$s</string>
 
     <!-- EMAIL FILE VALUES -->
-    <string name="email_encrypted_file_subject">MyPass Backup File</string>
-    <string name="email_encrypted_file_body">Backup of Entries in MyPass.</string>
+    <string name="email_encrypted_file_subject">APass Backup File</string>
+    <string name="email_encrypted_file_body">Backup of Entries in APass.</string>
     <string name="email_encrypted_file_attaching">ATTACHING: %s</string>
-    <string name="email_encrypted_file_attachment_error">ATTACHMENT ERROR!  Exists: [%b] canRead: [%b].</string>
+    <string name="email_encrypted_file_attachment_error">ATTACHMENT ERROR!  Exists: [%1$b] canRead: [%2$b].</string>
     <string name="email_encrypted_file_no_email_clients_configured">There are no email clients installed.</string>
 
     <!-- ADMOB VALUES -->

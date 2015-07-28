@@ -40,7 +40,6 @@ import com.google.android.gms.ads.AdView;
 import java.sql.SQLException;
 
 // TODO: modify confirmation box, to use a special message if the text has been modified.
-// TODO:  Figure out a way to make the Toast strings portable across languages (such as a string with %s embedded) subbing in resource
 
 public class EditResourceActivity extends ActionBarActivity {
     public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
@@ -149,7 +148,7 @@ public class EditResourceActivity extends ActionBarActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to invoke NO event
-                        Toast.makeText(getApplicationContext(), "Resource [" + resource + "] NOT DELETED.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.edit_resource_not_deleted), resource), Toast.LENGTH_SHORT).show();
                     }
                 });
 
@@ -158,7 +157,7 @@ public class EditResourceActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Log.w(this.getClass().getName(), "Deleting resource [" + resource + "]");
                         datasource.deleteResource(resource);
-                        Toast.makeText(getApplicationContext(), "Deleted Resource [" + resource + "]", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), String.format(getString(R.string.edit_resource_deleted), resource), Toast.LENGTH_LONG).show();
 
                         finish();
                     }
