@@ -25,6 +25,7 @@ package com.airanza.apass;
  */
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -166,6 +167,10 @@ public class LoginActivity extends ActionBarActivity {
                 if(checkLogin(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString()))
                 {
+                    passwordEditText.setEnabled(false);
+                    usernameEditText.setEnabled(false);
+                    usernameEditText.setBackgroundColor(Color.GREEN);
+                    passwordEditText.setBackgroundColor(Color.GREEN);
                     boolean isRememberMeChecked = ((CheckBox) findViewById(R.id.rememberMeCheckBox)).isChecked();
                     datasource.updateRememberedLastUser(username, isRememberMeChecked);
 

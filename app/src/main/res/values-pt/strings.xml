@@ -125,4 +125,7 @@
     <string name="apprater_rate_title">Avaliação %s</string>
     <string name="edit_resource_deleted">Recurso Excluído [%s].</string>
     <string name="edit_resource_not_deleted">Recurso não excluído [%s].</string>
+    <string name="change_registration_change_username_button_text">Mudar Usuário</string>
+    <string name="change_registration_change_username_dialog_button_ok">OK</string>
+    <string name="change_registration_change_username_dialog_button_cancel">Cancelar</string>
 </resources>

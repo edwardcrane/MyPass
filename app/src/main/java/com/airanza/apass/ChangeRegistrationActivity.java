@@ -21,16 +21,20 @@
 package com.airanza.apass;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
@@ -38,6 +42,8 @@ import java.sql.SQLException;
 public class ChangeRegistrationActivity extends ActionBarActivity {
 
     private LoginDataSource datasource;
+
+    private String newUsername = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,14 +58,14 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
             return;
         }
 
-        EditText usernameEditText = (EditText) findViewById(R.id.change_reg_username);
+        TextView usernameTextView = (TextView) findViewById(R.id.change_reg_username);
         EditText passwordHintEditText = (EditText) findViewById(R.id.change_reg_password_hint);
         EditText emailEditText = (EditText) findViewById(R.id.change_reg_email);
 
         Intent intent = getIntent();
 
         // setup username with current username:
-        usernameEditText.setText(intent.getStringExtra(LoginActivity.LOGGED_IN_USER));
+        usernameTextView.setText(intent.getStringExtra(LoginActivity.LOGGED_IN_USER));
 
         // setup password hint
         passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
@@ -94,6 +100,42 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void onChangeUsernameRequested(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.change_registration_change_username_button_text);
+        final String originalUsername = ((TextView)findViewById(R.id.change_reg_username)).getText().toString();
+
+        final EditText input = new EditText(this);
+        input.setText(originalUsername);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        builder.setView(input);
+
+        builder.setPositiveButton(R.string.change_registration_change_username_dialog_button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newUsername = input.getText().toString();
+                if (!datasource.isExistingUsername(newUsername)) {
+                    datasource.changeUsername(originalUsername, newUsername);
+                    if (datasource.getRememberedLastUser().equals(originalUsername)) {
+                        datasource.updateRememberedLastUser(newUsername, true);
+                    }
+                    ((TextView) findViewById(R.id.change_reg_username)).setText(newUsername);
+                    Toast.makeText(getApplicationContext(), R.string.change_registration_change_username_succesful, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), R.string.change_registration_username_already_exists, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton(R.string.change_registration_change_username_dialog_button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
     public void onRegisterButtonClick(View view) {
 
@@ -101,7 +143,7 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         String oldUsername = intent.getStringExtra(LoginActivity.LOGGED_IN_USER);
 
         // get username and password
-        EditText usernameEditText = (EditText) findViewById(R.id.change_reg_username);
+        TextView usernameTextView = (TextView) findViewById(R.id.change_reg_username);
         EditText passwordEditText = (EditText) findViewById(R.id.change_reg_password);
 
         // get new password and confirm:
@@ -113,7 +155,7 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         EditText emailEditText = (EditText) findViewById(R.id.change_reg_email);
         EditText confirmEmailEditText = (EditText) findViewById(R.id.change_reg_confirm_email);
 
-        String username = usernameEditText.getText().toString();
+        String username = usernameTextView.getText().toString();
         String password = passwordEditText.getText().toString();
 
         String newPassword = newPasswordEditText.getText().toString();
@@ -186,6 +228,9 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
     }
 
     public void cancelEntry(View view) {
+        Intent result = new Intent("com.airanza.apass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
+        result.putExtra(LoginActivity.LOGGED_IN_USER, ((TextView)findViewById(R.id.change_reg_username)).getText().toString());
+        setResult(Activity.RESULT_CANCELED, result);
         finish();
     }
 }

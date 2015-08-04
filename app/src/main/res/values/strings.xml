@@ -90,6 +90,11 @@
     <!-- CHANGE REGISTRATION DIALOG VALUES -->
     <string name="change_registration_title">Change Login Info</string>
     <string name="change_registration_username_hint">User Name</string>
+    <string name="change_registration_change_username_button_text">Change Username</string>
+    <string name="change_registration_username_already_exists">Cannot change. Username already exists.</string>
+    <string name="change_registration_change_username_succesful">Username changed successfully.</string>
+    <string name="change_registration_change_username_dialog_button_ok">OK</string>
+    <string name="change_registration_change_username_dialog_button_cancel">Cancel</string>
     <string name="change_registration_password_hint">Old Password</string>
     <string name="change_registration_new_password_hint">New Password</string>
     <string name="change_registration_confirm_new_password_hint">Confirm New Password</string>

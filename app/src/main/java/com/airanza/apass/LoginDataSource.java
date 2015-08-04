@@ -96,6 +96,18 @@ public class LoginDataSource {
         Log.w(this.getClass().getName(), "Updated: " + newUsername);
     }
 
+    public void changeUsername(String oldUsername, String newUsername) {
+        String filterString = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + oldUsername + "\'";
+        ContentValues args = new ContentValues();
+        args.put(LoginDBHelper.COLUMN_NAME_USERNAME, newUsername);
+
+        database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
+
+        requestBackup();
+
+        Log.w(this.getClass().getName(), "Changed username [" + oldUsername + "] to [" + newUsername + "]");
+    }
+
     public void updateRememberedLastUser(String username, boolean rememberMe) {
         String filterString = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
         ContentValues args = new ContentValues();

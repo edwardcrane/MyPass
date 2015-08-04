@@ -343,8 +343,11 @@ public class MainActivity extends ActionBarActivity {
                 if(resultCode == RESULT_OK) {
                     logged_in_user = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
                     Toast.makeText(getApplicationContext(), String.format(getString(R.string.logged_in_as_message), logged_in_user), Toast.LENGTH_LONG).show();
+                } else if (resultCode == RESULT_CANCELED) {
+                    logged_in_user = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
+                    Toast.makeText(getApplicationContext(), String.format(getString(R.string.logged_in_as_message), logged_in_user), Toast.LENGTH_LONG).show();
                 } else {
-                    // THERE IS NOTHING TO DO HERE UNLESS YOU WANT TO LOG USER OFF AND SHUT DOWN.
+                    // do nothing, I don't know what else could happen?
                 }
                 break;
 
