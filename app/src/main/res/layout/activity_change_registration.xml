@@ -37,84 +37,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dip"
-            >
-            <!-- User Name & change button -->
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dip">
+            android:divider="@drawable/divider"
+            android:showDividers="middle|end">
             <TextView android:id="@+id/change_reg_username"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/register_username_hint"
                 android:singleLine="true"
-                android:layout_alignBaseline="@+id/change_reg_change_username_button"
                 android:textSize="16dp"
-                android:textColor="#ffffffff" />
-                <Button
-                    android:id="@+id/change_reg_change_username_button"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:textAllCaps="false"
-                    android:text="@string/change_registration_change_username_button_text"
-                    android:onClick="onChangeUsernameRequested">
-                </Button>
-            </RelativeLayout>
+                android:textColor="#FFFFFF"
+                android:padding="20dip"/>
+
             <!-- Password -->
-            <EditText android:id="@+id/change_reg_password"
+            <TextView android:id="@+id/change_reg_password"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:password="true"
                 android:singleLine="true"
                 android:hint="@string/change_registration_password_hint"
-                android:layout_marginTop="5dip"/>
-
-            <!-- New Password -->
-            <EditText android:id="@+id/change_reg_new_password"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:password="true"
-                android:singleLine="true"
-                android:layout_marginTop="5dip"
-                android:hint="@string/change_registration_new_password_hint"
-                />
-
-            <!-- Confirm New Password -->
-            <EditText android:id="@+id/change_reg_confirm_new_password"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:password="true"
-                android:singleLine="true"
-                android:hint="@string/change_registration_confirm_new_password_hint"
-                android:layout_marginTop="5dip"/>
+                android:textSize="16dp"
+                android:textColor="#FFFFFF"
+                android:padding="20dip"/>
 
             <!-- Password Hint -->
-            <EditText android:id="@+id/change_reg_password_hint"
+            <TextView android:id="@+id/change_reg_password_hint"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:hint="@string/change_registration_password_hint_hint"
-                android:layout_marginTop="5dip"/>
+                android:textSize="16dp"
+                android:textColor="#FFFFFF"
+                android:padding="20dip"/>
 
             <!--  Email -->
-            <EditText android:id="@+id/change_reg_email"
+            <TextView android:id="@+id/change_reg_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
+                android:padding="20dip"
                 android:singleLine="true"
-                android:hint="@string/change_registration_email_hint"
-                />
-
-            <!--  Confirm Email -->
-            <EditText android:id="@+id/change_reg_confirm_email"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:hint="@string/change_registration_confirm_email_hint"
-                android:layout_marginBottom="20dip"/>
-
+                android:textSize="16dp"
+                android:textColor="#FFFFFF"
+                android:hint="@string/change_registration_email_hint"/>
         </LinearLayout>
         <!-- Registration Form Ends -->
 

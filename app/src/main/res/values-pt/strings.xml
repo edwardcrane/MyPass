@@ -52,7 +52,7 @@
 
     <!-- VALORES DI�LOGO DE MUDAN�A DE INCRI��o -->
     <string name="change_registration_username_hint">Usuário</string>
-    <string name="change_registration_password_hint">Senha antiga</string>
+    <string name="change_registration_password_hint">Senha</string>
     <string name="change_registration_new_password_hint">Senha nova</string>
     <string name="change_registration_confirm_new_password_hint">Confirmar senha nova</string>
     <string name="change_registration_password_hint_hint">Dica de Senha</string>
@@ -97,7 +97,7 @@
     <string name="login_title">Registrar APass</string>
     <string name="new_title">Novo</string>
     <string name="edit_title">Editar</string>
-    <string name="change_registration_title">Mudar autênticação (login)</string>
+    <string name="change_registration_title">Alterar autênticação (login)</string>
     <string name="change_registration_username_password_invalid">Usuário e senha devem ser válidos!</string>
     <string name="change_registration_username_not_updated">USUÁRIO [%s] não foi atualizado. Por favor, tente novamente.</string>
     <string name="change_registration_username_updated_successfully">Usuário [%s] foi atualizado com sucesso!</string>
@@ -125,7 +125,16 @@
     <string name="apprater_rate_title">Avaliação %s</string>
     <string name="edit_resource_deleted">Recurso Excluído [%s].</string>
     <string name="edit_resource_not_deleted">Recurso não excluído [%s].</string>
-    <string name="change_registration_change_username_button_text">Mudar Usuário</string>
+    <string name="change_registration_change_username_button_text">Alterar Usuário</string>
     <string name="change_registration_change_username_dialog_button_ok">OK</string>
     <string name="change_registration_change_username_dialog_button_cancel">Cancelar</string>
+    <string name="change_registration_change_password_dialog_button_cancel">Cancelar</string>
+    <string name="change_registration_change_password_dialog_button_ok">OK</string>
+    <string name="change_registration_change_password_text">Alterar Senha</string>
+    <string name="change_registration_password_update_failed">SENHA não foi atualizado. Por favor, tente novamente</string>
+    <string name="change_registration_password_update_successful">Senha foi atualizado com sucesso!</string>
+    <string name="change_registration_old_password_hint">Senha antiga</string>
+    <string name="change_registration_change_username_successful">Usuário foi atualizado com sucesso</string>
+    <string name="change_registration_change_email_successful">E-mail foi atualizado com sucesso</string>
+    <string name="change_registration_change_email_text">Alterar E-mail</string>
 </resources>

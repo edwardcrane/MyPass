@@ -34,6 +34,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +46,9 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
     private LoginDataSource datasource;
 
     private String newUsername = "";
+    private String newPassword = "";
+    private String newPasswordHint = "";
+    private String newEmail = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,45 +64,89 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         }
 
         TextView usernameTextView = (TextView) findViewById(R.id.change_reg_username);
-        EditText passwordHintEditText = (EditText) findViewById(R.id.change_reg_password_hint);
-        EditText emailEditText = (EditText) findViewById(R.id.change_reg_email);
+        TextView passwordTextView = (TextView) findViewById(R.id.change_reg_password);
+        TextView passwordHintTextView = (TextView) findViewById(R.id.change_reg_password_hint);
+        TextView emailTextView = (TextView) findViewById(R.id.change_reg_email);
 
         Intent intent = getIntent();
 
         // setup username with current username:
         usernameTextView.setText(intent.getStringExtra(LoginActivity.LOGGED_IN_USER));
 
-        // setup password hint
-        passwordHintEditText.setText(datasource.getPasswordHint(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
+        usernameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChangeUsernameRequested(v);
+            }
+        });
 
-        // setup email address:
-        emailEditText.setText(datasource.getEmail(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
+        passwordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChangePasswordRequested(v);
+            }
+        });
+
+        passwordHintTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChangePasswordRequested(v);
+            }
+        });
+
+        emailTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onChangeEmailRequested(v);
+            }
+        });
+
+
+        passwordTextView.setText(datasource.getPassword(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
+        passwordHintTextView.setText(datasource.getPasswordHint(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
+        emailTextView.setText(datasource.getEmail(intent.getStringExtra(LoginActivity.LOGGED_IN_USER)));
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // context-specific actionbar items:
-        getMenuInflater().inflate(R.menu.menu_register_activity, menu);
-        return true;
-    }
+    public void onChangeEmailRequested(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.change_registration_change_email_text);
+        final String originalUsername = ((TextView)findViewById(R.id.change_reg_username)).getText().toString();
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        final EditText emailEditText = new EditText(this);
+        emailEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        emailEditText.setText(((TextView)findViewById(R.id.change_reg_email)).getText().toString());
+        emailEditText.setHint(R.string.change_registration_email_hint);
 
-        if(id == R.id.action_save_login_info) {
-            onRegisterButtonClick(null);
-            return true;
-        }
+        final EditText confirmEmailEditText = new EditText(this);
+        confirmEmailEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS);
+        confirmEmailEditText.setHint(R.string.change_registration_confirm_email_hint);
 
-        if(id == R.id.action_cancel_login_info) {
-            cancelEntry(null);
-        }
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(emailEditText);
+        layout.addView(confirmEmailEditText);
+        builder.setView(layout);
 
-        return super.onOptionsItemSelected(item);
+        builder.setPositiveButton(R.string.change_registration_change_username_dialog_button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newEmail = emailEditText.getText().toString();
+                if (!newEmail.isEmpty() && newEmail.equals(confirmEmailEditText.getText().toString())) {
+                    datasource.changeEmail(originalUsername, newEmail);
+                    ((TextView) findViewById(R.id.change_reg_email)).setText(newEmail);
+                    Toast.makeText(getApplicationContext(), R.string.change_registration_change_email_successful, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton(R.string.change_registration_change_username_dialog_button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
     }
 
     public void onChangeUsernameRequested(View view) {
@@ -120,7 +169,7 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
                         datasource.updateRememberedLastUser(newUsername, true);
                     }
                     ((TextView) findViewById(R.id.change_reg_username)).setText(newUsername);
-                    Toast.makeText(getApplicationContext(), R.string.change_registration_change_username_succesful, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.change_registration_change_username_successful, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(getApplicationContext(), R.string.change_registration_username_already_exists, Toast.LENGTH_LONG).show();
                 }
@@ -137,97 +186,81 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
         builder.show();
     }
 
-    public void onRegisterButtonClick(View view) {
+    public void onChangePasswordRequested(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.change_registration_change_password_text);
 
-        Intent intent = getIntent();
-        String oldUsername = intent.getStringExtra(LoginActivity.LOGGED_IN_USER);
+        final String originalUsername = ((TextView)findViewById(R.id.change_reg_username)).getText().toString();
+        final String originalPasswordHint = ((TextView)findViewById(R.id.change_reg_password_hint)).getText().toString();
 
-        // get username and password
-        TextView usernameTextView = (TextView) findViewById(R.id.change_reg_username);
-        EditText passwordEditText = (EditText) findViewById(R.id.change_reg_password);
+        final TextView usernameTextView = new TextView(this);
+        usernameTextView.setText(originalUsername);
 
-        // get new password and confirm:
-        EditText newPasswordEditText = (EditText) findViewById(R.id.change_reg_new_password);
-        EditText confirmNewPasswordEditText = (EditText) findViewById(R.id.change_reg_confirm_new_password);
+        final EditText oldPasswordEditText = new EditText(this);
+        oldPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        oldPasswordEditText.setHint(R.string.change_registration_old_password_hint);
 
-        EditText passwordHintEditText = (EditText) findViewById(R.id.change_reg_password_hint);
+        final EditText newPasswordEditText = new EditText(this);
+        newPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        newPasswordEditText.setHint(R.string.change_registration_new_password_hint);
 
-        EditText emailEditText = (EditText) findViewById(R.id.change_reg_email);
-        EditText confirmEmailEditText = (EditText) findViewById(R.id.change_reg_confirm_email);
+        final EditText confirmNewPasswordEditText = new EditText(this);
+        confirmNewPasswordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        confirmNewPasswordEditText.setHint(R.string.change_registration_confirm_new_password_hint);
 
-        String username = usernameTextView.getText().toString();
-        String password = passwordEditText.getText().toString();
+        final EditText newPasswordHintEditText = new EditText(this);
+        newPasswordHintEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+        newPasswordHintEditText.setHint(R.string.change_registration_password_hint_hint);
+        newPasswordHintEditText.setText(originalPasswordHint);
 
-        String newPassword = newPasswordEditText.getText().toString();
-        String confirmNewPassword = confirmNewPasswordEditText.getText().toString();
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(usernameTextView);
+        layout.addView(oldPasswordEditText);
+        layout.addView(newPasswordEditText);
+        layout.addView(confirmNewPasswordEditText);
+        layout.addView(newPasswordHintEditText);
+        builder.setView(layout);
 
-        String passwordHint = passwordHintEditText.getText().toString();
+        builder.setPositiveButton(R.string.change_registration_change_username_dialog_button_ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                newPassword = newPasswordEditText.getText().toString();
+                String confirmNewPassword = confirmNewPasswordEditText.getText().toString();
+                newPasswordHint = newPasswordHintEditText.getText().toString();
+                if(!newPassword.equals(confirmNewPassword)) {
+                    Toast.makeText(getApplicationContext(), R.string.change_registration_password_confirm_do_not_match, Toast.LENGTH_LONG).show();
+                    return;
+                }
 
-        String email = emailEditText.getText().toString();
-        String confirmEmail = confirmEmailEditText.getText().toString();
-
-        if(!datasource.isValidLogin(username, password)) {
-            Toast t = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_username_password_invalid), Toast.LENGTH_LONG);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
-            return;
-        }
-
-        // if new password is not blank, new password confirmation must match:
-        if((!newPassword.equals("")) && !newPassword.equals(confirmNewPassword)) {
-            Toast t = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_password_confirm_do_not_match), Toast.LENGTH_LONG);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
-            newPasswordEditText.setText("");
-            confirmNewPasswordEditText.setText("");
-            newPasswordEditText.requestFocus();
-            if(passwordHint.equals("")) {
-                Toast t1 = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_password_hint_new_password), Toast.LENGTH_LONG);
-                t1.setGravity(Gravity.CENTER, 0, 0);
-                t1.show();
-                passwordHintEditText.requestFocus();
+                if(datasource.isValidLogin(originalUsername, oldPasswordEditText.getText().toString())) {
+                    // old login information was valid, so go ahead and change the password...
+                    datasource.changePassword(originalUsername, newPassword);
+                    datasource.changePasswordHint(originalUsername, newPasswordHint);
+                    if(datasource.isValidLogin(originalUsername, newPassword)) {
+                        // success
+                        Toast.makeText(getApplicationContext(), R.string.change_registration_password_update_successful, Toast.LENGTH_LONG).show();
+                        ((TextView)findViewById(R.id.change_reg_password)).setText(newPassword);
+                        ((TextView)findViewById(R.id.change_reg_password_hint)).setText(newPasswordHint);
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.change_registration_password_update_failed, Toast.LENGTH_LONG).show();
+                    }
+                }
             }
-            return;
-        }
+        });
 
-        // if email is not blank, new email is not same as old email, new email confirmation must match:
-        if((!email.equals("")) && !email.equals(datasource.getEmail(oldUsername)) && !email.equals(confirmEmail)) {
-            Toast t = Toast.makeText(getApplicationContext(), getString(R.string.change_registration_email_confirm_do_not_match), Toast.LENGTH_LONG);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
-            emailEditText.setText("");
-            confirmEmailEditText.setText("");
-            emailEditText.requestFocus();
-            return;
-        }
+        builder.setNegativeButton(R.string.change_registration_change_username_dialog_button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
 
-        datasource.update(oldUsername, username, password, newPassword, "old password hint", passwordHint, "old email", email, 0, 1);
-
-        if(!datasource.isValidLogin(username, newPassword)) {
-            // display an error message and allow the user to try again or cancel:
-            Toast t = Toast.makeText(getApplicationContext(), String.format(getString(R.string.change_registration_username_not_updated), username), Toast.LENGTH_LONG);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
-            Log.w(this.getClass().getName(), "LOGIN UPDATE FAILED FOR [" + username + "] [" + password + "] [" + email + "]");
-            return;
-        } else {
-            Toast t = Toast.makeText(getApplicationContext(), String.format(getString(R.string.change_registration_username_updated_successfully), username), Toast.LENGTH_LONG);
-            t.setGravity(Gravity.CENTER, 0, 0);
-            t.show();
-            Log.w(this.getClass().getName(), "USERNAME [" + username + "] [" + password + "] [" + email + "] WAS UPDATED SUCCESSFULLY!");
-        }
-
-        Intent result = new Intent("com.airanza.apass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
-        result.putExtra(LoginActivity.LOGGED_IN_USER, username);
-        if (getParent() == null) {
-            setResult(Activity.RESULT_OK, result);
-        } else {
-            getParent().setResult(Activity.RESULT_OK, result);
-        }
-        finish();
+        builder.show();
     }
 
-    public void cancelEntry(View view) {
+    @Override
+    public void onBackPressed() {
         Intent result = new Intent("com.airanza.apass.MainActivity.LOGIN_REQUEST", Uri.parse("content://result_uri"));
         result.putExtra(LoginActivity.LOGGED_IN_USER, ((TextView)findViewById(R.id.change_reg_username)).getText().toString());
         setResult(Activity.RESULT_CANCELED, result);

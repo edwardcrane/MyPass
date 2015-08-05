@@ -108,6 +108,42 @@ public class LoginDataSource {
         Log.w(this.getClass().getName(), "Changed username [" + oldUsername + "] to [" + newUsername + "]");
     }
 
+    public void changePassword(String username, String newPassword) {
+        String filterString = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
+        ContentValues args = new ContentValues();
+        args.put(LoginDBHelper.COLUMN_NAME_PASSWORD, newPassword);
+
+        database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
+
+        requestBackup();
+
+        Log.w(this.getClass().getName(), "Changed password for [" + username + "]");
+    }
+
+    public void changePasswordHint(String username, String newPasswordHint) {
+        String filterString = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
+        ContentValues args = new ContentValues();
+        args.put(LoginDBHelper.COLUMN_NAME_PASSWORD_HINT, newPasswordHint);
+
+        database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
+
+        requestBackup();
+
+        Log.w(this.getClass().getName(), "Changed password hint for [" + username + "] to [" + newPasswordHint + "]");
+    }
+
+    public void changeEmail(String username, String newEmail) {
+        String filterString = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
+        ContentValues args = new ContentValues();
+        args.put(LoginDBHelper.COLUMN_NAME_EMAIL, newEmail);
+
+        database.update(LoginDBHelper.TABLE_NAME, args, filterString, null);
+
+        requestBackup();
+
+        Log.w(this.getClass().getName(), "Changed email for [" + username + "] to [" + newEmail + "]");
+    }
+
     public void updateRememberedLastUser(String username, boolean rememberMe) {
         String filterString = LoginDBHelper.COLUMN_NAME_USERNAME + " = \'" + username + "\'";
         ContentValues args = new ContentValues();

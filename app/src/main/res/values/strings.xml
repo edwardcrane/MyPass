@@ -90,12 +90,18 @@
     <!-- CHANGE REGISTRATION DIALOG VALUES -->
     <string name="change_registration_title">Change Login Info</string>
     <string name="change_registration_username_hint">User Name</string>
+    <string name="change_registration_change_email_text">Change Email</string>
     <string name="change_registration_change_username_button_text">Change Username</string>
     <string name="change_registration_username_already_exists">Cannot change. Username already exists.</string>
-    <string name="change_registration_change_username_succesful">Username changed successfully.</string>
+    <string name="change_registration_change_username_successful">Username changed successfully.</string>
+    <string name="change_registration_change_email_successful">Email changed successfully.</string>
     <string name="change_registration_change_username_dialog_button_ok">OK</string>
+    <string name="change_registration_change_password_dialog_button_ok">OK</string>
     <string name="change_registration_change_username_dialog_button_cancel">Cancel</string>
-    <string name="change_registration_password_hint">Old Password</string>
+    <string name="change_registration_change_password_dialog_button_cancel">Cancel</string>
+    <string name="change_registration_change_password_text">Change Password</string>
+    <string name="change_registration_password_hint">Password</string>
+    <string name="change_registration_old_password_hint">Old Password</string>
     <string name="change_registration_new_password_hint">New Password</string>
     <string name="change_registration_confirm_new_password_hint">Confirm New Password</string>
     <string name="change_registration_password_hint_hint">Password Hint</string>
@@ -107,6 +113,8 @@
     <string name="change_registration_email_confirm_do_not_match">New Email and Confirmation do not match!  Please re-enter.</string>
     <string name="change_registration_username_not_updated">USER NAME [%s] WAS NOT UPDATED.  Please try again.</string>
     <string name="change_registration_username_updated_successfully">USERNAME [%s] WAS UPDATED SUCCESSFULLY!</string>
+    <string name="change_registration_password_update_successful">PASSWORD WAS UPDATED SUCCESSFULLY!</string>
+    <string name="change_registration_password_update_failed">PASSWORD WAS NOT UPDATED.  Please try again.</string>
 
     <!-- ACCEPT UNENCRYPTED DATA RISK DIALOG -->
     <string name="unencrypted_risk_dialog_title">SECURITY WARNING</string>
