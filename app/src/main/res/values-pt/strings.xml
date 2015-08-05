@@ -137,4 +137,5 @@
     <string name="change_registration_change_username_successful">Usuário foi atualizado com sucesso</string>
     <string name="change_registration_change_email_successful">E-mail foi atualizado com sucesso</string>
     <string name="change_registration_change_email_text">Alterar E-mail</string>
+    <string name="change_registration_username_already_exists">Não pode alterar. Usuário já existe.</string>
 </resources>
