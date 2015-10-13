@@ -31,6 +31,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,11 +44,13 @@ import java.sql.SQLException;
 
 public class EditResourceActivity extends ActionBarActivity {
     public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
+    public final static String EXTRA_BOOLEAN_SHOWADS = "com.airanza.apass.BOOLEAN_SHOWADS";
 
     private ResourceDataSource datasource;
     private Resource resource;
 
     private boolean isPasswordVisible = false;
+    private boolean mShowAds = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class EditResourceActivity extends ActionBarActivity {
 
         Intent intent = getIntent();
         resource = (Resource) intent.getSerializableExtra(EXTRA_RESOURCE);
+        mShowAds = (boolean) intent.getBooleanExtra(EXTRA_BOOLEAN_SHOWADS, true);
 
         setContentView(R.layout.activity_edit_resource);
         try {
@@ -68,14 +72,25 @@ public class EditResourceActivity extends ActionBarActivity {
         ((EditText) findViewById(R.id.password)).setText(resource.getPassword());
         ((EditText) findViewById(R.id.description)).setText(resource.getDescription());
 
-        // ADD ADS:
-        AdView mBottomAdView = (AdView) findViewById(R.id.edit_bottom_adview);
-        AdRequest bottomAdRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+        if(mShowAds) {
+            // ADD ADS:
+            AdView mBottomAdView = (AdView) findViewById(R.id.edit_bottom_adview);
+            AdRequest bottomAdRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
 //                .addTestDevice(getString(R.string.primary_android_admob_test_device))
-                .build();
-        mBottomAdView.loadAd(bottomAdRequest);
+                    .build();
+            mBottomAdView.loadAd(bottomAdRequest);
+        } else {
+            turnOffAds();
+        }
+    }
 
+    public void turnOffAds() {
+        // remove bottom banner ad:
+        View view = (View)findViewById(R.id.edit_bottom_ad_layout);
+        ViewGroup parent = (ViewGroup)view.getParent();
+        parent.removeView(view);
+        parent.invalidate();
     }
 
     public void onClickOnPassword(View view) {

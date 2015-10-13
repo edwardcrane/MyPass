@@ -39,6 +39,7 @@
     <string name="action_save_encrypted_file">Save Encrypted File…</string>
     <string name="action_load_encrypted_file">Load Encrypted File…</string>
     <string name="action_change_login">Change Login…</string>
+    <string name="action_remove_ads">Remove Ads...</string>
     <string name="action_show_splash">About…</string>
     <string name="action_add_resource">Add</string>
     <string name="action_cancel">Cancel</string>
@@ -176,5 +177,14 @@
     <string name="apprater_rate_later">Remind me Later</string>
     <string name="apprater_rate_cancel">No, Thanks</string>
     <string name="apprater_market_url" translatable="false">market://details?id=%s</string>
+
+    <!-- IN-APP-PURCHASE VALUES -->
+    <string name="iap_purchase_successful">Purchase successful.</string>
+    <string name="iap_turn_off_ads_already_purchased">No need to turn off ads, as they are already turned off!</string>
+    <string name="iap_failed_to_query_inventory">Failed to query inventory: </string>
+    <string name="iap_error_purchasing">Error purchasing: </string>
+    <string name="iap_error_purchasing_authentication">"Error purchasing. Authenticity verification failed."</string>
+    <string name="iap_turn_off_ads_thank_you">Thank you for upgrading to "No Ads"</string>
+    <string name="iap_billing_setup_problem">Problem setting up In-App Billing: </string>
 
 </resources>

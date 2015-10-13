@@ -36,10 +36,12 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.airanza.androidutils.AndroidEncryptor;
@@ -52,6 +54,10 @@ import java.io.OutputStream;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.airanza.com.airanza.iaputils.IabHelper;
+import com.airanza.com.airanza.iaputils.IabResult;
+import com.airanza.com.airanza.iaputils.Inventory;
+import com.airanza.com.airanza.iaputils.Purchase;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdRequest.Builder;
@@ -80,9 +86,108 @@ public class MainActivity extends ActionBarActivity {
 
     private int nDefaultSearchTextColor = Color.TRANSPARENT;
 
+    private IabHelper mHelper;
+    private final static String base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjQ0W7r9/Wl93j0fbKHdELAmRQ83lmGzYLrML3xreiSesEaJ7cWuADGSyBvLlskakxFOKa2N68wGVThUpPIaTbQey6Gxdvuvqz69Pn3izEQZl3FuIim/1ZRCP9qiBTLVg7FR4mH90E1JxSiWpBp58EP2Q6BOB8y2Xw1vFeexKwWhxlPX/xA9puapq6PbPGepYO0/0cdPw2agcYMUaUs/kKZctocsR3z7Rz8snwI3PULoO1xa6sLawIFReRIV1dnDkCBg8mW2l1Xj8ziEwdmB8YVKgZWLDsKhpVZ1BUstyj3MgagV80UVzBbWhsJUBIUtC7/Hj0JiDZRYV2p0SHTnSvQIDAQAB";
+    private final static String DEVELOPER_PAYLOAD_FOR_GOOGLE_PLAY_SECURITY = "EIEIO";
+    public final static String TURN_OFF_ADS_SKU = "turn_off_ads";
+    public final static int GOOGLE_PLAY_REQUEST_CODE = 12003;  // any + integer for onActivityResult
+    private static boolean mShowAds = true;
+    private Menu mMenu;     // to add and remove option for in-app-purchases.
+
+    // LISTENER THAT'S CALLED WHEN WE FINISH QUERYING THE ITEMS AND SUBSCRIPTIONS WE OWN.
+    private IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            Log.d(getClass().getName(), "Query inventory finished.");
+
+            // Have we been disposed of in the meantime? If so, quit.
+            if (mHelper == null) return;
+
+            // Is it a failure?
+            if (result.isFailure()) {
+                complain(getString(R.string.iap_failed_to_query_inventory) + result);
+                return;
+            }
+
+            Log.d(getClass().getName(), "Query inventory was successful.");
+
+            /*
+             * Check for items we own. Notice that for each purchase, we check
+             * the developer payload to see if it's correct! See
+             * verifyDeveloperPayload().
+             */
+
+            Purchase purchase = inventory.getPurchase(TURN_OFF_ADS_SKU);
+            mShowAds = !(purchase != null && purchase.getDeveloperPayload().equals(DEVELOPER_PAYLOAD_FOR_GOOGLE_PLAY_SECURITY));
+            Log.d(getClass().getName(), "Show Ads is " + (mShowAds ? "ON" : "OFF"));
+            if(!mShowAds) {
+                turnOffAds();
+            }
+
+            setWaitScreen(false);
+            Log.d(getClass().getName(), "Initial inventory query finished; enabling main UI.");
+        }
+    };
+
+
+    // Callback for when a purchase is finished
+    private IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.d(getClass().getName(), "Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mHelper == null) return;
+
+            if (result.isFailure()) {
+                complain(getString(R.string.iap_error_purchasing) + result);
+                setWaitScreen(false);
+                return;
+            }
+
+            if (!purchase.getDeveloperPayload().equals(DEVELOPER_PAYLOAD_FOR_GOOGLE_PLAY_SECURITY)) {
+                complain(getString(R.string.iap_error_purchasing_authentication));
+                setWaitScreen(false);
+                return;
+            }
+
+//            Log.d(getClass().getName(), getString(R.string.iap_purchase_successful));
+            tell(getString(R.string.iap_purchase_successful));
+
+            if (purchase.getSku().equals(TURN_OFF_ADS_SKU)) {
+                Log.d(getClass().getName(), "Purchased No Ads. Congratulating user.");
+                alert(getString(R.string.iap_turn_off_ads_thank_you));
+                mShowAds = false;
+
+                turnOffAds();
+                setWaitScreen(false);
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Check the In App Billing
+        mHelper = new IabHelper(this, base64EncodedPublicKey);
+        mHelper.enableDebugLogging(true);
+        Log.d(getClass().getName(), "Starting IAB Setup");
+        mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+                Log.d(getClass().getName(), "IAB Setup Finished.");
+                if(!result.isSuccess()) {
+                    complain(getString(R.string.iap_billing_setup_problem) + result);
+                    mHelper = null;
+                }
+
+                // have we been disposed of in the meantime? If so, quit.
+                if(mHelper == null) return;
+
+                // IAB is fully set up. Now lets get an inventory of stuff we own
+                Log.d(getClass().getName(), "IAB Setup Successful.  Querying Inventory.");
+                mHelper.queryInventoryAsync(mGotInventoryListener);
+            }
+        });
+
         setContentView(R.layout.activity_main);
 
         nDefaultSearchTextColor = ((EditText)findViewById(R.id.findString)).getTextColors().getDefaultColor();
@@ -106,13 +211,14 @@ public class MainActivity extends ActionBarActivity {
             Log.w(this.getClass().getName(), e);
         }
 
-        ListView listView = (ListView)findViewById(R.id.listMain);
+        ListView listView = (ListView) findViewById(R.id.listMain);
         listView.setOnItemClickListener(
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Intent intent = new Intent(getApplicationContext(), EditResourceActivity.class);
                         intent.putExtra(EXTRA_RESOURCE, values.get(position));
+                        intent.putExtra(EditResourceActivity.EXTRA_BOOLEAN_SHOWADS, mShowAds);
                         startActivity(intent);
                         adapter.notifyDataSetChanged();
                     }
@@ -121,20 +227,99 @@ public class MainActivity extends ActionBarActivity {
 
         addTextChangedListener();
 
-        // ADD ADS:
-        AdView mTopAdView = (AdView) findViewById(R.id.main_top_adview);
-        AdRequest topAadRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+        if(mShowAds) {
+            // ADD ADS:
+            AdView mTopAdView = (AdView) findViewById(R.id.main_top_adview);
+            AdRequest topAadRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
 //                .addTestDevice(getString(R.string.primary_android_admob_test_device))
-                .build();
-        mTopAdView.loadAd(topAadRequest);
+                    .build();
+            mTopAdView.loadAd(topAadRequest);
 
-        AdView mBottomAdView = (AdView) findViewById(R.id.main_bottom_adview);
-        AdRequest bottomAdRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            AdView mBottomAdView = (AdView) findViewById(R.id.main_bottom_adview);
+            AdRequest bottomAdRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
 //                .addTestDevice(getString(R.string.primary_android_admob_test_device))
-                .build();
-        mBottomAdView.loadAd(bottomAdRequest);
+                    .build();
+            mBottomAdView.loadAd(bottomAdRequest);
+        } else {
+            turnOffAds();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mHelper != null) mHelper.dispose();
+        mHelper = null;
+    }
+
+    void complain(String message) {
+        Log.e(getClass().getName(), "**** ERROR: " + message);
+        alert("Error: " + message);
+    }
+
+    void alert(String message) {
+        AlertDialog.Builder bld = new AlertDialog.Builder(this);
+        bld.setMessage(message);
+        bld.setNeutralButton("OK", null);
+        Log.d(getClass().getName(), "Showing alert dialog: " + message);
+        bld.create().show();
+    }
+
+    void tell(String message) {
+        Log.e(this.getClass().getName(), message);
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    // Enables or disables the "please wait" screen.
+    void setWaitScreen(boolean set) {
+        findViewById(R.id.activity_main).setVisibility(set ? View.GONE : View.VISIBLE);
+        findViewById(R.id.screen_wait).setVisibility(set ? View.VISIBLE : View.GONE);
+    }
+
+    public void onUserSelectedIAPTurnOffAds() {
+        if(mHelper == null) {
+            turnOffAds();
+            return;
+        }
+
+        Log.d(getClass().getName(), "User Selected In-App-Purchase to turn off ads.");
+        if(!mShowAds) {
+            complain(getString(R.string.iap_turn_off_ads_already_purchased));
+            return;
+        }
+
+        setWaitScreen(true);
+        Log.d(getClass().getName(), "Launching purchase flow for turning off ads.");
+
+        mHelper.launchPurchaseFlow(this, TURN_OFF_ADS_SKU, GOOGLE_PLAY_REQUEST_CODE, mPurchaseFinishedListener, DEVELOPER_PAYLOAD_FOR_GOOGLE_PLAY_SECURITY);
+    }
+
+    public void turnOffAds() {
+        mShowAds = false;
+        // TODO:  Implement logic for ALL ACTIVITIES!!!
+
+        // remove top banner ad:
+        View view = (View)findViewById(R.id.top_ad_layout);
+        ViewGroup parent = (ViewGroup)view.getParent();
+        parent.removeView(view);
+        // shift listView so it is laid out below findString field:
+        ListView listView = (ListView)findViewById(R.id.listMain);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)listView.getLayoutParams();
+        params.addRule(RelativeLayout.BELOW, R.id.search_group);
+        listView.setLayoutParams(params);
+        // repaint:
+        parent.invalidate();
+
+        // remove bottom banner ad:
+        view = (View)findViewById(R.id.bottom_ad_layout);
+        parent = (ViewGroup)view.getParent();
+        parent.removeView(view);
+        parent.invalidate();
+
+        // remove "Remove Ads..." item from menu:
+        mMenu.removeItem(R.id.action_remove_ads);
     }
 
     /**
@@ -142,7 +327,7 @@ public class MainActivity extends ActionBarActivity {
      */
     public void addTextChangedListener() {
         // get editText component:
-        EditText editText = (EditText)findViewById(R.id.findString);
+        EditText editText = (EditText) findViewById(R.id.findString);
 
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,6 +349,8 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         // context specific menu items:
@@ -191,8 +378,7 @@ public class MainActivity extends ActionBarActivity {
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // Write your code here to invoke NO event
-                            Log.w(getClass().getName(), getString(R.string.unencrypted_risk_dialog_user_declined_message));
-                            Toast.makeText(getApplicationContext(), getString(R.string.unencrypted_risk_dialog_user_declined_message), Toast.LENGTH_SHORT).show();
+                            tell(getString(R.string.unencrypted_risk_dialog_user_declined_message));
                         }
                     });
 
@@ -223,6 +409,11 @@ public class MainActivity extends ActionBarActivity {
 
         if(id == R.id.action_change_login) {
             onUserSelectedChangeLogin();
+            return true;
+        }
+
+        if(id == R.id.action_remove_ads) {
+            onUserSelectedIAPTurnOffAds();
             return true;
         }
 
@@ -285,7 +476,7 @@ public class MainActivity extends ActionBarActivity {
             e.printStackTrace();
             return false;
         }
-        Toast.makeText(getApplicationContext(), String.format(getString(R.string.export_exported_value_count), count, EXPORT_FILE_NAME), Toast.LENGTH_LONG).show();
+        tell(String.format(getString(R.string.export_exported_value_count), count, EXPORT_FILE_NAME));
         if(count > -1)
             return true;
         else return false;
@@ -306,8 +497,7 @@ public class MainActivity extends ActionBarActivity {
             if(user_email_address != null && user_email_address.length() > 0) {
                 addresses = new String[] { user_email_address };
             } else {
-                Toast.makeText(getApplicationContext(), String.format(getString(R.string.export_email_address_missing), logged_in_user), Toast.LENGTH_LONG).show();
-                Log.e(this.getClass().getName(), "ERROR: There is no email address for user!  logged_in_user: [" + logged_in_user + "].  USING DEFAULT EMAIL ADDRESS.");
+                complain(String.format(getString(R.string.export_email_address_missing), logged_in_user));
             }
 
             emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses);
@@ -316,11 +506,10 @@ public class MainActivity extends ActionBarActivity {
 
             File attachment = this.getApplicationContext().getFileStreamPath(EXPORT_FILE_NAME);
             if (!attachment.exists() || !attachment.canRead()) {
-                Toast.makeText(getApplicationContext(), String.format(getString(R.string.email_encrypted_file_attachment_error), attachment.exists(), attachment.canRead()), Toast.LENGTH_LONG).show();
-                Log.e(this.getClass().getName(), String.format(getString(R.string.email_encrypted_file_attachment_error), attachment.exists(), attachment.canRead()));
+                tell(String.format(getString(R.string.email_encrypted_file_attachment_error), attachment.exists(), attachment.canRead()));
             } else {
                 Uri uri = Uri.fromFile(attachment);
-                Toast.makeText(getApplicationContext(), String.format(getString(R.string.email_encrypted_file_attaching), uri.getPath()), Toast.LENGTH_LONG).show();
+                tell(String.format(getString(R.string.email_encrypted_file_attaching), uri.getPath()));
                 emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
             }
 
@@ -328,7 +517,7 @@ public class MainActivity extends ActionBarActivity {
             startActivityForResult(emailIntent, SEND_EMAIL_REQUEST);
 
         } catch(android.content.ActivityNotFoundException ex) {
-            Toast.makeText(this, getString(R.string.email_encrypted_file_no_email_clients_configured), Toast.LENGTH_LONG).show();
+            tell(getString(R.string.email_encrypted_file_no_email_clients_configured));
             return false;
         } catch(Exception e) {
             Log.e(getClass().getName(), e.getMessage(), e);
@@ -337,15 +526,15 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.i(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
+        Log.d(getClass().getName(), "inside onActivityResult(" + requestCode + ", " + resultCode + ", " + data + ")");
         switch(requestCode) {
             case LoginActivity.CHANGE_LOGIN:
                 if(resultCode == RESULT_OK) {
                     logged_in_user = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
-                    Toast.makeText(getApplicationContext(), String.format(getString(R.string.logged_in_as_message), logged_in_user), Toast.LENGTH_LONG).show();
+                    tell(String.format(getString(R.string.logged_in_as_message), logged_in_user));
                 } else if (resultCode == RESULT_CANCELED) {
                     logged_in_user = data.getStringExtra(LoginActivity.LOGGED_IN_USER);
-                    Toast.makeText(getApplicationContext(), String.format(getString(R.string.logged_in_as_message), logged_in_user), Toast.LENGTH_LONG).show();
+                    tell(String.format(getString(R.string.logged_in_as_message), logged_in_user));
                 } else {
                     // do nothing, I don't know what else could happen?
                 }
@@ -359,8 +548,17 @@ public class MainActivity extends ActionBarActivity {
                 }
                 break;
 
+            case GOOGLE_PLAY_REQUEST_CODE:
+                Log.i(getClass().getName(), "onActivityResult() is handling GOOGLE_PLAY_REQUEST_CODE");
+                if(resultCode == RESULT_OK) {
+                    // probably ought to find out which IAP was made and enabled that feature now.
+                } else {
+                    // maybe IAP purchase was canceled, or there was an error?  So don't do anything for now.
+                }
+                break;
+
             default:
-                Log.e(getClass().getName(), "ERROR: Received ActivityResult for something we did not request: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
+                complain("ERROR: Received ActivityResult for something we did not request: requestCode = [" + requestCode + "] resultCode = [" + resultCode + "] data: [" + data + "].");
         }
     }
 
@@ -386,6 +584,7 @@ public class MainActivity extends ActionBarActivity {
 
     public void newResource(View view) {
         Intent intent = new Intent(this, NewResourceActivity.class);
+        intent.putExtra(NewResourceActivity.EXTRA_BOOLEAN_SHOWADS, mShowAds);
         startActivity(intent);
     }
 
@@ -455,11 +654,9 @@ public class MainActivity extends ActionBarActivity {
                         // execute when the dialog OK button is pressed.
                         try {
                             AndroidEncryptor.encrypt(ResourceDBHelper.getPath(), chosenDir);
-                            Log.e(getClass().getName(), "File " + chosenDir + " Saved Successfully!");
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_saved_successfully), chosenDir), Toast.LENGTH_LONG).show();
+                            tell(String.format(getString(R.string.file_saved_successfully), chosenDir));
                         } catch (Exception e) {
-                            Log.e(getClass().getName(), "FILE "+ chosenDir + " SAVE FAILED: ", e);
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_save_failed), chosenDir, e.getMessage()), Toast.LENGTH_LONG).show();
+                            complain(String.format(getString(R.string.file_save_failed), chosenDir, e.getMessage()));
                         }
                     }
                 }
@@ -488,8 +685,7 @@ public class MainActivity extends ActionBarActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // Write your code here to invoke NO event
-                        Log.w(getClass().getName(), getString(R.string.overwrite_data_dialog_user_declined_message));
-                        Toast.makeText(getApplicationContext(), getString(R.string.overwrite_data_dialog_user_declined_message), Toast.LENGTH_SHORT).show();
+                        tell(getString(R.string.overwrite_data_dialog_user_declined_message));
                     }
                 });
 
@@ -520,11 +716,9 @@ public class MainActivity extends ActionBarActivity {
                             AndroidEncryptor.decrypt(chosenDir, ResourceDBHelper.getPath());
                             resourcedatasource.open();
                             adapter.notifyDataSetChanged();
-                            Log.e(getClass().getName(), "File " + chosenDir + " Loaded Successfully!");
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_loaded_successfully), chosenDir), Toast.LENGTH_LONG).show();
+                            tell(String.format(getString(R.string.file_loaded_successfully), chosenDir));
                         } catch (Exception e) {
-                            Log.e(getClass().getName(), "FILE " + chosenDir + " LOAD FAILED: ", e);
-                            Toast.makeText(getApplicationContext(), String.format(getString(R.string.file_load_failed), chosenDir, e.getMessage()), Toast.LENGTH_LONG).show();
+                            complain(String.format(getString(R.string.file_load_failed), chosenDir, e.getMessage()));
                         }
                     }
                 }

@@ -34,6 +34,8 @@
     </item>
     <item android:id="@+id/action_change_login" android:title="@string/action_change_login"
         android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_remove_ads" android:title="@string/action_remove_ads"
+        android:orderInCategory="100" app:showAsAction="never" />
     <group>
         <item android:id="@+id/action_show_splash" android:title="@string/action_show_splash"
             android:orderInCategory="100" app:showAsAction="never" />

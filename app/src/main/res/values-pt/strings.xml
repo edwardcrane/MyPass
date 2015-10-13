@@ -138,4 +138,12 @@
     <string name="change_registration_change_email_successful">E-mail foi atualizado com sucesso</string>
     <string name="change_registration_change_email_text">Alterar E-mail</string>
     <string name="change_registration_username_already_exists">Não pode alterar. Usuário já existe.</string>
+    <string name="action_remove_ads">Remover anúncios.</string>
+    <string name="iap_billing_setup_problem">In-App-Billing problema de configuração:</string>
+    <string name="iap_error_purchasing">Erro durante a compra:</string>
+    <string name="iap_error_purchasing_authentication">Erro durante a compra. Verificação de autenticidade falhou.</string>
+    <string name="iap_failed_to_query_inventory">Falha ao consultar o inventário.</string>
+    <string name="iap_turn_off_ads_already_purchased">Não há necessidade de desligar os anúncios, como eles já estão desligados!</string>
+    <string name="iap_turn_off_ads_thank_you">Obrigado por fazer o upgrade para "Sem anúncios"</string>
+    <string name="iap_purchase_successful">Comprado com sucesso.</string>
 </resources>

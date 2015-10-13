@@ -27,6 +27,8 @@
     android:background="@layout/radial_gradient"
     android:orientation="vertical" >
 
+    <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:visibility="gone" android:layout_gravity="center" android:id="@+id/screen_wait" android:src="@drawable/wait"/>
+
     <LinearLayout
         android:id="@+id/search_group"
         android:layout_width="match_parent"
@@ -47,7 +49,7 @@
     android:orientation="vertical"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
-        android:layout_below="@id/search_group"
+    android:layout_below="@id/search_group"
     android:background="@layout/banner_ad_default_logo">
 
         <com.google.android.gms.ads.AdView

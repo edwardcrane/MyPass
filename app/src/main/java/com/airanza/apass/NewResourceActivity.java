@@ -20,6 +20,7 @@
 
 package com.airanza.apass;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.method.HideReturnsTransformationMethod;
@@ -28,7 +29,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -38,14 +42,21 @@ import java.sql.SQLException;
 
 public class NewResourceActivity extends ActionBarActivity {
     public final static String EXTRA_RESOURCE = "com.airanza.apass.RESOURCE";
+    public final static String EXTRA_BOOLEAN_SHOWADS = "com.airanza.apass.SHOWADS";  // can e the same as that of EditResourceActivity with no ill effects.
 
     private ResourceDataSource datasource;
 
     private boolean isPasswordVisible = true;
 
+    private boolean mShowAds = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        mShowAds = (boolean) intent.getBooleanExtra(EXTRA_BOOLEAN_SHOWADS, true);
+
         setContentView(R.layout.activity_new_resource);
         try {
             datasource = new ResourceDataSource(this);
@@ -54,13 +65,25 @@ public class NewResourceActivity extends ActionBarActivity {
             Log.w(this.getClass().getName(), e);
         }
 
-        // ADD ADS:
-        AdView mBottomAdView = (AdView) findViewById(R.id.new_bottom_adview);
-        AdRequest bottomAdRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+        if(mShowAds) {
+            // ADD ADS:
+            AdView mBottomAdView = (AdView) findViewById(R.id.new_bottom_adview);
+            AdRequest bottomAdRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
 //                .addTestDevice(getString(R.string.primary_android_admob_test_device))
-                .build();
-        mBottomAdView.loadAd(bottomAdRequest);
+                    .build();
+            mBottomAdView.loadAd(bottomAdRequest);
+        } else {
+            turnOffAds();
+        }
+    }
+
+    public void turnOffAds() {
+        // remove bottom banner ad:
+        View view = (View)findViewById(R.id.new_bottom_ad_layout);
+        ViewGroup parent = (ViewGroup)view.getParent();
+        parent.removeView(view);
+        parent.invalidate();
     }
 
     public void onClickOnPassword(View view) {
