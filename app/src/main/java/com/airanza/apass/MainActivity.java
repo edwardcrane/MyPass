@@ -302,24 +302,34 @@ public class MainActivity extends ActionBarActivity {
 
         // remove top banner ad:
         View view = (View)findViewById(R.id.top_ad_layout);
-        ViewGroup parent = (ViewGroup)view.getParent();
-        parent.removeView(view);
-        // shift listView so it is laid out below findString field:
-        ListView listView = (ListView)findViewById(R.id.listMain);
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)listView.getLayoutParams();
-        params.addRule(RelativeLayout.BELOW, R.id.search_group);
-        listView.setLayoutParams(params);
-        // repaint:
-        parent.invalidate();
+        // check if top banner ad is still present (ads not already removed):
+        if(view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            parent.removeView(view);
+            // shift listView so it is laid out below findString field:
+            ListView listView = (ListView) findViewById(R.id.listMain);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) listView.getLayoutParams();
+            params.addRule(RelativeLayout.BELOW, R.id.search_group);
+            listView.setLayoutParams(params);
+            // repaint:
+            parent.invalidate();
+        }
 
         // remove bottom banner ad:
         view = (View)findViewById(R.id.bottom_ad_layout);
-        parent = (ViewGroup)view.getParent();
-        parent.removeView(view);
-        parent.invalidate();
+        // check if bottom banner ad is still present (ads not already removed):
+        if(view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            parent.removeView(view);
+            parent.invalidate();
+        }
 
         // remove "Remove Ads..." item from menu:
-        mMenu.removeItem(R.id.action_remove_ads);
+        if(mMenu != null) {         // avoid NullPointerException on startup and/or orientation change.
+            if(mMenu.findItem(R.id.action_remove_ads) != null) {    // avoid NullPointerException on startup and/or orientation change.
+                mMenu.removeItem(R.id.action_remove_ads);
+            }
+        }
     }
 
     /**

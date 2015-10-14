@@ -81,9 +81,12 @@ public class NewResourceActivity extends ActionBarActivity {
     public void turnOffAds() {
         // remove bottom banner ad:
         View view = (View)findViewById(R.id.new_bottom_ad_layout);
-        ViewGroup parent = (ViewGroup)view.getParent();
-        parent.removeView(view);
-        parent.invalidate();
+        // check whether ad view has already been removed (ads turned off):
+        if(view != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
+            parent.removeView(view);
+            parent.invalidate();
+        }
     }
 
     public void onClickOnPassword(View view) {
