@@ -27,7 +27,7 @@
     android:background="@layout/radial_gradient"
     android:orientation="vertical" >
 
-    <ImageView android:layout_height="wrap_content" android:layout_width="wrap_content" android:visibility="gone" android:layout_gravity="center" android:id="@+id/screen_wait" android:src="@drawable/wait"/>
+    <ImageView android:src="@drawable/wait" android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/screen_wait" android:visibility="gone" android:layout_gravity="center" />
 
     <LinearLayout
         android:id="@+id/search_group"

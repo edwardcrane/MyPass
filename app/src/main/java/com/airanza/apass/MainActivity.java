@@ -149,7 +149,6 @@ public class MainActivity extends ActionBarActivity {
                 return;
             }
 
-//            Log.d(getClass().getName(), getString(R.string.iap_purchase_successful));
             tell(getString(R.string.iap_purchase_successful));
 
             if (purchase.getSku().equals(TURN_OFF_ADS_SKU)) {
@@ -169,7 +168,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Check the In App Billing
         mHelper = new IabHelper(this, base64EncodedPublicKey);
-        mHelper.enableDebugLogging(true);
+        mHelper.enableDebugLogging(false);
         Log.d(getClass().getName(), "Starting IAB Setup");
         mHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
             public void onIabSetupFinished(IabResult result) {
@@ -559,11 +558,17 @@ public class MainActivity extends ActionBarActivity {
                 break;
 
             case GOOGLE_PLAY_REQUEST_CODE:
-                Log.i(getClass().getName(), "onActivityResult() is handling GOOGLE_PLAY_REQUEST_CODE");
-                if(resultCode == RESULT_OK) {
-                    // probably ought to find out which IAP was made and enabled that feature now.
+                Log.d(getClass().getName(), "onActivityResult("+requestCode+", "+resultCode+", "+data);
+                if(mHelper == null) return;
+
+                // pass on the activity result to the helper for handling
+                if(!mHelper.handleActivityResult(requestCode, resultCode, data)) {
+                    // not handled so handle it ourselves (here's where you'd
+                    // perform any handling of activity results not related to in-app
+                    // billing...  (this is from Google's sample IAB code.  Maybe not necessary?
+                    super.onActivityResult(requestCode, resultCode, data);
                 } else {
-                    // maybe IAP purchase was canceled, or there was an error?  So don't do anything for now.
+                    Log.d(getClass().getName(), "onActivityResult handled by IABUtil.");
                 }
                 break;
 
@@ -726,6 +731,7 @@ public class MainActivity extends ActionBarActivity {
                             AndroidEncryptor.decrypt(chosenDir, ResourceDBHelper.getPath());
                             resourcedatasource.open();
                             adapter.notifyDataSetChanged();
+                            findResource(listView);
                             tell(String.format(getString(R.string.file_loaded_successfully), chosenDir));
                         } catch (Exception e) {
                             complain(String.format(getString(R.string.file_load_failed), chosenDir, e.getMessage()));
