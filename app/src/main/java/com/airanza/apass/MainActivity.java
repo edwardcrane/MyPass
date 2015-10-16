@@ -138,7 +138,11 @@ public class MainActivity extends ActionBarActivity {
             if (mHelper == null) return;
 
             if (result.isFailure()) {
-                complain(getString(R.string.iap_error_purchasing) + result);
+                if(result.getResponse() != IabHelper.IABHELPER_USER_CANCELLED) {
+                    complain(getString(R.string.iap_error_purchasing) + result);
+                } else {
+                    Log.i(getClass().getName(), "USER CANCELED. result: " + result);
+                }
                 setWaitScreen(false);
                 return;
             }
@@ -241,16 +245,26 @@ public class MainActivity extends ActionBarActivity {
 //                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                     .build();
             mBottomAdView.loadAd(bottomAdRequest);
-        } else {
-            turnOffAds();
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if(mHelper != null) mHelper.dispose();
-        mHelper = null;
+        if(mHelper != null) {
+            mHelper.dispose();
+            mHelper = null;
+        }
+        // destroy ads:
+        AdView adView = (AdView)findViewById(R.id.main_top_adview);
+        if(adView != null) {
+            adView.destroy();
+        }
+        adView = (AdView)findViewById(R.id.main_bottom_adview);
+        if(adView != null) {
+            adView.destroy();
+        }
+
     }
 
     void complain(String message) {
@@ -296,8 +310,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void turnOffAds() {
-        mShowAds = false;
-        // TODO:  Implement logic for ALL ACTIVITIES!!!
 
         // remove top banner ad:
         View view = (View)findViewById(R.id.top_ad_layout);

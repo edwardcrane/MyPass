@@ -78,6 +78,14 @@ public class NewResourceActivity extends ActionBarActivity {
         }
     }
 
+    public void onDestroy(){
+        AdView adView = (AdView)findViewById(R.id.new_bottom_adview);
+        if(adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
+
     public void turnOffAds() {
         // remove bottom banner ad:
         View view = (View)findViewById(R.id.new_bottom_ad_layout);
