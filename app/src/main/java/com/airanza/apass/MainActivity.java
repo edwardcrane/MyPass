@@ -58,9 +58,11 @@ import com.airanza.com.airanza.iaputils.IabHelper;
 import com.airanza.com.airanza.iaputils.IabResult;
 import com.airanza.com.airanza.iaputils.Inventory;
 import com.airanza.com.airanza.iaputils.Purchase;
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdRequest.Builder;
+import com.google.android.gms.ads.InterstitialAd;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -92,6 +94,7 @@ public class MainActivity extends ActionBarActivity {
     public final static String TURN_OFF_ADS_SKU = "turn_off_ads";
     public final static int GOOGLE_PLAY_REQUEST_CODE = 12003;  // any + integer for onActivityResult
     private static boolean mShowAds = true;
+    private InterstitialAd mInterstitialAd;
     private Menu mMenu;     // to add and remove option for in-app-purchases.
 
     // LISTENER THAT'S CALLED WHEN WE FINISH QUERYING THE ITEMS AND SUBSCRIPTIONS WE OWN.
@@ -245,6 +248,20 @@ public class MainActivity extends ActionBarActivity {
 //                .addTestDevice(getString(R.string.primary_android_admob_test_device))
                     .build();
             mBottomAdView.loadAd(bottomAdRequest);
+
+            // MAKE INTERSTITIAL AD APPEAR AFTER LOGIN:
+            mInterstitialAd = new InterstitialAd(this);
+            mInterstitialAd.setAdUnitId(getString(R.string.main_activity_interstitial_ad_unit_id));
+            mInterstitialAd.setAdListener(new AdListener() {
+                @Override
+                public void onAdLoaded() {
+                    mInterstitialAd.show();
+                }
+            });
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                    .build();
+            mInterstitialAd.loadAd(adRequest);
         }
     }
 
