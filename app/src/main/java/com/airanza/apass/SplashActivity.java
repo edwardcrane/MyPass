@@ -31,6 +31,9 @@ import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
 /**
  * Created by ecrane on 3/31/2015.
  */
@@ -46,6 +49,10 @@ public class SplashActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        AppEventsLogger.activateApp(this);
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

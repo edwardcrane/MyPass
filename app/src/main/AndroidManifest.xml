@@ -35,6 +35,8 @@
 
         <meta-data android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAIiH50UfNgXWAhziYFleodvQnVwojRLpv2LgI2gQ" />
+
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <activity
             android:name="com.airanza.apass.MainActivity"
             android:label="@string/app_name"

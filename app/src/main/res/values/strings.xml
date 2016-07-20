@@ -22,6 +22,9 @@
 <resources>
 
     <string name="app_name">APass</string>
+
+    <string name="facebook_app_id">825455870923268</string>
+
     <string name="resource_name">Record Name</string>
     <string name="username">User Name</string>
     <string name="password">Password</string>
