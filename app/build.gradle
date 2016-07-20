@@ -35,8 +35,8 @@ android {
         applicationId "com.airanza.apass"
         minSdkVersion 15
         targetSdkVersion 21
-        versionCode 18
-        versionName "1.018"
+        versionCode 19
+        versionName "1.019"
     }
     buildTypes {
         release {
@@ -55,4 +55,7 @@ dependencies {
     compile files('libs/opencsv-3.2.jar')
     compile 'com.google.android.gms:play-services:7.3.0'
     compile 'com.facebook.android:facebook-android-sdk:4.8.0'
+//    compile 'com.google.android.gms:play-services-analytics:9.2.0'
 }
+
+//apply plugin: 'com.google.gms.google-services'
