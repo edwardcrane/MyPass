@@ -39,6 +39,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.sql.SQLException;
 
 public class LoginActivity extends ActionBarActivity {
@@ -66,11 +69,19 @@ public class LoginActivity extends ActionBarActivity {
     private long logged_in_time = 0;
     private final int STAY_LOGGED_IN_MINUTES = 2;
 
+    private Tracker mTracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // setting default screen to login.xml
         setContentView(R.layout.activity_login);
+
+        // Google Analytics Logger:
+        APassApplication application = (APassApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         try {
             datasource = new LoginDataSource(this);

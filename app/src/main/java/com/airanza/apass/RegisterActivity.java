@@ -33,16 +33,27 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.sql.SQLException;
 
 public class RegisterActivity extends ActionBarActivity {
 
     private LoginDataSource datasource;
 
+    private Tracker mTracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        // Google Analytics Logger:
+        APassApplication application = (APassApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         try {
             datasource = new LoginDataSource(this);

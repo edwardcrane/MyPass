@@ -33,6 +33,8 @@ import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 /**
  * Created by ecrane on 3/31/2015.
@@ -45,14 +47,22 @@ public class SplashActivity extends Activity {
     public final static String SPLASH_ACTION = "splash_action";
     public final static int SPLASH_ABOUT = 1;
 
+    private Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
-
+        // facebook analytics logger:
         AppEventsLogger.activateApp(this);
+
+        // Google Analytics Logger:
+        APassApplication application = (APassApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         try {
             PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);

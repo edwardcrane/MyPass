@@ -37,6 +37,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import java.sql.SQLException;
 
@@ -52,6 +54,8 @@ public class EditResourceActivity extends ActionBarActivity {
     private boolean isPasswordVisible = false;
     private boolean mShowAds = true;
 
+    private Tracker mTracker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,14 @@ public class EditResourceActivity extends ActionBarActivity {
         mShowAds = (boolean) intent.getBooleanExtra(EXTRA_BOOLEAN_SHOWADS, true);
 
         setContentView(R.layout.activity_edit_resource);
+
+        // Google Analytics Logger:
+        APassApplication application = (APassApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
+
+
         try {
             datasource = new ResourceDataSource(this);
             datasource.open();

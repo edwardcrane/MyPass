@@ -39,8 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/resource_name"
-            android:singleLine="true"
-            >
+            android:singleLine="true">
             <requestFocus />
         </EditText>
 

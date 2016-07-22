@@ -39,6 +39,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.sql.SQLException;
 
 public class ChangeRegistrationActivity extends ActionBarActivity {
@@ -50,10 +53,18 @@ public class ChangeRegistrationActivity extends ActionBarActivity {
     private String newPasswordHint = "";
     private String newEmail = "";
 
+    private Tracker mTracker;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_registration);
+
+        // Google Analytics Logger:
+        APassApplication application = (APassApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 
         try {
             datasource = new LoginDataSource(this);

@@ -63,6 +63,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdRequest.Builder;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -96,6 +98,8 @@ public class MainActivity extends ActionBarActivity {
     private static boolean mShowAds = true;
     private InterstitialAd mInterstitialAd;
     private Menu mMenu;     // to add and remove option for in-app-purchases.
+
+    private Tracker mTracker;
 
     // LISTENER THAT'S CALLED WHEN WE FINISH QUERYING THE ITEMS AND SUBSCRIPTIONS WE OWN.
     private IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
@@ -196,6 +200,11 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
+        // Google Analytics Logger:
+        APassApplication application = (APassApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
         nDefaultSearchTextColor = ((EditText)findViewById(R.id.findString)).getTextColors().getDefaultColor();
 
         // hide keyboard unless explicitly required by user clicking:
